@@ -1,0 +1,3 @@
+Calendar: http://jquense.github.io/react-big-calendar/examples/index.html?path=/docs/props--on-select-slot 
+
+scwnbjdt

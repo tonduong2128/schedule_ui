@@ -1,0 +1,270 @@
+* {
+  font-family: system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    "Liberation Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
+html * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.header-container {
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  z-index: 10;
+}
+
+.header-logo {
+  display: inline-block;
+  max-height: 56px;
+  max-width: 225px;
+  width: 40px;
+  padding: 8px 4px 8px 4px;
+  vertical-align: middle;
+}
+
+.header-logo img {
+  color: #fff
+}
+
+.header-logo-name {
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.header-logo:hover,
+.header-logo-name:hover {
+  cursor: pointer;
+}
+
+.header-item-container-sm {
+  display: none;
+}
+
+.header-item-navigation {
+  height: 68px;
+}
+
+.container-header-logo {
+  margin-left: 30px
+}
+
+.header-logo {
+  display: inline-block;
+  max-height: 56px;
+  max-width: 225px;
+  width: 70px;
+  padding: 8px 4px 8px 4px;
+  vertical-align: middle;
+}
+
+.header-logo img {
+  color: #000
+}
+
+.header-logo-name {
+  color: #9aa0a8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.header-logo:hover,
+.header-logo-name:hover {
+  cursor: pointer;
+}
+
+.container {
+  top: 68px;
+  position: relative;
+}
+
+.container-title h2 {
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #1f2125;
+}
+
+.input-pass {
+  margin-top: 20px;
+}
+
+.input-info {
+  margin-top: 40px;
+}
+
+.btn-login {
+  width: 100%;
+  margin-top: 40px;
+}
+
+@media only screen and (max-width: 800px) {
+  .header-item-container-sm {
+    display: block;
+  }
+
+  .header-item-container {
+    display: none;
+  }
+
+  .container-title {
+    text-align: center;
+  }
+
+  .container-title h2 {
+    font-size: 20px;
+    line-height: 25px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #1f2125;
+  }
+
+  .container-title p {
+    font-size: 13px;
+    color: #1f2125;
+  }
+
+  .container-body {
+    padding: 0px 30px;
+  }
+
+  .lable-container {
+    padding-bottom: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #3c3c3c;
+    text-transform: uppercase;
+  }
+
+  .container-car-type {
+    margin-top: 30px;
+  }
+
+  .container-car-location {
+    margin-top: 20px;
+  }
+
+  .date-input {
+    width: 100%;
+  }
+
+  .time-input {
+    width: 100%;
+  }
+
+  .container-title-login h2 {
+    padding-top: 70px;
+    font-size: 1.75em;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .input-pass {
+    margin-top: 20px;
+  }
+
+  .input-info {
+    margin-top: 40px;
+  }
+
+  .btn-login {
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .container-home-page {
+    top: 68px;
+    position: relative;
+  }
+
+  .background-home img {
+    width: 100%;
+  }
+
+  .container-title-regis {
+    position: absolute;
+    text-align: center;
+    bottom: 50%;
+    width: 100%;
+  }
+
+  .container-title-regis span {
+    font-size: 40px;
+    font-weight: 400;
+    color: #333;
+  }
+}
+
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root,
+.css-1gywuxd-MuiInputBase-root-MuiOutlinedInput-root,
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root,
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 0 !important;
+}
+
+/* width **/
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.registration-error-title {
+  font-size: 30px;
+  color: #fb0;
+  text-align: center;
+  font-family: monospace;
+}
+
+.registration-error-body {
+  font-size: 16px;
+  color: white;
+  font-family: Panton;
+  line-height: 1.6em;
+  font-weight: 400;
+  text-align: center;
+  font-family: monospace;
+}
+
+.button-close-modal {
+  text-align: end;
+}

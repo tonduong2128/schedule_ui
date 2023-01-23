@@ -1,0 +1,78 @@
+.container-title {
+    text-align: center;
+}
+
+.container-title h2 {
+    font-size: 20px;
+    line-height: 25px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #1f2125;
+}
+
+
+
+.lable-container {
+    padding-bottom: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #3c3c3c;
+    text-transform: uppercase;
+}
+
+.container-car-type {
+    margin-top: 30px;
+}
+
+.container-car-location {
+    margin-top: 20px;
+}
+
+.date-input {
+    width: 100%;
+}
+
+.time-input {
+    width: 100%;
+}
+
+
+/* Custom hard css of big calendar */
+.rbc-event,
+button {
+    border-radius: 0 !important;
+}
+
+*:first-letter {
+    text-transform: uppercase !important;
+}
+
+/* width */
+.rbc-time-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+.rbc-time-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.rbc-time-content::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.rbc-toolbar>span {
+    overflow-y: overlay;
+    text-align: center;
+}
+
+.rbc-off-range-bg {
+    background: rgb(235, 236, 240);
+}
