@@ -1,7 +1,7 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { PER_PAGE, RESPONSE_CODE } from "../../../common";
+import { RESPONSE_CODE } from "../../../common";
 import { Role } from "../../../services";
 const UserTypeAutocomplete = ({ onChange, label, disabled = false, value, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -9,7 +9,7 @@ const UserTypeAutocomplete = ({ onChange, label, disabled = false, value, ...pro
 
     useEffect(() => {
         const searchOption = {
-            limit: PER_PAGE,
+            limit: 100000,
             page: 1
         };
         const searchModel = {

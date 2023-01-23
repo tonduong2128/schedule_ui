@@ -28,7 +28,7 @@ function App() {
               <Route path="/logout" element={<LogoutPage />}></Route>
               <Route path="/profile" element={<ProfilePage />}></Route>
               <Route path="/vehicle-type" element={<VehicleTypePage />}></Route>
-              <Route path="/" element={<HomePage />}></Route>
+              <Route path="/" element={<CalenderPage />}></Route>
             </Route>
             <Route path="*" element={<div>
               <Header />

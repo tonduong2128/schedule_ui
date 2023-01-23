@@ -19,10 +19,10 @@ const VehicleType = {
             body: JSON.stringify({ vehicleType })
         })
     },
-    async deletes(vehicleType) {
+    async deletes(vehicleTypeIds) {
         return fetch(`${process.env.REACT_APP_API_URL}/vehicle-type`, {
             method: "DELETE",
-            body: JSON.stringify({ vehicleType })
+            body: JSON.stringify({ vehicleTypeIds })
         })
     }
 }

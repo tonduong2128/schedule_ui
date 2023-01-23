@@ -1,14 +1,14 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { PER_PAGE, RESPONSE_CODE } from "../../../common";
+import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
 const TeacherAutocomplete = ({ onChange, value, disabled = false, studentId, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const [teachers, setTeachers] = useState([])
     useEffect(() => {
         const searchOption = {
-            limit: PER_PAGE,
+            limit: 100000,
             page: 1
         };
         const seacherModel = {

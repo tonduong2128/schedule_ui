@@ -215,6 +215,8 @@ const CustomCalendar = (props) => {
                         setEvents([...events, newEvent])
                     } if (code === RESPONSE_CODE.RESERVATION_EXISTS) {
                         notificationContext.dispatch(openActionNotification("Giáo viên dã dạy giờ này rồi.", "error"))
+                    } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
+                        notificationContext.dispatch(openActionNotification("Bạn đã đăng ký giờ này rồi.", "error"))
                     } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
                         notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
                     } else {
@@ -448,6 +450,12 @@ const CustomCalendar = (props) => {
             }}
             components={
                 {
+                    day: {
+                        event: events => {
+                            const { info } = events.event;
+                            return <>{events.title}-({info.VehicleType.name})</>
+                        }
+                    },
                     week: {
                         event: events => {
                             return isMobile ? <></> : events.title;
@@ -457,7 +465,7 @@ const CustomCalendar = (props) => {
                         event: events => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}</div>
+                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>
                                 : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}</div>;
                         },
                     },

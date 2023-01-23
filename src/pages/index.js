@@ -1,5 +1,4 @@
 export * from './Login';
-export * from './Home';
 export * from './ForgotPassword'
 export * from './Page'
 export * from './ChangePassword'

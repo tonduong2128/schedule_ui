@@ -1,18 +1,18 @@
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { PER_PAGE, RESPONSE_CODE } from "../../../common";
+import { RESPONSE_CODE } from "../../../common";
 import { VehicleType } from "../../../services";
 const VehicleTypeAutocomplete = ({ onChange, vehicleTypeId, teacherId = 0, disabled = false, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const [vehicleTypes, setVehicleTypes] = useState([])
     useEffect(() => {
         const searchOption = {
-            limit: PER_PAGE,
+            limit: 100000,
             page: 1
         };
         const seacherModel = {
-            createdBy: teacherId
+            teacherId: teacherId
         };
         VehicleType.getVehicleTypes(searchOption, seacherModel)
             .then(response => {

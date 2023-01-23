@@ -287,11 +287,11 @@ const Page = ({ ...props }) => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button autoFocus onClick={() => handleDelete()}>
-                            Đồng ý
-                        </Button>
-                        <Button onClick={() => setOpenConfirm(false)} autoFocus>
+                        <Button variant='outlined' onClick={() => setOpenConfirm(false)} >
                             Quay lại
+                        </Button>
+                        <Button variant='contained' onClick={() => handleDelete()}>
+                            Đồng ý
                         </Button>
                     </DialogActions>
                 </Dialog>

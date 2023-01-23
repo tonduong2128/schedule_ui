@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Snackbar, TablePagination } from '@mui/material';
+import { Box, Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TablePagination } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,7 +13,7 @@ import { PER_PAGE, RESPONSE_CODE, ROLE } from '../../common';
 import { Header } from '../../components';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
-import { User, VehicleType } from '../../services';
+import { VehicleType } from '../../services';
 import { getUser } from '../../utils';
 import { defaultResultModel, defaultSearchModel, ResultModel, SearchModel } from './Model';
 import VehicleTypeAdd from './VehicleTypeAdd';
@@ -122,7 +122,7 @@ const VehicleTypePage = ({ ...props }) => {
     const handleDelete = async () => {
         if (selectModel.length === 1) {
             loadingContext.dispatch(openActionLoading())
-            const response = await User.deletes(selectModel)
+            const response = await VehicleType.deletes(selectModel)
             loadingContext.dispatch(closeActionLoading())
             const { code } = response
             if (code === RESPONSE_CODE.SUCCESS) {
@@ -280,11 +280,11 @@ const VehicleTypePage = ({ ...props }) => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button autoFocus onClick={() => handleDelete()}>
-                            Đồng ý
-                        </Button>
-                        <Button onClick={() => setOpenConfirm(false)} autoFocus>
+                        <Button variant='outlined' onClick={() => setOpenConfirm(false)} >
                             Quay lại
+                        </Button>
+                        <Button variant='contained' onClick={() => handleDelete()}>
+                            Đồng ý
                         </Button>
                     </DialogActions>
                 </Dialog>
