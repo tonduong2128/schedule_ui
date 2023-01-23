@@ -458,7 +458,9 @@ const CustomCalendar = (props) => {
                     },
                     week: {
                         event: events => {
-                            return isMobile ? <></> : events.title;
+                            const { info } = events.event;
+                            const { startTime, endTime } = info;
+                            return isMobile ? <></> : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>;
                         }
                     },
                     month: {
@@ -466,7 +468,7 @@ const CustomCalendar = (props) => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
                             return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>
-                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}</div>;
+                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>;
                         },
                     },
                     work_week: {
