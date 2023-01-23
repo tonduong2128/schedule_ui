@@ -19,6 +19,12 @@ const Auth = {
             body: JSON.stringify(body),
         })
     },
+    async resetForce(user) {
+        return fetch(`${process.env.REACT_APP_API_URL}/auth/reset-force`, {
+            method: "POST",
+            body: JSON.stringify({ user }),
+        })
+    },
     async changePassword(oldPassword, newPassword) {
         return fetch(`${process.env.REACT_APP_API_URL}/auth/change-password`, {
             method: "POST",

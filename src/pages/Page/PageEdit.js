@@ -3,13 +3,13 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { memo, useContext, useState } from 'react';
-import { RESPONSE_CODE, ROLE } from '../../common';
+import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import UserStatus from '../../components/Controls/User/UserStatus';
 import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
-import { User } from '../../services';
+import { Auth, User } from '../../services';
 import { getUser } from '../../utils';
 
 const style = {
@@ -36,7 +36,7 @@ function PageEdit({
     const [user, setUser] = useState({
         username: "",
         fullname: "",
-        password: "123456",//default
+        password: PASSWORD_DEFAULT,//default
         phone: "",
         email: "",
         status: 1,
@@ -95,6 +95,19 @@ function PageEdit({
             notificationContext.dispatch(openActionNotification("Vui lòng chọn một dòng dữ liệu.", "warning"))
         } else {
             notificationContext.dispatch(openActionNotification("Vui lòng chỉ chọn một dòng dữ liệu.", "warning"))
+        }
+    }
+    const resetPasswordForce = async () => {
+        loadingContext.dispatch(openActionLoading())
+        const response = await Auth.resetForce(user)
+        loadingContext.dispatch(closeActionLoading())
+        const { code } = response;
+        if (code === RESPONSE_CODE.SUCCESS) {
+            notificationContext.dispatch(openActionNotification("Đặt lại mật khẩu thành công.", "success"))
+            setOpenModal(false)
+        } else {
+            notificationContext.dispatch(openActionNotification("Vui lòng thử lại sau.", "error"))
+            console.log("External error");
         }
     }
     return (<div style={{ display: "inline-block" }}>
@@ -252,6 +265,9 @@ function PageEdit({
                         <div className="container-car-type container-car-location">
                             <Button onClick={() => handleSumit()} variant="contained" disableElevation>
                                 Lưu
+                            </Button>
+                            <Button style={{ marginLeft: 10 }} onClick={() => resetPasswordForce()} variant="contained" disableElevation>
+                                Đặt lại password (123456)
                             </Button>
                         </div>
                     </div>

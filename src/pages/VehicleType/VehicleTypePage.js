@@ -165,13 +165,13 @@ const VehicleTypePage = ({ ...props }) => {
                                     defaultValue: defaultSearchModel,
                                     label: "Tìm kiếm",
                                     values: SearchModel,
-                                    code: `User_Page_Search${isMobile ? '_mb' : ''}`
+                                    code: `VehicleType_Page_Search${isMobile ? '_mb' : ''}`
                                 }}
                                 option2={{
                                     defaultValue: defaultResultModel,
                                     label: "Kết quả",
                                     values: ResultModel,
-                                    code: `User_Page_Research${isMobile ? '_mb' : ''}`
+                                    code: `VehicleType_Research${isMobile ? '_mb' : ''}`
                                 }}
                                 onChange1={value => setOption1(value)}
                                 onChange2={value => setOption2(value)} />

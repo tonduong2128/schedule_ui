@@ -3,7 +3,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
-import { RESPONSE_CODE, ROLE } from '../../common';
+import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
 import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { User } from '../../services';
 import { getUser } from '../../utils';
@@ -44,7 +44,7 @@ function PageAdd({
     const [user, setUser] = useState({
         username: "",
         fullname: "",
-        password: "123456",//default
+        password: PASSWORD_DEFAULT,//default
         phone: "",
         email: "",
         status: 1,
