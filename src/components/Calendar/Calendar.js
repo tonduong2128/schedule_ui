@@ -3,7 +3,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Alert, Box, Modal, Slide, Snackbar } from "@mui/material";
 import moment from "moment";
 import 'moment/locale/vi';
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -51,6 +51,7 @@ const CustomCalendar = (props) => {
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
 
+    const clickRef = useRef(null)
     const [events, setEvents] = useState([
         // {
         //     start: moment().toDate(),
@@ -73,6 +74,18 @@ const CustomCalendar = (props) => {
             calendar.removeEventListener("click", (e) => {
                 //remove before event
             })
+        }
+    }, [])
+
+    useEffect(() => {
+        /**
+         * What Is This?
+         * This is to prevent a memory leak, in the off chance that you
+         * teardown your interface prior to the timed method being called.
+         */
+        return () => {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            window.clearTimeout(clickRef?.current)
         }
     }, [])
 
@@ -133,12 +146,11 @@ const CustomCalendar = (props) => {
             return;
         }
         const { start: startTime, end: endTime } = slotInfo;
-        setInfoRegister(() => {
-            return {
-                targetDate: moment(startTime).format("YYYY-MM-DD"),
-                startTime: moment(startTime).format("HH:mm:ss"),
-                endTime: moment(endTime).format("HH:mm:ss"),
-            }
+        setModeModal(MODE_REGISTER_SHEDULE.ADD)
+        setInfoRegister({
+            targetDate: moment(startTime).format("YYYY-MM-DD"),
+            startTime: moment(startTime).format("HH:mm:ss"),
+            endTime: moment(endTime).format("HH:mm:ss"),
         })
         setOpenModal(true)
     }
@@ -185,17 +197,30 @@ const CustomCalendar = (props) => {
                 loadingContext.dispatch(closeActionLoading())
             })
     };
-    const hanldeClickEvent = (slotInfo) => {
-        const { start, end, info } = slotInfo;
-        setInfoRegister({
-            targetDate: moment(start).format("YYYY-MM-DD"),
-            startTime: moment(start).format("HH:mm:ss"),
-            endTime: moment(end).format("HH:mm:ss"),
-            info,
-        })
-        setModeModal(MODE_REGISTER_SHEDULE.EDIT)
-        setOpenModal(true)
-    }
+    const hanldeClickEvent = useCallback((slotInfo) => {
+        window.clearTimeout(clickRef?.current)
+        clickRef.current = window.setTimeout(() => {
+            const { start, end, info } = slotInfo;
+            setInfoRegister({
+                targetDate: moment(start).format("YYYY-MM-DD"),
+                startTime: moment(start).format("HH:mm:ss"),
+                endTime: moment(end).format("HH:mm:ss"),
+                info,
+            })
+            setModeModal(MODE_REGISTER_SHEDULE.EDIT)
+            setOpenModal(true)
+        }, 250)
+
+    }, [])
+    const hanldeDoubleClickEvent = useCallback((slotInfo) => {
+        /**
+      * Notice our use of the same ref as above.
+      */
+        window.clearTimeout(clickRef?.current)
+        clickRef.current = window.setTimeout(() => {
+            console.log(slotInfo);
+        }, 250)
+    }, [])
 
     const hanldeSubmit = (slotInfo, mode = MODE_REGISTER_SHEDULE.ADD) => {
         if (mode === MODE_REGISTER_SHEDULE.ADD) {
@@ -364,11 +389,12 @@ const CustomCalendar = (props) => {
     const handleChangeCalendarOf = (calendarOf) => {
         setCalendarOf(calendarOf)
     }
+    const Component = isMobile ? Calendar : DnDCalendar;
     return <div>
         <div style={{ padding: "10px 0px" }}>
             <CalenderOf onChange={handleChangeCalendarOf} />
         </div>
-        <DnDCalendar
+        <Component
             formats={{
                 eventTimeRangeFormat: () => {
                     return "";
@@ -409,6 +435,7 @@ const CustomCalendar = (props) => {
             onSelectSlot={handleEventSelectSlot}
             // onSelecting={handleEnventSelecting}
             onSelectEvent={hanldeClickEvent}
+            // onDoubleClickEvent={hanldeDoubleClickEvent}
             onRangeChange={handleRangeChange}
             // onDoubleClickEvent={e => { console.log("Double Click Event", e) }}
             // onDragStart={e => { console.log("Drag start", e) }}
@@ -453,22 +480,22 @@ const CustomCalendar = (props) => {
                     day: {
                         event: events => {
                             const { info } = events.event;
-                            return <>{events.title}-({info.VehicleType.name})</>
+                            return <>{events.title} ({info.VehicleType.name})</>
                         }
                     },
                     week: {
                         event: events => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <></> : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>;
+                            return isMobile ? <></> : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>;
                         }
                     },
                     month: {
                         event: events => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>
-                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)}({info.VehicleType.name})</div>;
+                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>
+                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>;
                         },
                     },
                     work_week: {
