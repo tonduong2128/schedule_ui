@@ -35,7 +35,11 @@ function ChangePassword() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state])
     const handleSubmit = async (e) => {
-        if (!!oldPassword && !!password && password === retypePassword) {
+        if (!!oldPassword && !!password && !!retypePassword) {
+            if (password === retypePassword) {
+                notificationContext.dispatch(openActionNotification("Nhập lại mật khẩu mới không giống", "warning"))
+                return;
+            }
             loadingContext.dispatch(openActionLoading())
             const response = await Auth.changePassword(oldPassword, password)
             loadingContext.dispatch(closeActionLoading())
@@ -43,12 +47,12 @@ function ChangePassword() {
             if (code === RESPONSE_CODE.SUCCESS) {
                 navigate("/")
             } else if (code === RESPONSE_CODE.OLD_PASSWORD_NOT_MATCH) {
-                console.log("old password not match");
+                notificationContext.dispatch(openActionNotification("Mật khẩu cũ không đúng", "warning"))
             } else {
-                console.log("error else");
                 //handle error else
             }
         } else {
+            notificationContext.dispatch(openActionNotification("Tất cả các trường phải được điền", "warning"))
             console.log("Not empty for three field");
             //handle empty data
         }
@@ -118,7 +122,7 @@ function ChangePassword() {
                                 </div>
                                 <div className="input-pass">
                                     <FormControl sx={{ width: '100%' }} variant="outlined">
-                                        <InputLabel htmlFor="retypePassword">Nhập lại mật khẩu</InputLabel>
+                                        <InputLabel htmlFor="retypePassword">Nhập lại mật khẩu mới</InputLabel>
                                         <OutlinedInput
                                             id="retypePassword"
                                             type={showRetypePassword ? 'text' : 'password'}

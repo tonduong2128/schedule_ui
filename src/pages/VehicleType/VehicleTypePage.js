@@ -231,9 +231,9 @@ const VehicleTypePage = ({ ...props }) => {
                                             <TableCell className={!option2.includes("description") ? "hidden" : ""} align="left">{vehicleType.description}</TableCell>
                                             <TableCell className={!option2.includes("teacher") ? "hidden" : ""} align="left">{vehicleType.Teacher.fullname}</TableCell>
                                             <TableCell className={!option2.includes("createdDate") ? "hidden" : ""} align="left">{!!vehicleType.createdDate ?
-                                                moment(vehicleType.createdDate).format("DD//MM/YYYY HH:mm") : ""}</TableCell>
+                                                moment(vehicleType.createdDate).format("DD/MM/YYYY HH:mm") : ""}</TableCell>
                                             <TableCell className={!option2.includes("updatedDate") ? "hidden" : ""} align="left">{!!vehicleType.updatedDate ?
-                                                moment(vehicleType.updatedDate).format("DD//MM/YYYY HH:mm") : ""}</TableCell>
+                                                moment(vehicleType.updatedDate).format("DD/MM/YYYY HH:mm") : ""}</TableCell>
                                             {roleIds.includes(ROLE.admin) &&
                                                 <>
                                                     <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">{vehicleType.CreatedBy?.fullname}</TableCell>

@@ -1,6 +1,6 @@
-import { Box, Button, Checkbox, Drawer, FormControlLabel, FormGroup, Grid, List } from "@mui/material"
-import { memo, useEffect, useState } from "react"
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Button, Checkbox, Drawer, FormControlLabel, Grid, List } from "@mui/material";
+import { memo, useEffect, useState } from "react";
 
 const PageSidebar = ({ option1 = {
     label: "",

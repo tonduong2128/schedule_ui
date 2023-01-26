@@ -85,6 +85,7 @@ const VehicleTypeSearch = ({ option = [], searchModel: _searchModel, onChange, .
                     className={!option.includes("createdBy") ? "hidden" : ""}
                     xs={12} sm={12} md={6} lg={6} xl={6}>
                     <UserAutocomplete
+                        admin
                         label="Người tạo"
                         value={searchModel.createdBy || []}
                         onChange={value => setSearchModel({
@@ -96,6 +97,7 @@ const VehicleTypeSearch = ({ option = [], searchModel: _searchModel, onChange, .
                     className={!option.includes("updatedBy") ? "hidden" : ""}
                     xs={12} sm={12} md={6} lg={6} xl={6}>
                     <UserAutocomplete
+                        admin
                         label="Người cập nhập"
                         value={searchModel.updatedBy || []}
                         onChange={value => setSearchModel({

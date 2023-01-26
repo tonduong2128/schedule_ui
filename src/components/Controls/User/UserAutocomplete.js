@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { RESPONSE_CODE, ROLE } from "../../../common";
 import { User } from "../../../services";
 import { getUser } from '../../../utils';
-const UserAutocomplete = ({ onChange, label, disabled = false, value = [], ...props }) => {
+const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = [], ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const _user = getUser()
     const [users, setUsers] = useState([])
@@ -20,6 +20,9 @@ const UserAutocomplete = ({ onChange, label, disabled = false, value = [], ...pr
         if (roleIds.includes(ROLE.teacher_vip)) {
             searchOther.student = true;
             searchOther.teacherId = _user.id;
+        }
+        if (admin) {
+            searchOther.admin = true;
         }
         User.getUsers(searchOption, searchModel, searchOther)
             .then(response => {

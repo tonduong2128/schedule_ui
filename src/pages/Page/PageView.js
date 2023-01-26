@@ -1,6 +1,6 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Modal, TextField } from '@mui/material';
+import { Box, InputAdornment, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { memo, useContext, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
@@ -11,6 +11,9 @@ import { closeActionLoading, LoadingContext, openActionLoading } from '../../red
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { User } from '../../services';
 import { getUser } from '../../utils';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import PersonIcon from '@mui/icons-material/Person';
+import moment from 'moment';
 
 const style = {
     position: 'absolute',
@@ -99,10 +102,6 @@ function PageView({
                                 label="Tên đăng nhập"
                                 value={user.username}
                                 onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        username: event.nativeEvent.target.value
-                                    })
                                 }}
                             />
                         </div>
@@ -111,10 +110,6 @@ function PageView({
                                 disabled
                                 label="Loại người dùng"
                                 onChange={value => {
-                                    setUser({
-                                        ...user,
-                                        User_Roles: [value]
-                                    })
                                 }}
                                 value={user.User_Roles?.[0]}
                             />
@@ -126,10 +121,6 @@ function PageView({
                                     size='small'
                                     disabled
                                     onChange={value => {
-                                        setUser({
-                                            ...user,
-                                            Students_Teacher: [value]
-                                        })
                                     }}
                                     value={user.Students_Teacher?.[0]}
                                 />
@@ -145,12 +136,6 @@ function PageView({
                                 size="small"
                                 label="Họ và tên"
                                 value={user.fullname}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        fullname: event.nativeEvent.target.value
-                                    })
-                                }}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
@@ -163,12 +148,6 @@ function PageView({
                                 size="small"
                                 label="Số điện thoại"
                                 value={user.phone}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        phone: event.nativeEvent.target.value
-                                    })
-                                }}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
@@ -181,11 +160,10 @@ function PageView({
                                 size="small"
                                 label="Email"
                                 value={user.email}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        email: event.nativeEvent.target.value
-                                    })
+                                InputProps={{
+                                    startAdornment: (
+                                        <></>
+                                    ),
                                 }}
                             />
                         </div>
@@ -199,11 +177,10 @@ function PageView({
                                 size="small"
                                 label="Nickname"
                                 value={user.nickname}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        nickname: event.nativeEvent.target.value
-                                    })
+                                InputProps={{
+                                    startAdornment: (
+                                        <></>
+                                    ),
                                 }}
                             />
                         </div>
@@ -213,11 +190,83 @@ function PageView({
                                 label="Trạng thái"
                                 value={user.status}
                                 onChange={value => {
-                                    setUser({
-                                        ...user,
-                                        status: value
-                                    })
                                 }}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="createdBy"
+                                placeholder="Người tạo"
+                                variant="outlined"
+                                size="small"
+                                label="Người tạo"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <PersonIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={user?.CreatedBy?.fullname}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="updatedBy"
+                                placeholder="Người cập nhập"
+                                variant="outlined"
+                                size="small"
+                                label="Người cập nhập"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <PersonIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={user?.UpdatedBy?.fullname}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="createdDate"
+                                placeholder="Ngày tạo"
+                                variant="outlined"
+                                size="small"
+                                label="Ngày tạo"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <DateRangeIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={user?.createdDate ? moment(user?.createdDate).format("DD/MM/YYYY HH:mm") : ""}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="updatedDate"
+                                placeholder="Ngày cập nhập"
+                                variant="outlined"
+                                size="small"
+                                label="Ngày cập nhập"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <DateRangeIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={user?.updatedDate ? moment(user?.updatedDate).format("DD/MM/YYYY HH:mm") : ""}
                             />
                         </div>
                     </div>

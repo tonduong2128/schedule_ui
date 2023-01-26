@@ -263,11 +263,11 @@ function PageEdit({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <Button onClick={() => handleSumit()} variant="contained" disableElevation>
-                                Lưu
-                            </Button>
-                            <Button style={{ marginLeft: 10 }} onClick={() => resetPasswordForce()} variant="contained" disableElevation>
+                            <Button onClick={() => resetPasswordForce()} variant="contained" disableElevation>
                                 Đặt lại password (123456)
+                            </Button>
+                            <Button style={{ marginLeft: 10 }} onClick={() => handleSumit()} variant="contained" disableElevation>
+                                Lưu
                             </Button>
                         </div>
                     </div>

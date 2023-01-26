@@ -3,7 +3,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
-const TeacherAutocomplete = ({ onChange, value, disabled = false, studentId, ...props }) => {
+const TeacherAutocomplete = ({ onChange, value, label, disabled = false, studentId, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const [teachers, setTeachers] = useState([])
     useEffect(() => {
@@ -42,8 +42,8 @@ const TeacherAutocomplete = ({ onChange, value, disabled = false, studentId, ...
                     {...params}
                     size='small'
                     className="search-car-input"
-                    label="Giáo viên"
-                    placeholder="Giáo viên"
+                    label={label || "Giáo viên"}
+                    placeholder={label || "Giáo viên"}
                     InputProps={{
                         ...params.InputProps,
                         startAdornment: (

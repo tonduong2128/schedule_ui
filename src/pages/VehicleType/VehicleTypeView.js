@@ -1,15 +1,16 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Modal, TextField } from '@mui/material';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import PersonIcon from '@mui/icons-material/Person';
+import { Box, InputAdornment, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import moment from 'moment';
 import { memo, useContext, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
-import UserStatus from '../../components/Controls/User/UserStatus';
-import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
-import { User, VehicleType } from '../../services';
+import { VehicleType } from '../../services';
 import { getUser } from '../../utils';
 
 const style = {
@@ -97,10 +98,6 @@ function VehicleTypeView({
                                 label="Tên loại xe"
                                 value={vehicleType.name}
                                 onChange={event => {
-                                    setVehicleType({
-                                        ...vehicleType,
-                                        name: event.nativeEvent.target.value
-                                    })
                                 }}
                             />
                         </div>
@@ -114,11 +111,10 @@ function VehicleTypeView({
                                 size="small"
                                 label="Mô tả"
                                 value={vehicleType.description}
-                                onChange={event => {
-                                    setVehicleType({
-                                        ...vehicleType,
-                                        description: event.nativeEvent.target.value
-                                    })
+                                InputProps={{
+                                    startAdornment: (
+                                        <></>
+                                    ),
                                 }}
                             />
                         </div>
@@ -129,15 +125,87 @@ function VehicleTypeView({
                                     size='small'
                                     disabled
                                     onChange={value => {
-                                        setVehicleType({
-                                            ...vehicleType,
-                                            teacherId: value
-                                        })
                                     }}
                                     value={vehicleType.teacherId}
                                 />
                             </div>
                         }
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="createdBy"
+                                placeholder="Người tạo"
+                                variant="outlined"
+                                size="small"
+                                label="Người tạo"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <PersonIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={vehicleType?.CreatedBy?.fullname}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="updatedBy"
+                                placeholder="Người cập nhập"
+                                variant="outlined"
+                                size="small"
+                                label="Người cập nhập"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <PersonIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={vehicleType?.UpdatedBy?.fullname}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="createdDate"
+                                placeholder="Ngày tạo"
+                                variant="outlined"
+                                size="small"
+                                label="Ngày tạo"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <DateRangeIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={vehicleType?.createdDate ? moment(vehicleType?.createdDate).format("DD/MM/YYYY HH:mm") : ""}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                disabled
+                                id="updatedDate"
+                                placeholder="Ngày cập nhập"
+                                variant="outlined"
+                                size="small"
+                                label="Ngày cập nhập"
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment style={{ marginLeft: -8 }} position="start">
+                                            <DateRangeIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                value={vehicleType?.updatedDate ? moment(vehicleType?.updatedDate).format("DD/MM/YYYY HH:mm") : ""}
+                            />
+                        </div>
                     </div>
                 </div >
             </Box>
