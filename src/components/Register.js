@@ -1,4 +1,5 @@
 
+import { Checkbox, FormControlLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -30,6 +31,7 @@ function Register({
     const [targetDate, setTargetDate] = useState(_targetDate);
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
+    const [isBusy, setIsBusy] = useState(false);
     const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
@@ -38,7 +40,7 @@ function Register({
             notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
             return
         }
-        if (!vehicleTypeId) {
+        if (!vehicleTypeId && !isBusy) {
             notificationContext.dispatch(openActionNotification("Loại xe không được bỏ trống.", "error"))
             return
         }
@@ -58,9 +60,12 @@ function Register({
             notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
             return
         }
-        if (!studentId && roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip)) {
+        if (!studentId && !isBusy && roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip)) {
             notificationContext.dispatch(openActionNotification("Học viên không được bỏ trống.", "error"))
             return
+        }
+        if (isBusy) {
+            console.log("Handle data before sumit");
         }
         //handle before summit
         onSumit({
@@ -88,26 +93,44 @@ function Register({
                 className="container-type"
                 style={{ overflowY: "overlay", maxHeight: "calc(92vh - 96px)", height: "100%", width: "100%", paddingRight: 8 }}
             >
+                {
+                    roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher) && calendarOf?.isMe &&
+                    <div className="container-car-type container-car-location" style={{ marginTop: 0, marginBottom: -16 }}>
+                        <FormControlLabel
+                            labelPlacement="start"
+                            style={{ marginLeft: 0 }}
+                            control={<Checkbox size="small" />}
+                            label="Lịch bận"
+                            checked={isBusy}
+                            onChange={(e, checked) => { setIsBusy(checked) }}
+                        />
+                    </div>
+                }
                 <TeacherAutocomplete
                     studentId={roleIds.includes(ROLE.student) ? _user.id : undefined}
                     disabled={disabled || roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)}
                     onChange={teacherId => setTeacherId(teacherId)}
                     value={teacherId}
                 />
-                <VehicleTypeAutocomplete
-                    disabled={disabled || !teacherId}
-                    teacherId={teacherId}
-                    onChange={vehicleTypeId => setVehicleTypeId(vehicleTypeId)}
-                    vehicleTypeId={vehicleTypeId}
-                />
-                {roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip) &&
-                    <StudentAutocomplete
-                        disabled={disabled}
-                        teacherId={teacherId}
-                        onChange={value => setStudentId(value)}
-                        value={studentId}
-                    />
+                {!isBusy &&
+                    <>
+                        <VehicleTypeAutocomplete
+                            disabled={disabled || !teacherId}
+                            teacherId={teacherId}
+                            onChange={vehicleTypeId => setVehicleTypeId(vehicleTypeId)}
+                            vehicleTypeId={vehicleTypeId}
+                        />
+                        {roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip) &&
+                            <StudentAutocomplete
+                                disabled={disabled}
+                                teacherId={teacherId}
+                                onChange={value => setStudentId(value)}
+                                value={studentId}
+                            />
+                        }
+                    </>
                 }
+
                 <div className="container-car-type container-car-location">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
@@ -158,7 +181,24 @@ function Register({
                         />
                     </LocalizationProvider>
                 </div>
-                <div className="container-car-type container-car-location">
+                {
+                    isBusy && <div className="container-car-type container-car-location">
+                        <TextField
+                            fullWidth
+                            id="nicname"
+                            placeholder="Lý do"
+                            variant="outlined"
+                            size="small"
+                            label="Lý do"
+                            InputProps={{
+                                startAdornment: (
+                                    <></>
+                                ),
+                            }}
+                        />
+                    </div>
+                }
+                <div className="container-car-type container-car-location" style={{ marginTop: 8 }}>
                     {mode === MODE_REGISTER_SHEDULE.ADD &&
                         <Button onClick={() => handleSumit(MODE_REGISTER_SHEDULE.ADD)} variant="contained" disableElevation>
                             Đăng Ký
