@@ -6,8 +6,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import moment from 'moment';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { MODE_REGISTER_SHEDULE, ROLE } from '../common';
+import { NotificationContext, openActionNotification } from '../reducer/notification';
 import { getUser } from '../utils';
 import { StudentAutocomplete } from './Controls/Student';
 import TeacherAutocomplete from './Controls/Teacher/TeacherAutocomplete';
@@ -29,30 +30,36 @@ function Register({
     const [targetDate, setTargetDate] = useState(_targetDate);
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
+    const notificationContext = useContext(NotificationContext);
+
     const roleIds = _user.Roles.map(r => r.id);
     const handleSumit = (mode) => {
         if (!teacherId) {
-            console.log("teacherId Empty");
+            notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
             return
         }
         if (!vehicleTypeId) {
-            console.log("vehicleTypeId Empty");
+            notificationContext.dispatch(openActionNotification("Loại xe không được bỏ trống.", "error"))
             return
         }
         if (!targetDate) {
-            console.log("targetDate Empty");
+            notificationContext.dispatch(openActionNotification("Ngày học không được bỏ trống.", "error"))
             return
         }
         if (!startTime) {
-            console.log("startTime Empty");
+            notificationContext.dispatch(openActionNotification("Giờ bắt đầu không được bỏ trống.", "error"))
             return
         }
         if (!endTime) {
-            console.log("targetDate Empty");
+            notificationContext.dispatch(openActionNotification("Giờ kết thúc không được bỏ trống.", "error"))
+            return
+        }
+        if (startTime >= endTime) {
+            notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
             return
         }
         if (!studentId && roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip)) {
-            console.log("studentId Empty");
+            notificationContext.dispatch(openActionNotification("Học viên không được bỏ trống.", "error"))
             return
         }
         //handle before summit
@@ -67,6 +74,7 @@ function Register({
         }, mode)
     }
     const disabled = !calendarOf?.isMe && mode === MODE_REGISTER_SHEDULE.EDIT && info.studentId !== _user.id;
+
     return (
         <div style={{ paddingBottom: 20, width: "100%", paddingRight: -8 }}>
             <div className="container-title">
@@ -105,7 +113,7 @@ function Register({
                         <DatePicker
                             disabled={disabled}
                             className="date-input"
-                            label="Ngày"
+                            label="Ngày học"
                             renderInput={(params) => <TextField
                                 size='small'
                                 {...params} />}

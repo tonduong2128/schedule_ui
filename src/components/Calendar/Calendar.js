@@ -97,6 +97,14 @@ const CustomCalendar = (props) => {
             notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học người khác.", "error"))
             return;
         }
+        if (moment(`${info.targetDate} ${info.startTime}`, 'YYYY-MM-DD HH:mm:ss').isBefore(moment())) {
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch đã học.", "error"))
+            return;
+        }
+        if (moment(start).isBefore(moment())) {
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học về quá khứ.", "error"))
+            return;
+        }
         loadingContext.dispatch(openActionLoading())
         Reservation.updateReservation({
             ...info,
@@ -145,7 +153,14 @@ const CustomCalendar = (props) => {
             notificationContext.dispatch(openActionNotification("Admin không thể đăng ký lịch học.", "error"))
             return;
         }
-        const { start: startTime, end: endTime } = slotInfo;
+        let { start: startTime, end: endTime } = slotInfo;
+        if ((moment(startTime).isBefore(moment()) && modeCalendar !== "month")
+            || (modeCalendar === "month" && moment(startTime).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))) {
+            notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch học trong quá khứ.", "error"))
+            return;
+        }
+        if (modeCalendar === "month" && moment(startTime).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")) {
+        }
         setModeModal(MODE_REGISTER_SHEDULE.ADD)
         setInfoRegister({
             targetDate: moment(startTime).format("YYYY-MM-DD"),
@@ -159,6 +174,14 @@ const CustomCalendar = (props) => {
         const { info } = event;
         if (!(info.studentId === _user.id || calendarOf.isMe)) {
             notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học người khác.", "error"))
+            return;
+        }
+        if (moment(`${info.targetDate} ${info.startTime}`, 'YYYY-MM-DD HH:mm:ss').isBefore(moment())) {
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch đã học.", "error"))
+            return;
+        }
+        if (moment(start).isBefore(moment())) {
+            notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch học trong quá khứ.", "error"))
             return;
         }
         loadingContext.dispatch(openActionLoading())
@@ -224,6 +247,10 @@ const CustomCalendar = (props) => {
 
     const hanldeSubmit = (slotInfo, mode = MODE_REGISTER_SHEDULE.ADD) => {
         if (mode === MODE_REGISTER_SHEDULE.ADD) {
+            if (moment(moment(`${slotInfo.targetDate} ${slotInfo.startTime}`, "YYYY-MM-DD HH:mm:ss")).isBefore(moment())) {
+                notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch học trong quá khứ.", "error"))
+                return;
+            }
             loadingContext.dispatch(openActionLoading())
             Reservation.addReservation(slotInfo)
                 .then(response => {
@@ -252,6 +279,10 @@ const CustomCalendar = (props) => {
                     loadingContext.dispatch(closeActionLoading())
                 })
         } else if (mode === MODE_REGISTER_SHEDULE.EDIT) {
+            if (moment(moment(`${slotInfo.targetDate} ${slotInfo.startTime}`, "YYYY-MM-DD HH:mm:ss")).isBefore(moment())) {
+                notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch đã học.", "error"))
+                return;
+            }
             loadingContext.dispatch(openActionLoading())
             Reservation.updateReservation(slotInfo)
                 .then(response => {
@@ -284,6 +315,10 @@ const CustomCalendar = (props) => {
                     loadingContext.dispatch(closeActionLoading())
                 })
         } else if (mode === MODE_REGISTER_SHEDULE.DELETE) {
+            if (moment(moment(`${slotInfo.targetDate} ${slotInfo.startTime}`, "YYYY-MM-DD HH:mm:ss")).isBefore(moment())) {
+                notificationContext.dispatch(openActionNotification("Không thể xóa lịch đã học.", "error"))
+                return;
+            }
             const reservationIds = [slotInfo.id]
             loadingContext.dispatch(openActionLoading())
             Reservation.deleteReservations(reservationIds)
