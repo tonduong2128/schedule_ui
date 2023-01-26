@@ -503,6 +503,15 @@ const CustomCalendar = (props) => {
                         }
                     }
                 } else {
+                    if (moment(start).isBefore(moment())) {
+                        return {
+                            className: "cell-hover",
+                            style: {
+                                backgroundColor: "#87a2c7",
+                                color: "white"
+                            }
+                        }
+                    }
                     return {
                         className: "cell-hover",
                         style: {
