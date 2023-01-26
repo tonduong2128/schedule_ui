@@ -268,3 +268,7 @@ body {
 .button-close-modal {
   text-align: end;
 }
+
+.rbc-allday-cell {
+  display: none !important;
+}

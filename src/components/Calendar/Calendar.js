@@ -1,6 +1,6 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { Alert, Box, Button, Modal, Slide, Snackbar } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import moment from "moment";
 import 'moment/locale/vi';
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -15,6 +15,7 @@ import { NotificationContext, openActionNotification } from '../../reducer/notif
 import { Reservation } from "../../services";
 import { getUser } from "../../utils";
 import Register from "../Register";
+import Busy from './Busy';
 import "./Calendar.css";
 import CalenderOf from './CalendarOf';
 moment.locale("vi");
@@ -424,18 +425,12 @@ const CustomCalendar = (props) => {
     const handleChangeCalendarOf = (calendarOf) => {
         setCalendarOf(calendarOf)
     }
-    const handleClickAddBusy = () => {
-        console.log("Oke");
-    }
+
     const Component = isMobile ? Calendar : DnDCalendar;
     return <div>
         <div style={{ padding: "10px 0px", display: "flex" }}>
             <CalenderOf style={{ flex: 1, width: 250 }} onChange={handleChangeCalendarOf} />
-
-            <Button
-                hidden={!roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip)}
-                onClick={handleClickAddBusy}
-                variant='contained'>Lịch bận</Button>
+            <Busy />
         </div>
         <Component
             formats={{
@@ -539,7 +534,8 @@ const CustomCalendar = (props) => {
                         event: events => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <></> : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>;
+                            return isMobile ? <div style={{ fontSize: 12 }}>{startTime.slice(3, 5)}<br />{endTime.slice(3, 5)} </div>
+                                : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>;
                         }
                     },
                     month: {
@@ -569,7 +565,6 @@ const CustomCalendar = (props) => {
             open={openModal}
             onClose={() => {
                 setOpenModal(false);
-                setModeModal(MODE_REGISTER_SHEDULE.ADD);
             }}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
