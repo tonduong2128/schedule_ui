@@ -16,23 +16,9 @@ import { Link } from 'react-router-dom';
 import { ROLE } from '../../common/constantsUiAndApi';
 import { getUser } from '../../utils';
 
-const settings = [
-    {
-        name: 'Tài khoản',
-        to: "/profile"
-    },
-    {
-        name: 'Đổi mật khẩu',
-        to: "/change-password"
-    },
-    {
-        name: 'Đăng xuất',
-        to: "/logout"
-    }
-];
 const handleSelectHeader = () => {
     const user = getUser();
-    const roleIds = user.Roles.map(r => r.id);
+    const roleIds = user?.Roles?.map(r => r.id) || [];
     if (roleIds.includes(ROLE.student)) {
         return [
             {
@@ -51,7 +37,7 @@ const handleSelectHeader = () => {
                 to: "/vehicle-type"
             }
         ];
-    } else {
+    } else if (roleIds.includes(ROLE.teacher_vip)) {
         return [
             {
                 name: "Lịch",
@@ -66,10 +52,60 @@ const handleSelectHeader = () => {
                 to: "/vehicle-type"
             }
         ];
+    } else if (roleIds.includes(ROLE.admin)) {
+        return [
+            {
+                name: "Lịch",
+                to: "/calendar"
+            },
+            {
+                name: "Người dùng",
+                to: "/page"
+            },
+            {
+                name: "Loại xe",
+                to: "/vehicle-type"
+            }
+        ];
+    } else {
+        return [{
+            name: 'Về chúng tôi',
+            to: "/about"
+        }]
+    }
+}
+const handleSelectSetting = () => {
+    const user = getUser();
+    const roleIds = user?.Roles?.map(r => r.id) || [];
+    if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.admin || id === ROLE.student || id === ROLE.teacher)) {
+        return [
+            {
+                name: 'Tài khoản',
+                to: "/profile"
+            },
+            {
+                name: 'Đổi mật khẩu',
+                to: "/change-password"
+            },
+            {
+                name: 'Về chúng tôi',
+                to: "/about"
+            },
+            {
+                name: 'Đăng xuất',
+                to: "/logout"
+            }
+        ];
+    } else {
+        return [{
+            name: "Đăng nhập",
+            to: "/login"
+        }]
     }
 }
 function Header() {
     const [pages, setPages] = useState(handleSelectHeader)
+    const [settings, setSettings] = useState(handleSelectSetting)
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 

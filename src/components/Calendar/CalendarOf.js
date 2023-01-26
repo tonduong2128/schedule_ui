@@ -44,7 +44,8 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
             .then(response => {
                 const { code, records } = response
                 if (code === RESPONSE_CODE.SUCCESS) {
-                    const newUsers = [...users, ...records]
+                    const newRecords = records.map(user => ({ ...user, fullname: "(GV) " + user.fullname }))
+                    const newUsers = [...users, ...newRecords]
                     setUsers(newUsers)
                     if (newUsers?.[0]) {
                         const user = newUsers[0]
@@ -66,8 +67,9 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
     }, [])
 
     return (
-
-        <div>
+        <div
+            {...props}
+        >
             <Autocomplete
                 disablePortal
                 disabled={disabled}
@@ -91,7 +93,7 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
                     />
                 )}
                 value={user}
-                style={{ maxWidth: 300 }}
+                style={{ width: 250 }}
                 onChange={(event, newValue) => {
                     if (!newValue) { return }
                     setUser(newValue)

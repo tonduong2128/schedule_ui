@@ -4,7 +4,7 @@ import { useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Header, PrivateRoute } from './components';
-import { CalenderPage, ChangePassword, ForgotPasswordPage, HomePage, LoginPage, LogoutPage, Page, ProfilePage, VehicleTypePage } from './pages';
+import { AboutPage, CalenderPage, ChangePassword, ForgotPasswordPage, LoginPage, LogoutPage, Page, ProfilePage, VehicleTypePage } from './pages';
 import { LoadingContext } from './reducer/loading';
 import notificationReducer, { closeActionNotification, initialStateNotification, NotificationContext } from './reducer/notification';
 
@@ -21,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
+            <Route path="/about" element={<AboutPage />}></Route>
             <Route path='/' element={<PrivateRoute />}>
               <Route path="/calendar" element={<CalenderPage />}></Route>
               <Route path="/page" element={<Page />}></Route>

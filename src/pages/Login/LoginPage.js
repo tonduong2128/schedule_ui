@@ -99,6 +99,7 @@ function Login() {
                                 </Button>
                             </div>
                         </div>
+                        <div>Bạn chưa có tài khoản? Đăng ký <Link to="/about" >tại đây.</Link></div>
                         <div>Bạn đã quên mật khẩu? Lấy lại <Link to="/forgot-password" >tại đây.</Link></div>
                     </div>
                 </div>

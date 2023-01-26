@@ -139,6 +139,13 @@ const VehicleTypePage = ({ ...props }) => {
         }
         setOpenConfirm(false)
     }
+    const handleClickDelete = () => {
+        if (selectModel.length === 0) {
+            notificationContext.dispatch(openActionNotification("Bạn chưa chọn dòng dữ liệu nào.", "warning"))
+            return
+        }
+        setOpenConfirm(true)
+    }
     return (
         <div>
             <Header />
@@ -155,7 +162,7 @@ const VehicleTypePage = ({ ...props }) => {
                             <VehicleTypeAdd search={search} />
                             <VehicleTypeView selectModel={selectModel} />
                             <VehicleTypeEdit search={search} selectModel={selectModel} />
-                            <Button onClick={() => setOpenConfirm(true)} variant="outlined" size="medium">
+                            <Button onClick={() => handleClickDelete()} variant="outlined" size="medium">
                                 Xóa
                             </Button>
                         </div>

@@ -1,6 +1,6 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { Alert, Box, Modal, Slide, Snackbar } from "@mui/material";
+import { Alert, Box, Button, Modal, Slide, Snackbar } from "@mui/material";
 import moment from "moment";
 import 'moment/locale/vi';
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -48,6 +48,7 @@ const CustomCalendar = (props) => {
         moment().startOf('month').toDate(),
         moment().endOf('month').toDate()
     ]);
+    const roleIds = _user.Roles.map(r => r.id);
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
 
@@ -148,7 +149,6 @@ const CustomCalendar = (props) => {
     //     handleSelectEmptyCell(slotInfo)
     // }
     const handleSelectEmptyCell = (slotInfo) => {
-        const roleIds = _user.Roles.map(r => r.id);
         if (roleIds.includes(ROLE.admin)) {
             notificationContext.dispatch(openActionNotification("Admin không thể đăng ký lịch học.", "error"))
             return;
@@ -424,10 +424,18 @@ const CustomCalendar = (props) => {
     const handleChangeCalendarOf = (calendarOf) => {
         setCalendarOf(calendarOf)
     }
+    const handleClickAddBusy = () => {
+        console.log("Oke");
+    }
     const Component = isMobile ? Calendar : DnDCalendar;
     return <div>
-        <div style={{ padding: "10px 0px" }}>
-            <CalenderOf onChange={handleChangeCalendarOf} />
+        <div style={{ padding: "10px 0px", display: "flex" }}>
+            <CalenderOf style={{ flex: 1, width: 250 }} onChange={handleChangeCalendarOf} />
+
+            <Button
+                hidden={!roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip)}
+                onClick={handleClickAddBusy}
+                variant='contained'>Lịch bận</Button>
         </div>
         <Component
             formats={{

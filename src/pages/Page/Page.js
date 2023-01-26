@@ -142,6 +142,13 @@ const Page = ({ ...props }) => {
         }
         setOpenConfirm(false)
     }
+    const handleClickDelete = () => {
+        if (selectModel.length === 0) {
+            notificationContext.dispatch(openActionNotification("Bạn chưa chọn dòng dữ liệu nào.", "warning"))
+            return
+        }
+        setOpenConfirm(true)
+    }
     return (
         <div>
             <Header />
@@ -158,7 +165,7 @@ const Page = ({ ...props }) => {
                             <PageAdd search={search} />
                             <PageView selectModel={selectModel} />
                             <PageEdit search={search} selectModel={selectModel} />
-                            <Button onClick={() => setOpenConfirm(true)} variant="outlined" size="medium">
+                            <Button onClick={() => handleClickDelete()} variant="outlined" size="medium">
                                 Xóa
                             </Button>
                         </div>
