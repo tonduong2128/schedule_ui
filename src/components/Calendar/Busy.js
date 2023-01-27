@@ -354,7 +354,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         toolbar={false}
                     // step={60}
                     />
-                    <div style={{ textAlign: "right", padding: "10px 20px" }}>
+                    <div style={{ textAlign: "right", padding: "10px" }}>
                         <Button onClick={() => setOpenModal(false)} variant="contained" disableElevation>
                             Quay lại
                         </Button>
