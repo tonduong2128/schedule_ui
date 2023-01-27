@@ -84,7 +84,6 @@ const Busy = ({ teacherId, ...props }) => {
     }
     return <>
         <Button
-            hidden={!roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip)}
             onClick={handleClickOpenBusy}
             variant='contained'>Lịch bận</Button>
         <Modal

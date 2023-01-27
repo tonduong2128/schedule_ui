@@ -120,14 +120,12 @@ function Register({
                             onChange={vehicleTypeId => setVehicleTypeId(vehicleTypeId)}
                             vehicleTypeId={vehicleTypeId}
                         />
-                        {roleIds.some(id => id === ROLE.admin || id === ROLE.teacher || id === ROLE.teacher_vip) &&
-                            <StudentAutocomplete
-                                disabled={disabled}
-                                teacherId={teacherId}
-                                onChange={value => setStudentId(value)}
-                                value={studentId}
-                            />
-                        }
+                        <StudentAutocomplete
+                            disabled={disabled || roleIds.includes(ROLE.student)}
+                            teacherId={teacherId}
+                            onChange={value => setStudentId(value)}
+                            value={studentId || _user.id}
+                        />
                     </>
                 }
 
