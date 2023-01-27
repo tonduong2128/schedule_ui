@@ -168,7 +168,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
             if (code === RESPONSE_CODE.SUCCESS) {
                 if (records?.length > 0) {
                     const data = records[0]
-                    const hours = handleResponseData(JSON.parse(records[0].hours))
+                    const hours = handleResponseData(records[0].hours)
                     delete data.hours
                     setData({
                         ...data,
