@@ -85,7 +85,14 @@ function VehicleTypeView({
                     </div>
                     <div
                         className="container-type"
-                        style={{ overflowY: "overlay", maxHeight: "calc(92vh - 96px)", height: "100%", width: "100%" }}
+                        style={{
+                            overflowY: "overlay",
+                            maxHeight: "calc(92vh - 96px)",
+                            height: "100%",
+                            width: "100%",
+                            paddingRight: 10,
+                            marginRight: -10,
+                        }}
                     >
                         <div className="container-car-type container-car-location">
                             <TextField
