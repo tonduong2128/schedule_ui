@@ -88,7 +88,12 @@ const Busy = ({ calendarOf, search, ...props }) => {
                 if (code === RESPONSE_CODE.SUCCESS) {
                     if (records?.length > 0) {
                         const data = records[0]
-                        const hours = handleResponseData(JSON.parse(records[0].hours))
+                        let hours = []
+                        try {
+                            hours = handleResponseData(data.hours)
+                        } catch (error) {
+                            hours = handleResponseData(JSON.parse(data.hours))
+                        }
                         delete data.hours
                         setData({
                             ...data,
@@ -168,7 +173,12 @@ const Busy = ({ calendarOf, search, ...props }) => {
             if (code === RESPONSE_CODE.SUCCESS) {
                 if (records?.length > 0) {
                     const data = records[0]
-                    const hours = handleResponseData(records[0].hours)
+                    let hours = []
+                    try {
+                        hours = handleResponseData(data.hours)
+                    } catch (error) {
+                        hours = handleResponseData(JSON.parse(data.hours))
+                    }
                     delete data.hours
                     setData({
                         ...data,
