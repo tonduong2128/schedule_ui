@@ -217,10 +217,7 @@ body {
   }
 }
 
-.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root,
-.css-1gywuxd-MuiInputBase-root-MuiOutlinedInput-root,
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root,
-.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+.MuiInputBase-sizeSmall {
   border-radius: 0 !important;
 }
 
