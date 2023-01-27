@@ -87,7 +87,7 @@ const Busy = ({ teacherId, ...props }) => {
     return <>
         <Button
             onClick={handleClickOpenBusy}
-            variant='contained'>Lịch bận</Button>
+            variant='contained' style={{ fontSize: isMobile ? 12 : 16 }}>Lịch bận</Button>
         <Modal
             open={openModal}
             onClose={() => {
@@ -103,18 +103,17 @@ const Busy = ({ teacherId, ...props }) => {
                 >
                     <ClearIcon />
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }} className="container-title" >
-                    <h2 style={{ display: "inline-block", position: "relative" }}>LỊCH BẬN HÀNG TUẦN
-                        <div style={{ position: "absolute", right: -98, top: -5, fontSize: "10px !important" }}>
-                            (<FormControlLabel
-                                onChange={(e, value) => setUsed(value)}
-                                style={{ fontSize: "10px !important", marginLeft: 0, textTransform: "lowercase" }}
-                                labelPlacement="start"
-                                control={<Checkbox checked={used} size="small" style={{ marginLeft: -6 }} />}
-                                label="Sử dụng"
-                            />)
-                        </div>
-                    </h2>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} className="container-title" >
+                    <h2 style={{ fontSize: 18 }}>LỊCH BẬN HÀNG TUẦN</h2>
+                    <div style={{ marginTop: -6, marginLeft: 4 }}>
+                        (<FormControlLabel
+                            onChange={(e, value) => setUsed(value)}
+                            style={{ marginLeft: 0 }}
+                            labelPlacement="start"
+                            control={<Checkbox checked={used} size="small" style={{ marginLeft: -6 }} />}
+                            label={<span style={{ fontWeight: 600 }}>SỬ DỤNG</span>}
+                        />)
+                    </div>
                 </div>
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
@@ -190,11 +189,21 @@ const Busy = ({ teacherId, ...props }) => {
                         events={events}
                         components={{
                             week: {
+                                event: (event) => {
+                                    const { info } = event.event;
+                                    const { startTime, endTime } = info;
+                                    return <div style={{ fontSize: 12 }}>{startTime.slice(3, 5)}<br />{endTime.slice(3, 5)}</div>
+                                },
                                 header: (info) => {
                                     const title = info.label.split(" ")[1];
                                     return title
                                 }
                             }
+                        }}
+                        formats={{
+                            eventTimeRangeFormat: () => {
+                                return "";
+                            },
                         }}
                         onSelectSlot={handleSelectSlot}
                         defaultView="week"
@@ -232,7 +241,7 @@ const Busy = ({ teacherId, ...props }) => {
                 >
                     <ClearIcon />
                 </div>
-                <div className="container-title" style={{ fontSize: 30 }}>
+                <div className="container-title" style={{ fontSize: 20 }}>
                     <h2>CHI TIẾT LỊCH BẬN</h2>
                 </div>
                 <div style={{ overflowY: "overlay", maxHeight: "calc(92vh - 96px)", height: "100%", width: "100%", paddingRight: 8 }}>

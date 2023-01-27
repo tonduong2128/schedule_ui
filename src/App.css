@@ -272,3 +272,8 @@ body {
 .rbc-allday-cell {
   display: none !important;
 }
+
+.rbc-event,
+.rbc-day-slot .rbc-background-event {
+  padding: 2px 5px 2px 2px !important;
+}
