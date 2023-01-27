@@ -75,7 +75,9 @@ function Register({
             targetDate,
             startTime,
             endTime,
-            status: isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new,
+            status: !info?.id && (mode === MODE_REGISTER_SHEDULE.EDIT ||
+                mode === MODE_REGISTER_SHEDULE.DELETE) ? STATUS_RESERVATION.ofWeek :
+                (isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new),
             studentId: mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId
         }, mode)
     }

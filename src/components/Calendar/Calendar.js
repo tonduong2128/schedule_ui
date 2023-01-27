@@ -524,6 +524,15 @@ const CustomCalendar = (props) => {
                     }
                 }
                 if (info.status === STATUS_RESERVATION.ofWeek) {
+                    if (moment(end).isBefore(moment())) {
+                        return {
+                            className: "cell-hover hidden",
+                            style: {
+                                backgroundColor: "#eb7867",
+                                color: "white"
+                            }
+                        }
+                    }
                     return {
                         className: "cell-hover",
                         style: {
