@@ -31,7 +31,8 @@ function Register({
     const [targetDate, setTargetDate] = useState(_targetDate);
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
-    const [isBusy, setIsBusy] = useState(info?.studentId === info?.teacherId && !!info?.teacherId);
+    const [reason, setReason] = useState(info.reason);
+    const [isBusy, setIsBusy] = useState((info?.studentId === info?.teacherId && !!info?.teacherId) || true);
     const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
@@ -75,10 +76,11 @@ function Register({
             targetDate,
             startTime,
             endTime,
+            reason,
             status: !info?.id && (mode === MODE_REGISTER_SHEDULE.EDIT ||
                 mode === MODE_REGISTER_SHEDULE.DELETE) ? STATUS_RESERVATION.ofWeek :
                 (isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new),
-            studentId: mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId
+            studentId: mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId,
         }, mode)
     }
     const disabled = !calendarOf?.isMe && mode === MODE_REGISTER_SHEDULE.EDIT && info.studentId !== _user.id;
@@ -201,7 +203,10 @@ function Register({
                             variant="outlined"
                             size="small"
                             label="Lý do"
-                            value={info.reason}
+                            value={reason}
+                            onChange={(e) => {
+                                setReason(e.nativeEvent.target.value)
+                            }}
                             InputProps={{
                                 startAdornment: (
                                     <></>

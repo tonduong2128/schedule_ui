@@ -98,6 +98,12 @@ const CustomCalendar = (props) => {
         if (modeCalendar === "month") { return }
         const { start, end, event } = slotInfo;
         const { info } = event;
+
+        if (info.status === STATUS_RESERVATION.ofWeek) {
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch của tuần.", "error"))
+            return;
+        }
+
         if (!(info.studentId === _user.id || calendarOf.isMe)) {
             notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học người khác.", "error"))
             return;
@@ -132,8 +138,8 @@ const CustomCalendar = (props) => {
                     events.splice(indexOldEvent, 1, newEvent);
                     setEvents([...events])
                     notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch học thành công.", "success"))
-                } else if (code === RESPONSE_CODE.RESERVATION_EXISTS) {
-                    notificationContext.dispatch(openActionNotification("Giáo viên dã dạy giờ này rồi.", "error"))
+                } else if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
+                    notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                 } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
                     notificationContext.dispatch(openActionNotification("Bạn đã đặt lịch giờ này rồi.", "error"))
                 } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
@@ -176,6 +182,10 @@ const CustomCalendar = (props) => {
     const handleEventDrop = (slotInfo) => {
         const { start, end, event } = slotInfo;
         const { info } = event;
+        if (info.status === STATUS_RESERVATION.ofWeek) {
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch của tuần.", "error"))
+            return;
+        }
         if (!(info.studentId === _user.id || calendarOf.isMe)) {
             notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học người khác.", "error"))
             return;
@@ -210,8 +220,8 @@ const CustomCalendar = (props) => {
                     events.splice(indexOldEvent, 1, newEvent);
                     setEvents([...events])
                     notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch học thành công.", "success"))
-                } else if (code === RESPONSE_CODE.RESERVATION_EXISTS) {
-                    notificationContext.dispatch(openActionNotification("Giáo viên dã dạy giờ này rồi.", "error"))
+                } else if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
+                    notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                 } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
                     notificationContext.dispatch(openActionNotification("Bạn đã đặt lịch giờ này rồi.", "error"))
                 } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
@@ -274,8 +284,8 @@ const CustomCalendar = (props) => {
                         }
                         notificationContext.dispatch(openActionNotification("Đăng ký lịch học thành công.", "success"))
                         setEvents([...events, newEvent])
-                    } if (code === RESPONSE_CODE.RESERVATION_EXISTS) {
-                        notificationContext.dispatch(openActionNotification("Giáo viên dã dạy giờ này rồi.", "error"))
+                    } if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
+                        notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                     } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
                         notificationContext.dispatch(openActionNotification("Bạn đã đăng ký giờ này rồi.", "error"))
                     } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
@@ -310,8 +320,8 @@ const CustomCalendar = (props) => {
                         events.splice(indexEventEdit, 1, newEventEdit)
                         setEvents([...events])
                         notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch học thành công.", "success"))
-                    } else if (code === RESPONSE_CODE.RESERVATION_EXISTS) {
-                        notificationContext.dispatch(openActionNotification("Giáo viên dã dạy giờ này rồi.", "error"))
+                    } else if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
+                        notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                     } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
                         notificationContext.dispatch(openActionNotification("Bạn đã đăng ký giờ này rồi.", "error"))
                     } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
@@ -524,15 +534,6 @@ const CustomCalendar = (props) => {
                     }
                 }
                 if (info.status === STATUS_RESERVATION.ofWeek) {
-                    if (moment(end).isBefore(moment())) {
-                        return {
-                            className: "cell-hover hidden",
-                            style: {
-                                backgroundColor: "#eb7867",
-                                color: "white"
-                            }
-                        }
-                    }
                     return {
                         className: "cell-hover",
                         style: {

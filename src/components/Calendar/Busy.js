@@ -217,7 +217,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
         <Button
             hidden={roleIds.includes(ROLE.student) && calendarOf.isMe}
             onClick={handleClickOpenBusy}
-            variant='contained' style={{ fontSize: isMobile ? 12 : 16 }}>LỊCH TUẦN</Button>
+            variant='contained' style={{ fontSize: isMobile ? 12 : 16, padding: isMobile ? "2px 4px" : "6px 16px" }}>LỊCH TUẦN</Button>
         <Modal
             open={openModal}
             onClose={() => {
@@ -434,33 +434,31 @@ const Busy = ({ calendarOf, search, ...props }) => {
                             />
                         </LocalizationProvider>
                     </div>
-                    {typeOf === TYPEOF_SPECIFIC_SCHEDULE.BUSY &&
-                        <div className="container-car-type container-car-location">
-                            <TextField
-                                fullWidth
-                                id="name"
-                                placeholder="Lý do"
-                                variant="outlined"
-                                size="small"
-                                label="Lý do"
-                                value={dataModalDetail?.info?.reason}
-                                onChange={event => {
-                                    setDataModalDetail({
-                                        ...dataModalDetail,
-                                        info: {
-                                            ...dataModalDetail.info,
-                                            reason: event.nativeEvent.target.value
-                                        }
-                                    })
-                                }}
-                                InputProps={{
-                                    startAdornment: (
-                                        <></>
-                                    ),
-                                }}
-                            />
-                        </div>
-                    }
+                    <div className="container-car-type container-car-location">
+                        <TextField
+                            fullWidth
+                            id="name"
+                            placeholder="Lý do bận"
+                            variant="outlined"
+                            size="small"
+                            label="Lý do bận"
+                            value={dataModalDetail?.info?.reason}
+                            onChange={event => {
+                                setDataModalDetail({
+                                    ...dataModalDetail,
+                                    info: {
+                                        ...dataModalDetail.info,
+                                        reason: event.nativeEvent.target.value
+                                    }
+                                })
+                            }}
+                            InputProps={{
+                                startAdornment: (
+                                    <></>
+                                ),
+                            }}
+                        />
+                    </div>
                     {
                         calendarOf.isMe &&
                         <div style={{ textAlign: "right", padding: "10px 20px" }}>
