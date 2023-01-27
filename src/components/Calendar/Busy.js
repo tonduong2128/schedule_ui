@@ -1,9 +1,9 @@
-import { Box, Button, Checkbox, FormControlLabel, Modal, TextField } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Modal, Radio, RadioGroup, TextField } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import moment from "moment";
 import { useContext, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { ROLE } from "../../common";
+import { ROLE, TYPEOF_SPECIFIC_SCHEDULE } from "../../common";
 import { getUser } from "../../utils";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import 'moment/locale/vi';
@@ -46,6 +46,8 @@ const Busy = ({ teacherId, ...props }) => {
     const [openModal, setOpenModal] = useState(false)
     const [openModalDetail, setOpenModalDetail] = useState(false)
     const [dataModalDetail, setDataModalDetail] = useState()
+    const [typeOf, setTypeOf] = useState(TYPEOF_SPECIFIC_SCHEDULE.BUSY)
+    const [used, setUsed] = useState(true)
     const roleIds = _user.Roles.map(r => r.id);
     const [events, setEvents] = useState([
         {
@@ -101,15 +103,38 @@ const Busy = ({ teacherId, ...props }) => {
                 >
                     <ClearIcon />
                 </div>
-                <div className="container-title" >
-                    <h2>LỊCH BẬN HÀNG TUẦN </h2>
-                    <FormControlLabel
-                        style={{ marginTop: -12 }}
-                        labelPlacement="start"
-                        control={<Checkbox size="small" defaultChecked />}
-                        label="Sử dụng"
-                    />
+                <div style={{ display: "flex", justifyContent: "center" }} className="container-title" >
+                    <h2 style={{ display: "inline-block", position: "relative" }}>LỊCH BẬN HÀNG TUẦN
+                        <div style={{ position: "absolute", right: -98, top: -5, fontSize: "10px !important" }}>
+                            (<FormControlLabel
+                                onChange={(e, value) => setUsed(value)}
+                                style={{ fontSize: "10px !important", marginLeft: 0, textTransform: "lowercase" }}
+                                labelPlacement="start"
+                                control={<Checkbox checked={used} size="small" style={{ marginLeft: -6 }} />}
+                                label="Sử dụng"
+                            />)
+                        </div>
+                    </h2>
                 </div>
+                <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue={TYPEOF_SPECIFIC_SCHEDULE.BUSY}
+                    style={{ display: "flex", justifyContent: "center", flexDirection: "row", marginTop: -8 }}
+                    onChange={(e, type) => { setTypeOf(type) }}
+                >
+                    <FormControlLabel
+                        labelPlacement="start"
+                        value={TYPEOF_SPECIFIC_SCHEDULE.BUSY}
+                        control={<Radio size="small" style={{ marginLeft: -6 }} />}
+                        label="Lịch bận"
+                    />
+                    <FormControlLabel
+                        value={TYPEOF_SPECIFIC_SCHEDULE.UNBUSY}
+                        labelPlacement="start"
+                        control={<Radio size="small" style={{ marginLeft: -6 }} />}
+                        label="Lịch rảnh"
+                    />
+                </RadioGroup>
                 <div style={{ overflowY: "overlay", maxHeight: "calc(92vh - 96px)", height: "100%", width: "100%", paddingRight: 8 }}>
                     <Calendar
                         messages={{
@@ -135,11 +160,30 @@ const Busy = ({ teacherId, ...props }) => {
                         onSelectEvent={handleClickEvent}
                         style={{ height: "calc(92vh - 162px)", width: "100%" }}
                         eventPropGetter={(event, start, end, isSelected) => {
-                            return {
-                                className: "cell-hover",
-                                style: {
-                                    backgroundColor: "#e03b24",
-                                    color: "white"
+                            if (used === false) {
+                                return {
+                                    className: "cell-hover",
+                                    style: {
+                                        backgroundColor: "#687477",
+                                        color: "white"
+                                    }
+                                }
+                            }
+                            if (typeOf === TYPEOF_SPECIFIC_SCHEDULE.BUSY) {
+                                return {
+                                    className: "cell-hover",
+                                    style: {
+                                        backgroundColor: "#e03b24",
+                                        color: "white"
+                                    }
+                                }
+                            } else {
+                                return {
+                                    className: "cell-hover",
+                                    style: {
+                                        backgroundColor: "#64a338",
+                                        color: "white"
+                                    }
                                 }
                             }
                         }}
