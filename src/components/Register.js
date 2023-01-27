@@ -32,7 +32,7 @@ function Register({
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
     const [reason, setReason] = useState(info.reason);
-    const [isBusy, setIsBusy] = useState((info?.studentId === info?.teacherId && !!info?.teacherId) || true);
+    const [isBusy, setIsBusy] = useState((info?.studentId === info?.teacherId && !!info?.teacherId) || mode === MODE_REGISTER_SHEDULE.ADD);
     const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
