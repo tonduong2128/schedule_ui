@@ -38,7 +38,7 @@ function App() {
 
           </Routes>
         </BrowserRouter>
-        <Slide direction="left" in={notification.open} mountOnEnter unmountOnExit>
+        <Slide direction="left" in={notification.open} >
           <Snackbar
             autoHideDuration={2500}
             onClose={() => dispatchNotification(closeActionNotification())}

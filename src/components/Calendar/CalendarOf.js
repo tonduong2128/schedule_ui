@@ -52,7 +52,7 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
                         setUser(user)
                         onChange({
                             isMe: user.id === _user.id,
-                            id: user.id
+                            id: user.id,
                         })
                     }
                 } else {

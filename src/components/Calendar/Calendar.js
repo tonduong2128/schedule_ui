@@ -9,7 +9,7 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { isMobile } from 'react-device-detect';
-import { MODE_REGISTER_SHEDULE, PER_PAGE, RESPONSE_CODE, ROLE } from "../../common";
+import { MODE_REGISTER_SHEDULE, PER_PAGE, RESPONSE_CODE, ROLE, STATUS_RESERVATION } from "../../common";
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { Reservation } from "../../services";
@@ -63,6 +63,9 @@ const CustomCalendar = (props) => {
         //     info: {}
         // },
     ])
+    const search = () => {
+        handleRangeChange(targetDateRange, modeCalendar, true)
+    }
     useEffect(() => {
         handleRangeChange(targetDateRange, modeCalendar, true)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -247,6 +250,11 @@ const CustomCalendar = (props) => {
     }, [])
 
     const hanldeSubmit = (slotInfo, mode = MODE_REGISTER_SHEDULE.ADD) => {
+        if (slotInfo?.status === STATUS_RESERVATION.ofWeek) {
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch bận của tuần.", "error"))
+            return
+        }
+
         if (mode === MODE_REGISTER_SHEDULE.ADD) {
             if (moment(moment(`${slotInfo.targetDate} ${slotInfo.startTime}`, "YYYY-MM-DD HH:mm:ss")).isBefore(moment())) {
                 notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch học trong quá khứ.", "error"))
@@ -261,7 +269,7 @@ const CustomCalendar = (props) => {
                         const newEvent = {
                             start: moment(`${slot.targetDate} ${slot.startTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
                             end: moment(`${slot.targetDate} ${slot.endTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
-                            title: slot.Student.nickname || slot.Student.fullname,
+                            title: slot?.Student?.fullname,
                             info: slot
                         }
                         notificationContext.dispatch(openActionNotification("Đăng ký lịch học thành công.", "success"))
@@ -296,7 +304,7 @@ const CustomCalendar = (props) => {
                             start: moment(`${targetDate} ${startTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
                             end: moment(`${targetDate} ${endTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
                             // end: moment().add(1, "days").toDate(),
-                            title: slot.Student.nickname || slot.Student.fullname,
+                            title: slot?.Student?.fullname,
                             info: slot
                         }
                         events.splice(indexEventEdit, 1, newEventEdit)
@@ -393,7 +401,7 @@ const CustomCalendar = (props) => {
                 const { code, records } = response;
                 if (code === RESPONSE_CODE.SUCCESS) {
                     return records.map(rc => ({
-                        title: rc.Student.nickname || rc.Student.fullname,
+                        title: rc?.Student?.fullname,
                         start: moment(`${rc.targetDate} ${rc.startTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
                         end: moment(`${rc.targetDate} ${rc.endTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
                         info: rc
@@ -430,7 +438,7 @@ const CustomCalendar = (props) => {
     return <div>
         <div style={{ padding: "10px 0px", display: "flex" }}>
             <CalenderOf style={{ flex: 1, width: 250 }} onChange={handleChangeCalendarOf} />
-            <Busy />
+            <Busy search={search} calendarOf={calendarOf} />
         </div>
         <Component
             formats={{
@@ -497,6 +505,33 @@ const CustomCalendar = (props) => {
             // elementProps={{}} //prop to main div canlender
             eventPropGetter={(event, start, end, isSelected) => {
                 const { info } = event;
+                if (info.status === STATUS_RESERVATION.special) {
+                    if (moment(start).isBefore(moment())) {
+                        return {
+                            className: "cell-hover",
+                            style: {
+                                backgroundColor: "#eb7867",
+                                color: "white"
+                            }
+                        }
+                    }
+                    return {
+                        className: "cell-hover",
+                        style: {
+                            backgroundColor: "#e85e4a",
+                            color: "white"
+                        }
+                    }
+                }
+                if (info.status === STATUS_RESERVATION.ofWeek) {
+                    return {
+                        className: "cell-hover",
+                        style: {
+                            backgroundColor: "#e03b24",
+                            color: "white"
+                        }
+                    }
+                }
                 if (!(info.studentId === _user.id || calendarOf.isMe)) {
                     return {
                         className: "cell-hover",
@@ -527,7 +562,7 @@ const CustomCalendar = (props) => {
                     day: {
                         event: events => {
                             const { info } = events.event;
-                            return <>{events.title} ({info.VehicleType.name})</>
+                            return <>{events.title} ({info?.VehicleType?.name})</>
                         }
                     },
                     week: {
@@ -535,15 +570,15 @@ const CustomCalendar = (props) => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
                             return isMobile ? <div style={{ fontSize: 12 }}>{startTime.slice(3, 5)}<br />{endTime.slice(3, 5)} </div>
-                                : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>;
+                                : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name})</div>;
                         }
                     },
                     month: {
                         event: events => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>
-                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info.VehicleType.name})</div>;
+                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name})</div>
+                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name})</div>;
                         },
                     },
                     work_week: {

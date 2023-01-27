@@ -7,8 +7,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import moment from 'moment';
-import { useContext, useState } from 'react';
-import { MODE_REGISTER_SHEDULE, ROLE } from '../common';
+import { useContext, useEffect, useState } from 'react';
+import { MODE_REGISTER_SHEDULE, ROLE, STATUS_RESERVATION } from '../common';
 import { NotificationContext, openActionNotification } from '../reducer/notification';
 import { getUser } from '../utils';
 import { StudentAutocomplete } from './Controls/Student';
@@ -31,7 +31,7 @@ function Register({
     const [targetDate, setTargetDate] = useState(_targetDate);
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
-    const [isBusy, setIsBusy] = useState(false);
+    const [isBusy, setIsBusy] = useState(info?.studentId === info?.teacherId && !!info?.teacherId);
     const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
@@ -75,11 +75,11 @@ function Register({
             targetDate,
             startTime,
             endTime,
+            status: isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new,
             studentId: mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId
         }, mode)
     }
     const disabled = !calendarOf?.isMe && mode === MODE_REGISTER_SHEDULE.EDIT && info.studentId !== _user.id;
-
     return (
         <div style={{ paddingBottom: 20, width: "100%", paddingRight: -8 }}>
             <div className="container-title">
@@ -104,6 +104,15 @@ function Register({
                             checked={isBusy}
                             onChange={(e, checked) => { setIsBusy(checked) }}
                         />
+                        {info?.status === STATUS_RESERVATION.ofWeek &&
+                            <FormControlLabel
+                                labelPlacement="start"
+                                style={{ marginLeft: 0, paddingLeft: 10 }}
+                                control={<Checkbox size="small" />}
+                                label="Của tuần"
+                                checked={info.status === STATUS_RESERVATION.ofWeek}
+                            />
+                        }
                     </div>
                 }
                 <TeacherAutocomplete
@@ -172,6 +181,7 @@ function Register({
                             renderInput={(params) => <TextField
                                 size='small'
                                 {...params} />}
+                            minTime={startTime ? moment(startTime, "HH:mm:ss") : null}
                             value={moment(endTime || moment().format("HH:mm:ss"), "HH:mm:ss").toDate()}
                             onChange={newValue => {
                                 setEndTime(moment(newValue.$d).format("HH:mm:ss"))
@@ -182,12 +192,14 @@ function Register({
                 {
                     isBusy && <div className="container-car-type container-car-location">
                         <TextField
+                            disabled={disabled}
                             fullWidth
                             id="nicname"
                             placeholder="Lý do"
                             variant="outlined"
                             size="small"
                             label="Lý do"
+                            value={info.reason}
                             InputProps={{
                                 startAdornment: (
                                     <></>
