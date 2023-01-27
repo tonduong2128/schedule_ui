@@ -32,12 +32,12 @@ function Register({
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
     const [reason, setReason] = useState(info.reason);
+    const roleIds = _user.Roles.map(r => r.id);
     const [isBusy, setIsBusy] = useState(info?.status === STATUS_RESERVATION.ofWeek
         || info?.status === STATUS_RESERVATION.special
-        || mode === MODE_REGISTER_SHEDULE.ADD);
+        || (mode === MODE_REGISTER_SHEDULE.ADD && roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)));
     const notificationContext = useContext(NotificationContext);
 
-    const roleIds = _user.Roles.map(r => r.id);
     const handleSumit = (mode) => {
         if (!teacherId) {
             notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
