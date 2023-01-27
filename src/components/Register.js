@@ -208,7 +208,7 @@ function Register({
                         <TextField
                             disabled={disabled}
                             fullWidth
-                            id="nicname"
+                            id="reason"
                             placeholder="Lý do"
                             variant="outlined"
                             size="small"

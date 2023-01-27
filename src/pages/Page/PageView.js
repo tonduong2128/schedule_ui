@@ -175,23 +175,6 @@ function PageView({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
-                                fullWidth
-                                disabled
-                                id="nicname"
-                                placeholder="Nickname"
-                                variant="outlined"
-                                size="small"
-                                label="Nickname"
-                                value={user.nickname}
-                                InputProps={{
-                                    startAdornment: (
-                                        <></>
-                                    ),
-                                }}
-                            />
-                        </div>
-                        <div className="container-car-type container-car-location">
                             <UserStatus
                                 disabled
                                 label="Trạng thái"

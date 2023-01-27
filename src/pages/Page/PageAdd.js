@@ -10,6 +10,7 @@ import { getUser } from '../../utils';
 import CloseIcon from '@mui/icons-material/Close';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
+import { NotificationContext, openActionNotification } from '../../reducer/notification';
 
 const style = {
     position: 'absolute',
@@ -48,13 +49,13 @@ function PageAdd({
         phone: "",
         email: "",
         status: 1,
-        nickname: "",
         User_Roles: [],
         Students_Teacher: [],
     });
     const [showError, setShowError] = React.useState(false);
     const [errorText, setErrorText] = React.useState('');
     const loadingContext = useContext(LoadingContext);
+    const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
     const handleOpenError = (text) => {
@@ -84,6 +85,8 @@ function PageAdd({
                 if (code === RESPONSE_CODE.SUCCESS) {
                     !!search && search()
                     setOpenModal(false);
+                } else if (code === RESPONSE_CODE.USERNAME_HAD_USED) {
+                    notificationContext.dispatch(openActionNotification("Tên đăng nhập đã tồn tại.", "warning"))
                 } else {
                     if (!user.username) {
                         handleOpenError('Vui lòng nhập tên đăng nhập');
@@ -99,10 +102,6 @@ function PageAdd({
                     }
                     if (!user.email) {
                         handleOpenError('Vui lòng nhập email');
-                        return;
-                    }
-                    if (!user.nickname) {
-                        handleOpenError('Vui lòng nhập nickname');
                         return;
                     }
                     console.log("username exit");
@@ -244,24 +243,6 @@ function PageAdd({
                                 }}
                             />
                         </div>
-                        <div className="container-car-type container-car-location">
-                            <TextField
-                                fullWidth
-                                id="nicname"
-                                placeholder="Nickname"
-                                variant="outlined"
-                                size="small"
-                                label="Nickname"
-                                value={user.nickname}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        nickname: event.nativeEvent.target.value
-                                    })
-                                }}
-                            />
-                        </div>
-
                         <div className="container-car-type container-car-location">
                             <Button onClick={() => handleSumit()} variant="contained" disableElevation>
                                 Lưu

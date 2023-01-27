@@ -58,9 +58,6 @@ const Page = ({ ...props }) => {
         if (!!searchModel.phone) {
             _searchModel.$or.push({ phone: { $like: `%25${searchModel.phone}%25` } })
         }
-        if (!!searchModel.nickname) {
-            _searchModel.$or.push({ nickname: { $like: `%25${searchModel.nickname}%25` } })
-        }
         if (searchModel.createdDate?.length > 0) {
             _searchModel.$or.push({ createdDate: { $between: searchModel.createdDate } })
         }
@@ -207,15 +204,10 @@ const Page = ({ ...props }) => {
                                         <TableCell className={!option2.includes("phone") ? "hidden" : ""} align="left">Số điện thoại</TableCell>
                                         <TableCell className={!option2.includes("username") ? "hidden" : ""} align="left">Tên đăng nhập</TableCell>
                                         <TableCell className={!option2.includes("email") ? "hidden" : ""} align="left">Email</TableCell>
-                                        <TableCell className={!option2.includes("nickname") ? "hidden" : ""} align="left">Nickname</TableCell>
                                         <TableCell className={!option2.includes("createdDate") ? "hidden" : ""} align="left">Ngày tạo</TableCell>
                                         <TableCell className={!option2.includes("updatedDate") ? "hidden" : ""} align="left">Ngày cập nhập</TableCell>
-                                        {roleIds.includes(ROLE.admin) &&
-                                            <>
-                                                <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">Người tạo</TableCell>
-                                                <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">Người cập nhập</TableCell>
-                                            </>
-                                        }
+                                        <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">Người tạo</TableCell>
+                                        <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">Người cập nhập</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -243,17 +235,12 @@ const Page = ({ ...props }) => {
                                             <TableCell className={!option2.includes("phone") ? "hidden" : ""} align="left">{user.phone}</TableCell>
                                             <TableCell className={!option2.includes("username") ? "hidden" : ""} align="left">{user.username}</TableCell>
                                             <TableCell className={!option2.includes("email") ? "hidden" : ""} align="left">{user.email}</TableCell>
-                                            <TableCell className={!option2.includes("nickname") ? "hidden" : ""} align="left">{user.nickname}</TableCell>
                                             <TableCell className={!option2.includes("createdDate") ? "hidden" : ""} align="left">{!!user.createdDate ?
                                                 moment(user.createdDate).format("DD//MM/YYYY HH:mm") : ""}</TableCell>
                                             <TableCell className={!option2.includes("updatedDate") ? "hidden" : ""} align="left">{!!user.updatedDate ?
                                                 moment(user.updatedDate).format("DD//MM/YYYY HH:mm") : ""}</TableCell>
-                                            {roleIds.includes(ROLE.admin) &&
-                                                <>
-                                                    <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">{user.CreatedBy?.fullname}</TableCell>
-                                                    <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">{user.UpdatedBy?.fullname}</TableCell>
-                                                </>
-                                            }
+                                            <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">{user.CreatedBy?.fullname}</TableCell>
+                                            <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">{user.UpdatedBy?.fullname}</TableCell>
                                         </TableRow>
                                     })}
                                 </TableBody>

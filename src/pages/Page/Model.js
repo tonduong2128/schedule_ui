@@ -18,10 +18,6 @@ const SearchModel = [
         code: "phone"
     },
     {
-        label: "Nickname",
-        code: "nickname"
-    },
-    {
         label: "Ngày tạo",
         code: "createdDate"
     },
@@ -57,10 +53,6 @@ const ResultModel = [
         code: "phone"
     },
     {
-        label: "Nickname",
-        code: "nickname"
-    },
-    {
         label: "Ngày tạo",
         code: "createdDate"
     },
@@ -83,7 +75,6 @@ const defaultSearchModel = isMobile ? ["fullname", "phone"] : [
     "username",
     "email",
     "phone",
-    "nickname",
     "createdDate",
     "updatedDate",
     "createdBy",
@@ -94,7 +85,6 @@ const defaultResultModel = isMobile ? ["fullname", "phone"] : [
     "username",
     "email",
     "phone",
-    "nickname",
     "createdDate",
     "updatedDate",
     "createdBy",

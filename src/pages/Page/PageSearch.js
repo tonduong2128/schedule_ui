@@ -80,23 +80,6 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
             />
         </Grid>
         <Grid item
-            className={!option.includes("nickname") ? "hidden" : ""}
-            xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
-                fullWidth
-                id="nickname"
-                placeholder="Nickanme"
-                label="Nickanme"
-                variant="outlined"
-                size="small"
-                value={searchModel.nickname}
-                onChange={value => setSearchModel({
-                    ...searchModel,
-                    nickname: value.nativeEvent.target.value,
-                })}
-            />
-        </Grid>
-        <Grid item
             className={!option.includes("createdDate") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
             <DatepickerRange label="Ngày tạo" onChange={value => setSearchModel({

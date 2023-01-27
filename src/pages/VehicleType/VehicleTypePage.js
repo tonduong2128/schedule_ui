@@ -128,11 +128,8 @@ const VehicleTypePage = ({ ...props }) => {
             if (code === RESPONSE_CODE.SUCCESS) {
                 notificationContext.dispatch(openActionNotification("Xóa thành công.", "success"))
                 search()
-            } if (code === RESPONSE_CODE.USER_HAD_USED) {
-                notificationContext.dispatch(openActionNotification("Không thể xóa! Người dùng đang được sử dụng.", "warning"))
-                search()
             } else {
-
+                notificationContext.dispatch(openActionNotification("Không thể xóa! Loại xe đang được sử dụng.", "warning"))
             }
         } else if (selectModel.length === 0) {
             notificationContext.dispatch(openActionNotification("Vui lòng chọn một dòng dữ liệu.", "warning"))
@@ -205,12 +202,8 @@ const VehicleTypePage = ({ ...props }) => {
                                         <TableCell className={!option2.includes("teacher") ? "hidden" : ""} align="left">Giáo viên</TableCell>
                                         <TableCell className={!option2.includes("createdDate") ? "hidden" : ""} align="left">Ngày tạo</TableCell>
                                         <TableCell className={!option2.includes("updatedDate") ? "hidden" : ""} align="left">Ngày cập nhập</TableCell>
-                                        {roleIds.includes(ROLE.admin) &&
-                                            <>
-                                                <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">Người tạo</TableCell>
-                                                <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">Người cập nhập</TableCell>
-                                            </>
-                                        }
+                                        <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">Người tạo</TableCell>
+                                        <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">Người cập nhập</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -241,12 +234,8 @@ const VehicleTypePage = ({ ...props }) => {
                                                 moment(vehicleType.createdDate).format("DD/MM/YYYY HH:mm") : ""}</TableCell>
                                             <TableCell className={!option2.includes("updatedDate") ? "hidden" : ""} align="left">{!!vehicleType.updatedDate ?
                                                 moment(vehicleType.updatedDate).format("DD/MM/YYYY HH:mm") : ""}</TableCell>
-                                            {roleIds.includes(ROLE.admin) &&
-                                                <>
-                                                    <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">{vehicleType.CreatedBy?.fullname}</TableCell>
-                                                    <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">{vehicleType.UpdatedBy?.fullname}</TableCell>
-                                                </>
-                                            }
+                                            <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">{vehicleType.CreatedBy?.fullname}</TableCell>
+                                            <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">{vehicleType.UpdatedBy?.fullname}</TableCell>
                                         </TableRow>
                                     })}
                                 </TableBody>

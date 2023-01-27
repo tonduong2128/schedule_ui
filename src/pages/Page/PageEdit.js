@@ -40,7 +40,6 @@ function PageEdit({
         phone: "",
         email: "",
         status: 1,
-        nickname: "",
         User_Roles: [],
         Students_Teacher: [],
     });
@@ -68,6 +67,8 @@ function PageEdit({
                 if (code === RESPONSE_CODE.SUCCESS) {
                     setOpenModal(false)
                     !!search && search()
+                } else if (code === RESPONSE_CODE.USERNAME_HAD_USED) {
+                    notificationContext.dispatch(openActionNotification("Tên đăng nhập đã tồn tại.", "warning"))
                 } else {
                     //handle error
                 }
@@ -146,6 +147,7 @@ function PageEdit({
                     >
                         <div className="container-car-type container-car-location">
                             <TextField
+                                disabled
                                 fullWidth
                                 id="username"
                                 placeholder="Tên đăng nhập"
@@ -240,23 +242,6 @@ function PageEdit({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
-                                fullWidth
-                                id="nicname"
-                                placeholder="Nickname"
-                                variant="outlined"
-                                size="small"
-                                label="Nickname"
-                                value={user.nickname}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        nickname: event.nativeEvent.target.value
-                                    })
-                                }}
-                            />
-                        </div>
-                        <div className="container-car-type container-car-location">
                             <UserStatus
                                 disabled={user.id === _user.id && roleIds.includes(ROLE.admin)}
                                 label="Trạng thái"
@@ -270,10 +255,10 @@ function PageEdit({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <Button onClick={() => resetPasswordForce()} variant="contained" disableElevation>
+                            <Button style={{ fontSize: 12 }} onClick={() => resetPasswordForce()} variant="contained" disableElevation>
                                 Đặt lại password (123456)
                             </Button>
-                            <Button style={{ marginLeft: 10 }} onClick={() => handleSumit()} variant="contained" disableElevation>
+                            <Button style={{ fontSize: 12, marginLeft: 10 }} onClick={() => handleSumit()} variant="contained" disableElevation>
                                 Lưu
                             </Button>
                         </div>
