@@ -32,7 +32,9 @@ function Register({
     const [startTime, setStartTime] = useState(_startTime);
     const [endTime, setEndTime] = useState(_endTime);
     const [reason, setReason] = useState(info.reason);
-    const [isBusy, setIsBusy] = useState((info?.studentId === info?.teacherId && !!info?.teacherId) || mode === MODE_REGISTER_SHEDULE.ADD);
+    const [isBusy, setIsBusy] = useState(info?.status === STATUS_RESERVATION.ofWeek
+        || info?.status === STATUS_RESERVATION.special
+        || mode === MODE_REGISTER_SHEDULE.ADD);
     const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
@@ -69,6 +71,7 @@ function Register({
             console.log("Handle data before sumit");
         }
         //handle before summit
+        debugger
         onSumit({
             ...info,
             teacherId,
@@ -80,7 +83,7 @@ function Register({
             status: !info?.id && (mode === MODE_REGISTER_SHEDULE.EDIT ||
                 mode === MODE_REGISTER_SHEDULE.DELETE) ? STATUS_RESERVATION.ofWeek :
                 (isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new),
-            studentId: mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId,
+            studentId: isBusy ? _user.id : (mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId),
         }, mode)
     }
     const disabled = !calendarOf?.isMe && mode === MODE_REGISTER_SHEDULE.EDIT && info.studentId !== _user.id;
@@ -90,7 +93,7 @@ function Register({
                 {mode === MODE_REGISTER_SHEDULE.ADD ?
                     <h2>ĐĂNG KÝ LỊCH HỌC</h2>
                     :
-                    <h2>THÔNG TIN LỊCH HỌC</h2>
+                    <h2>THÔNG TIN {info?.status === STATUS_RESERVATION.ofWeek || info?.status === STATUS_RESERVATION.special ? "LỊCH BẬN" : "LỊCH HỌC"}</h2>
                 }
             </div>
             <div
