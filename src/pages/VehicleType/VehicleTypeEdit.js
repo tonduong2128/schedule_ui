@@ -68,6 +68,7 @@ function VehicleTypeEdit({
                     setOpenModal(false)
                     !!search && search()
                 } else {
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                     //handle error
                 }
             })

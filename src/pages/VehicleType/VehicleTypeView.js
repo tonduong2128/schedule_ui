@@ -50,6 +50,8 @@ function VehicleTypeView({
                 const vehicleType = records[0]
                 setVehicleType(vehicleType)
                 setOpenModal(true)
+            } else {
+                notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
             }
         } else if (selectModel.length === 0) {
             notificationContext.dispatch(openActionNotification("Vui lòng chọn một dòng dữ liệu.", "warning"))

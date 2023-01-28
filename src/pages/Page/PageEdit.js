@@ -77,7 +77,7 @@ function PageEdit({
                     setOpenModal(false)
                     !!search && search()
                 } else {
-                    //handle error
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {
@@ -97,7 +97,7 @@ function PageEdit({
                 setUser(user)
                 setOpenModal(true)
             } else {
-                console.log("External error");
+                notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
             }
         } else if (selectModel.length === 0) {
             notificationContext.dispatch(openActionNotification("Vui lòng chọn một dòng dữ liệu.", "warning"))
@@ -114,8 +114,7 @@ function PageEdit({
             notificationContext.dispatch(openActionNotification("Đặt lại mật khẩu thành công.", "success"))
             setOpenModal(false)
         } else {
-            notificationContext.dispatch(openActionNotification("Vui lòng thử lại sau.", "error"))
-            console.log("External error");
+            notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
         }
     }
     return (<div style={{ display: "inline-block" }}>

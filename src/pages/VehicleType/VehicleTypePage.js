@@ -93,6 +93,7 @@ const VehicleTypePage = ({ ...props }) => {
                     setSelectModel([])
                 } else {
                     //handle error
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {

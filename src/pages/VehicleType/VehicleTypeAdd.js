@@ -36,30 +36,21 @@ const modalStyle = {
     boxShadow: 24,
     pb: 5,
 };
+const initVehicleType = {
+    name: "",
+    description: "",
+    teacherId: 0,
+}
 function VehicleTypeAdd({
     search,
     ...props
 }) {
     const _user = getUser()
     const [openModal, setOpenModal] = useState(false);
-    const [vehicleType, setVehicleType] = useState({
-        name: "",
-        description: "",
-        teacherId: 0,
-    });
-    const [showError, setShowError] = React.useState(false);
-    const [errorText, setErrorText] = React.useState('');
+    const [vehicleType, setVehicleType] = useState(initVehicleType);
     const loadingContext = useContext(LoadingContext);
     const notificationContext = useContext(NotificationContext);
-
     const roleIds = _user.Roles.map(r => r.id);
-    const handleOpenError = (text) => {
-        setErrorText(text);
-        setShowError(true);
-    };
-    const handleClose = () => {
-        setShowError(false);
-    };
     const handleSumit = () => {
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             vehicleType.teacherId = _user.id
@@ -86,22 +77,11 @@ function VehicleTypeAdd({
                     !!search && search()
                     setOpenModal(false);
                 } else {
-                    if (!vehicleType.name) {
-                        handleOpenError('Vui lòng nhập tên đăng nhập');
-                        return;
-                    }
-                    if (!vehicleType.description) {
-                        handleOpenError('Vui lòng nhập họ và tên');
-                        return;
-                    }
-                    if (!vehicleType.teacherId) {
-                        handleOpenError('Vui lòng nhập vui số điện thoại');
-                        return;
-                    }
-                    console.log("username exit");
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {
+                setVehicleType({ ...initVehicleType })
                 loadingContext.dispatch(closeActionLoading())
                 // setOpenModal(false);
             })
@@ -113,6 +93,7 @@ function VehicleTypeAdd({
         <Modal
             open={openModal}
             onClose={() => {
+                setVehicleType({ ...initVehicleType })
                 setOpenModal(false);
             }}
             aria-labelledby="modal-modal-title"
@@ -121,7 +102,10 @@ function VehicleTypeAdd({
             <Box sx={style} >
                 <div
                     style={{ position: "absolute", top: 12, right: 16, cursor: "pointer" }}
-                    onClick={() => setOpenModal(false)}
+                    onClick={() => {
+                        setVehicleType({ ...initVehicleType })
+                        setOpenModal(false)
+                    }}
                 >
                     <ClearIcon />
                 </div>
@@ -140,6 +124,21 @@ function VehicleTypeAdd({
                             marginRight: -10,
                         }}
                     >
+                        {
+                            roleIds.includes(ROLE.admin) &&
+                            <div className="container-car-type container-car-location">
+                                <TeacherAutocomplete
+                                    size='small'
+                                    onChange={value => {
+                                        setVehicleType({
+                                            ...vehicleType,
+                                            teacherId: value
+                                        })
+                                    }}
+                                    value={vehicleType.teacherId}
+                                />
+                            </div>
+                        }
                         <div className="container-car-type container-car-location">
                             <TextField
                                 fullWidth
@@ -174,21 +173,6 @@ function VehicleTypeAdd({
                                 }}
                             />
                         </div>
-                        {
-                            roleIds.includes(ROLE.admin) &&
-                            <div className="container-car-type container-car-location">
-                                <TeacherAutocomplete
-                                    size='small'
-                                    onChange={value => {
-                                        setVehicleType({
-                                            ...vehicleType,
-                                            teacherId: value
-                                        })
-                                    }}
-                                    value={vehicleType.teacherId}
-                                />
-                            </div>
-                        }
                         <div className="container-car-type container-car-location">
                             <Button onClick={() => handleSumit()} variant="contained" disableElevation>
                                 Lưu
@@ -198,24 +182,6 @@ function VehicleTypeAdd({
                 </div >
             </Box>
         </Modal>
-        <div>
-            <Modal
-                open={showError}
-                onClose={handleClose}
-                aria-labelledby="parent-modal-title"
-                aria-describedby="parent-modal-description"
-            >
-                <Box sx={modalStyle}>
-                    <div className="button-close-modal">
-                        <button className="btn" onClick={handleClose}>
-                            <CloseIcon style={{ color: 'white' }} />
-                        </button>
-                    </div>
-                    <p className="registration-error-title">ERROR</p>
-                    <p className="registration-error-body">{errorText}</p>
-                </Box>
-            </Modal>
-        </div>
     </div >)
 }
 export default memo(VehicleTypeAdd)

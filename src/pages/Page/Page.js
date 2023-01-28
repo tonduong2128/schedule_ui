@@ -92,7 +92,7 @@ const Page = ({ ...props }) => {
                     setUsers(users)
                     setSelectModel([])
                 } else {
-                    //handle error
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {
@@ -132,7 +132,7 @@ const Page = ({ ...props }) => {
                 notificationContext.dispatch(openActionNotification("Không thể xóa! Người dùng đang được sử dụng.", "warning"))
                 search()
             } else {
-
+                notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
             }
         } else if (selectModel.length === 0) {
             notificationContext.dispatch(openActionNotification("Vui lòng chọn một dòng dữ liệu.", "warning"))

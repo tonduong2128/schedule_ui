@@ -53,19 +53,10 @@ function PageAdd({
     const _user = getUser()
     const [openModal, setOpenModal] = useState(false);
     const [user, setUser] = useState(initUser);
-    const [showError, setShowError] = React.useState(false);
-    const [errorText, setErrorText] = React.useState('');
     const loadingContext = useContext(LoadingContext);
     const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
-    const handleOpenError = (text) => {
-        setErrorText(text);
-        setShowError(true);
-    };
-    const handleClose = () => {
-        setShowError(false);
-    };
     const handleSumit = () => {
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
@@ -111,23 +102,7 @@ function PageAdd({
                 } else if (code === RESPONSE_CODE.USERNAME_HAD_USED) {
                     notificationContext.dispatch(openActionNotification("Tên đăng nhập đã tồn tại.", "warning"))
                 } else {
-                    if (!user.username) {
-                        handleOpenError('Vui lòng nhập tên đăng nhập');
-                        return;
-                    }
-                    if (!user.fullname) {
-                        handleOpenError('Vui lòng nhập họ và tên');
-                        return;
-                    }
-                    if (!user.phone) {
-                        handleOpenError('Vui lòng nhập vui số điện thoại');
-                        return;
-                    }
-                    if (!user.email) {
-                        handleOpenError('Vui lòng nhập email');
-                        return;
-                    }
-                    console.log("username exit");
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {
@@ -283,24 +258,6 @@ function PageAdd({
                 </div >
             </Box>
         </Modal>
-        <div>
-            <Modal
-                open={showError}
-                onClose={handleClose}
-                aria-labelledby="parent-modal-title"
-                aria-describedby="parent-modal-description"
-            >
-                <Box sx={modalStyle}>
-                    <div className="button-close-modal">
-                        <button className="btn" onClick={handleClose}>
-                            <CloseIcon style={{ color: 'white' }} />
-                        </button>
-                    </div>
-                    <p className="registration-error-title">ERROR</p>
-                    <p className="registration-error-body">{errorText}</p>
-                </Box>
-            </Modal>
-        </div>
     </div >)
 }
 export default memo(PageAdd)
