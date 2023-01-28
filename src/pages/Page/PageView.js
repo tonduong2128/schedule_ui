@@ -61,9 +61,6 @@ function PageView({
             notificationContext.dispatch(openActionNotification("Vui lòng chỉ chọn một dòng dữ liệu.", "warning"))
         }
     }
-    const handleSumit = () => {
-        //handle before summit
-    }
     return (<div style={{ display: "inline-block" }}>
         <Button variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
             Xem

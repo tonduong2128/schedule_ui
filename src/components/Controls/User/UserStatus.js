@@ -40,7 +40,7 @@ const UserStatus = ({ onChange, label, disabled = false, value = [], ...props })
         )}
         value={status.find(st => st.code === value) || null}
         onChange={(event, newValue) => {
-            !!onChange && onChange(newValue.code)
+            !!onChange && onChange(newValue?.code)
         }}
     />
 }

@@ -362,11 +362,11 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         {
                             calendarOf.isMe &&
                             <>
-                                <span style={{ padding: 4 }} />
+                                <span style={{ paddingLeft: 2 }} />
                                 <Button onClick={() => setData({ ...data, hours: [] })} variant="contained" disableElevation>
                                     Xóa hết
                                 </Button>
-                                <span style={{ padding: 4 }} />
+                                <span style={{ paddingLeft: 2 }} />
                                 <Button onClick={() => handleSubmit()} variant="contained" disableElevation>
                                     Lưu
                                 </Button>

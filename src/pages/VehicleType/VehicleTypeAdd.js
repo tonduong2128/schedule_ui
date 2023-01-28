@@ -10,6 +10,7 @@ import { getUser } from '../../utils';
 import CloseIcon from '@mui/icons-material/Close';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
+import { NotificationContext, openActionNotification } from '../../reducer/notification';
 
 const style = {
     position: 'absolute',
@@ -49,6 +50,7 @@ function VehicleTypeAdd({
     const [showError, setShowError] = React.useState(false);
     const [errorText, setErrorText] = React.useState('');
     const loadingContext = useContext(LoadingContext);
+    const notificationContext = useContext(NotificationContext);
 
     const roleIds = _user.Roles.map(r => r.id);
     const handleOpenError = (text) => {
@@ -62,6 +64,20 @@ function VehicleTypeAdd({
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             vehicleType.teacherId = _user.id
         }
+
+        if (!vehicleType.name) {
+            notificationContext.dispatch(openActionNotification("Tên loại xe không được bỏ trống.", "error"))
+            return
+        }
+        if (!vehicleType.description) {
+            notificationContext.dispatch(openActionNotification("Mô tả không được bỏ trống.", "error"))
+            return
+        }
+        if (!vehicleType.teacherId) {
+            notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
+            return
+        }
+
         loadingContext.dispatch(openActionLoading())
         VehicleType.createVehicleType(vehicleType)
             .then(respones => {
@@ -89,7 +105,6 @@ function VehicleTypeAdd({
                 loadingContext.dispatch(closeActionLoading())
                 // setOpenModal(false);
             })
-        //handle before summit
     }
     return (<div style={{ display: "inline-block" }}>
         <Button variant="outlined" size="medium" onClick={() => setOpenModal(true)}>

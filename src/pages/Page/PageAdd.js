@@ -36,22 +36,23 @@ const modalStyle = {
     boxShadow: 24,
     pb: 5,
 };
+const initUser = {
+    username: "",
+    fullname: "",
+    password: PASSWORD_DEFAULT,//default
+    phone: "",
+    email: "",
+    status: 1,
+    User_Roles: [],
+    Students_Teacher: [],
+}
 function PageAdd({
     search,
     ...props
 }) {
     const _user = getUser()
     const [openModal, setOpenModal] = useState(false);
-    const [user, setUser] = useState({
-        username: "",
-        fullname: "",
-        password: PASSWORD_DEFAULT,//default
-        phone: "",
-        email: "",
-        status: 1,
-        User_Roles: [],
-        Students_Teacher: [],
-    });
+    const [user, setUser] = useState(initUser);
     const [showError, setShowError] = React.useState(false);
     const [errorText, setErrorText] = React.useState('');
     const loadingContext = useContext(LoadingContext);
@@ -69,6 +70,27 @@ function PageAdd({
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
         }
+
+        if (!user.username) {
+            notificationContext.dispatch(openActionNotification("Tên đăng nhập không được bỏ trống.", "error"))
+            return
+        }
+        if (!user.fullname) {
+            notificationContext.dispatch(openActionNotification("Họ và tên không được bỏ trống.", "error"))
+            return
+        }
+        if (!user.User_Roles?.length && roleIds.includes(ROLE.admin)) {
+            notificationContext.dispatch(openActionNotification("Loại người dùng không được bỏ trống.", "error"))
+            return
+        }
+        if (user.User_Roles?.[0]?.roleId === ROLE.student && !user.Students_Teacher?.length) {
+            notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
+            return
+        }
+        if (!user.phone) {
+            notificationContext.dispatch(openActionNotification("Số điện thoại không được bỏ trống.", "error"))
+            return
+        }
         //check before create
         user.User_Roles = user.User_Roles.map(id => ({
             roleId: id,
@@ -78,6 +100,7 @@ function PageAdd({
             teacherId: id,
             createdBy: _user.id
         }))
+
         loadingContext.dispatch(openActionLoading())
         User.createUser(user)
             .then(respones => {
@@ -111,7 +134,6 @@ function PageAdd({
                 loadingContext.dispatch(closeActionLoading())
                 // setOpenModal(false);
             })
-        //handle before summit
     }
     return (<div style={{ display: "inline-block" }}>
         <Button variant="outlined" size="medium" onClick={() => setOpenModal(true)}>
@@ -120,6 +142,7 @@ function PageAdd({
         <Modal
             open={openModal}
             onClose={() => {
+                setUser({ ...initUser })
                 setOpenModal(false);
             }}
             aria-labelledby="modal-modal-title"
@@ -128,7 +151,10 @@ function PageAdd({
             <Box sx={style} >
                 <div
                     style={{ position: "absolute", top: 12, right: 16, cursor: "pointer" }}
-                    onClick={() => setOpenModal(false)}
+                    onClick={() => {
+                        setUser({ ...initUser })
+                        setOpenModal(false)
+                    }}
                 >
                     <ClearIcon />
                 </div>
@@ -165,12 +191,29 @@ function PageAdd({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
+                            <TextField
+                                fullWidth
+                                id="fullname"
+                                placeholder="Họ và tên"
+                                variant="outlined"
+                                size="small"
+                                label="Họ và tên"
+                                value={user.fullname}
+                                onChange={event => {
+                                    setUser({
+                                        ...user,
+                                        fullname: event.nativeEvent.target.value
+                                    })
+                                }}
+                            />
+                        </div>
+                        <div className="container-car-type container-car-location">
                             <UserTypeAutocomplete
                                 label="Loại người dùng"
                                 onChange={value => {
                                     setUser({
                                         ...user,
-                                        User_Roles: [value]
+                                        User_Roles: !!value ? [value] : []
                                     })
                                 }}
                                 disabled={roleIds.includes(ROLE.teacher_vip)}
@@ -192,23 +235,6 @@ function PageAdd({
                                 />
                             </div>
                         }
-                        <div className="container-car-type container-car-location">
-                            <TextField
-                                fullWidth
-                                id="fullname"
-                                placeholder="Họ và tên"
-                                variant="outlined"
-                                size="small"
-                                label="Họ và tên"
-                                value={user.fullname}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        fullname: event.nativeEvent.target.value
-                                    })
-                                }}
-                            />
-                        </div>
                         <div className="container-car-type container-car-location">
                             <TextField
                                 fullWidth
@@ -240,6 +266,11 @@ function PageAdd({
                                         ...user,
                                         email: event.nativeEvent.target.value
                                     })
+                                }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <></>
+                                    ),
                                 }}
                             />
                         </div>

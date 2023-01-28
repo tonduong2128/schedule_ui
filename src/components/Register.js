@@ -70,8 +70,6 @@ function Register({
         if (isBusy) {
             console.log("Handle data before sumit");
         }
-        //handle before summit
-        debugger
         onSumit({
             ...info,
             teacherId,

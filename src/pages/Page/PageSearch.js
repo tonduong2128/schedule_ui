@@ -60,6 +60,11 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
                     ...searchModel,
                     email: value.nativeEvent.target.value,
                 })}
+                InputProps={{
+                    startAdornment: (
+                        <></>
+                    ),
+                }}
             />
         </Grid>
         <Grid item

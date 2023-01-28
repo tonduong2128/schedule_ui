@@ -1,11 +1,10 @@
 import { Alert, Backdrop, CircularProgress, Slide, Snackbar } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import moment from 'moment';
 import { useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Header, PrivateRoute } from './components';
-import { AboutPage, CalenderPage, ChangePassword, ForgotPasswordPage, LoginPage, LogoutPage, Page, ProfilePage, VehicleTypePage } from './pages';
+import { AboutPage, CalenderPage, ChangePassword, ForgotPasswordPage, LoginPage, LogoutPage, Page, VehicleTypePage } from './pages';
 import { LoadingContext } from './reducer/loading';
 import notificationReducer, { closeActionNotification, initialStateNotification, NotificationContext } from './reducer/notification';
 
@@ -27,7 +26,7 @@ function App() {
               <Route path="/page" element={<Page />}></Route>
               <Route path="/change-password" element={<ChangePassword />}></Route>
               <Route path="/logout" element={<LogoutPage />}></Route>
-              <Route path="/profile" element={<ProfilePage />}></Route>
+              {/* <Route path="/profile" element={<></>}></Route > */}
               <Route path="/vehicle-type" element={<VehicleTypePage />}></Route>
               <Route path="/" element={<CalenderPage />}></Route>
             </Route>

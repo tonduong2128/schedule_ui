@@ -51,7 +51,16 @@ function PageEdit({
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
         }
-        //handle before summit
+
+        if (!user.fullname) {
+            notificationContext.dispatch(openActionNotification("Họ và tên không được bỏ trống.", "error"))
+            return
+        }
+        if (!user.phone) {
+            notificationContext.dispatch(openActionNotification("Số điện thoại không được bỏ trống.", "error"))
+            return
+        }
+
         user.User_Roles = user.User_Roles.map(id => ({
             roleId: id,
             createdBy: _user.id
@@ -67,8 +76,6 @@ function PageEdit({
                 if (code === RESPONSE_CODE.SUCCESS) {
                     setOpenModal(false)
                     !!search && search()
-                } else if (code === RESPONSE_CODE.USERNAME_HAD_USED) {
-                    notificationContext.dispatch(openActionNotification("Tên đăng nhập đã tồn tại.", "warning"))
                 } else {
                     //handle error
                 }
@@ -163,9 +170,11 @@ function PageEdit({
                                 }}
                             />
                         </div>
+
                         <div className="container-car-type container-car-location">
                             <UserTypeAutocomplete
                                 label="Loại người dùng"
+                                disabled
                                 onChange={value => {
                                     setUser({
                                         ...user,
@@ -180,6 +189,7 @@ function PageEdit({
                             <div className="container-car-type container-car-location">
                                 <TeacherAutocomplete
                                     size='small'
+                                    disabled
                                     onChange={value => {
                                         setUser({
                                             ...user,
@@ -238,6 +248,11 @@ function PageEdit({
                                         ...user,
                                         email: event.nativeEvent.target.value
                                     })
+                                }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <></>
+                                    ),
                                 }}
                             />
                         </div>

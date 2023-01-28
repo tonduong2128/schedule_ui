@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROLE } from '../../common/constantsUiAndApi';
+import ProfilePage from '../../pages/Profile/ProfilePage';
 import { getUser } from '../../utils';
 
 const handleSelectHeader = () => {
@@ -79,10 +80,6 @@ const handleSelectSetting = () => {
     const roleIds = user?.Roles?.map(r => r.id) || [];
     if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.admin || id === ROLE.student || id === ROLE.teacher)) {
         return [
-            {
-                name: 'Tài khoản',
-                to: "/profile"
-            },
             {
                 name: 'Đổi mật khẩu',
                 to: "/change-password"
@@ -241,6 +238,11 @@ function Header() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
+                            <MenuItem key={"/profile"} onClick={handleCloseUserMenu}>
+                                <Typography component={"span"} textAlign="center" >
+                                    <ProfilePage />
+                                </Typography>
+                            </MenuItem>
                             {settings.map((setting) => (
                                 <Link key={setting.to} to={setting.to} style={{ color: "#000", textDecoration: "none" }}>
                                     <MenuItem key={setting.to} onClick={handleCloseUserMenu}>

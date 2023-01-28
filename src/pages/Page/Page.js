@@ -104,7 +104,7 @@ const Page = ({ ...props }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchOption])
     useEffect(() => {
-        document.title = "Quản lý page"
+        document.title = "Quản lý học viên"
     }, [])
     const handleSelectRow = (event, userId) => {
         selectModel.includes(userId) ? selectModel = selectModel.filter(sl => sl !== userId)

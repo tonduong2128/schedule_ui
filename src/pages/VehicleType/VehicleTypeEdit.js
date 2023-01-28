@@ -47,6 +47,19 @@ function VehicleTypeEdit({
             vehicleType.teacherId = _user.id
         }
 
+        if (!vehicleType.name) {
+            notificationContext.dispatch(openActionNotification("Tên loại xe không được bỏ trống.", "error"))
+            return
+        }
+        if (!vehicleType.description) {
+            notificationContext.dispatch(openActionNotification("Mô tả không được bỏ trống.", "error"))
+            return
+        }
+        if (!vehicleType.teacherId) {
+            notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
+            return
+        }
+
         loadingContext.dispatch(openActionLoading())
         VehicleType.updateVehicleType(vehicleType)
             .then(response => {

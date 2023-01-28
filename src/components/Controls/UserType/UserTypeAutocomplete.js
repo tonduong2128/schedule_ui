@@ -54,7 +54,7 @@ const UserTypeAutocomplete = ({ onChange, label, disabled = false, value, ...pro
         )}
         value={roles.find(role => role.id === value) || null}
         onChange={(event, newValue) => {
-            !!onChange && onChange(newValue.id)
+            !!onChange && onChange(newValue?.id)
         }}
     />
 }
