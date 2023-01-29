@@ -1,21 +1,27 @@
 import PersonIcon from '@mui/icons-material/Person';
-import { Autocomplete, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Autocomplete, CircularProgress, InputAdornment, TextField } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
+import { useDebounce } from '../../CustomHook';
 const StudentAutocomplete = ({ onChange, teacherId, value, disabled = false, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const [students, setStudents] = useState([])
     const [student, setStudent] = useState(value)
-    useEffect(() => {
+    const [textSearch, setTextSearch] = useState("");
+    const [loading, setLoading] = useState(false);
+    const debounceValue = useDebounce(textSearch, 800);
+    const search = useCallback(() => {
         const searchOption = {
-            limit: 100000,
+            limit: 20,
             page: 1
         };
-        const seacherModel = {
+        const searchModel = {
         };
+        searchModel.fullname = debounceValue ? { $like: `%25${debounceValue}%25` } : undefined;
         const searchOther = { student: true, teacherId }
-        User.getStudents(searchOption, seacherModel, searchOther)
+        setLoading(() => true)
+        User.getStudents(searchOption, searchModel, searchOther)
             .then(response => {
                 const { code, records } = response
                 if (code === RESPONSE_CODE.SUCCESS) {
@@ -24,23 +30,37 @@ const StudentAutocomplete = ({ onChange, teacherId, value, disabled = false, ...
                     //handle error
                 }
             })
+            .finally(() => {
+                setLoading(false)
+            })
 
+    }, [teacherId, debounceValue])
+    useEffect(() => {
+        search()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [teacherId, value])
-    return <div className="container-car-type container-car-location">
+    }, [search])
+    return <div className="container-car-type container-car-location" style={{ position: "relative" }}>
         <Autocomplete
             disablePortal
+            key="StudentAutocomplete"
             disabled={disabled}
             options={students}
             getOptionLabel={option => option.fullname}
             renderInput={(params) => (
                 <TextField
-                    required
                     {...params}
                     className="search-car-input"
                     label="Học viên"
                     placeholder="Học viên"
                     size='small'
+                    onChange={(e) => {
+                        setTextSearch(e.currentTarget.value)
+                    }}
+                    onBlur={e => {
+                        if (!student?.fullname) {
+                            setTextSearch("")
+                        }
+                    }}
                     InputProps={{
                         ...params.InputProps,
                         startAdornment: (
@@ -48,7 +68,7 @@ const StudentAutocomplete = ({ onChange, teacherId, value, disabled = false, ...
                                 <PersonIcon />
                                 {params.InputProps.startAdornment}
                             </>
-                        ),
+                        )
                     }}
                 />
             )}

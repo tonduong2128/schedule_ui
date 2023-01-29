@@ -1,9 +1,10 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { User } from '../../services';
 import { getUser } from '../../utils';
+import { useDebounce } from '../CustomHook';
 
 export default function CalenderOf({ onChange = () => { }, disabled = false, ...props }) {
     const _user = getUser()
@@ -19,11 +20,12 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
             }]
         }
     })
-    const loadingContext = useContext(LoadingContext);
+    const [textSearch, setTextSearch] = useState("");
+    const debounceValue = useDebounce(textSearch, 800);
 
-    useEffect(() => {
+    const search = useCallback(() => {
         const searchOption = {
-            limit: 100000,
+            limit: 10,
             page: 1
         };
         const searchOther = {}
@@ -39,7 +41,7 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
                 ]
             };
         }
-        loadingContext.dispatch(openActionLoading())
+        searchModel.fullname = debounceValue ? { $like: `%25${debounceValue}%25` } : undefined;
         User.getStudents(searchOption, searchModel, searchOther)
             .then(response => {
                 const { code, records } = response
@@ -59,12 +61,11 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
                     //handle error
                 }
             })
-            .finally(() => {
-                loadingContext.dispatch(closeActionLoading())
-            })
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [debounceValue])
+    useEffect(() => {
+        search()
+    }, [search])
 
     return (
         <div
@@ -77,8 +78,15 @@ export default function CalenderOf({ onChange = () => { }, disabled = false, ...
                 getOptionLabel={option => option.fullname}
                 renderInput={(params) => (
                     <TextField
-                        required
                         {...params}
+                        onChange={(e) => {
+                            setTextSearch(e.currentTarget.value)
+                        }}
+                        onBlur={e => {
+                            if (!e.currentTarget.value) {
+                                setTextSearch(e.currentTarget.value)
+                            }
+                        }}
                         label="Lịch của"
                         placeholder="Lịch của"
                         InputProps={{

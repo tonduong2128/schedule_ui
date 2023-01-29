@@ -1,20 +1,24 @@
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { Autocomplete, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { VehicleType } from "../../../services";
+import { useDebounce } from '../../CustomHook';
 const VehicleTypeAutocomplete = ({ onChange, vehicleTypeId, teacherId = 0, disabled = false, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const [vehicleTypes, setVehicleTypes] = useState([])
-    useEffect(() => {
+    const [textSearch, setTextSearch] = useState("");
+    const debounceValue = useDebounce(textSearch, 800);
+    const search = useCallback(() => {
         const searchOption = {
-            limit: 100000,
+            limit: 10,
             page: 1
         };
-        const seacherModel = {
+        const searchModel = {
             teacherId: teacherId
         };
-        VehicleType.getVehicleTypes(searchOption, seacherModel)
+        searchModel.name = debounceValue ? { $like: `%25${debounceValue}%25` } : undefined;
+        VehicleType.getVehicleTypes(searchOption, searchModel)
             .then(response => {
                 const { code, records } = response
                 if (code === RESPONSE_CODE.SUCCESS) {
@@ -23,11 +27,13 @@ const VehicleTypeAutocomplete = ({ onChange, vehicleTypeId, teacherId = 0, disab
                     //handle error
                 }
             })
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [teacherId])
+    }, [teacherId, debounceValue])
+    useEffect(() => {
+        search()
+    }, [search])
     return <div className="container-car-type container-car-location">
         <Autocomplete
+            key="VehicleTypeAutocomplete"
             disablePortal
             disabled={disabled}
             options={vehicleTypes}
@@ -35,6 +41,14 @@ const VehicleTypeAutocomplete = ({ onChange, vehicleTypeId, teacherId = 0, disab
             renderInput={(params) => (
                 <TextField
                     {...params}
+                    onChange={(e) => {
+                        setTextSearch(e.currentTarget.value)
+                    }}
+                    onBlur={e => {
+                        if (!vehicleTypeId?.name) {
+                            setTextSearch("")
+                        }
+                    }}
                     className="search-car-input"
                     size='small'
                     label="Loại xe"

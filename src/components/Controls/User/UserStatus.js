@@ -3,8 +3,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 import { STATUS_USER } from "../../../common";
 const UserStatus = ({ onChange, label, disabled = false, value = [], ...props }) => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const [status, setStatus] = useState([
+    const [status] = useState([
         {
             code: STATUS_USER.using,
             name: "Đang xử dụng",

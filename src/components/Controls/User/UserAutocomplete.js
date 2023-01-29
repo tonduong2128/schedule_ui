@@ -1,17 +1,21 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE, ROLE } from "../../../common";
 import { User } from "../../../services";
 import { getUser } from '../../../utils';
+import { useDebounce } from '../../CustomHook';
 const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = [], ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const _user = getUser()
     const [users, setUsers] = useState([])
+    const [textSearch, setTextSearch] = useState("");
+    const [loading, setLoading] = useState(false);
+    const debounceValue = useDebounce(textSearch, 800);
     const roleIds = _user.Roles.map(r => r.id);
-    useEffect(() => {
+    const search = useCallback(() => {
         const searchOption = {
-            limit: 100000,
+            limit: 20,
             page: 1
         };
         const searchModel = {
@@ -24,29 +28,46 @@ const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = []
         if (admin) {
             searchOther.admin = true;
         }
+        searchModel.fullname = debounceValue ? { $like: `%25${debounceValue}%25` } : undefined;
+        setLoading(true)
         User.getUsers(searchOption, searchModel, searchOther)
             .then(response => {
                 const { code, records } = response
                 if (code === RESPONSE_CODE.SUCCESS) {
-                    const users = records
-                    setUsers(users)
+                    setUsers(records)
                 } else {
                     //handle error
                 }
             })
+            .finally(() => {
+                setLoading(false)
+            })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value])
+    }, [value, debounceValue])
+    useEffect(() => {
+        search()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [search])
     return <Autocomplete
         disablePortal
         disabled={disabled}
         options={users}
         multiple
         size='small'
+        freeSolo
         getOptionLabel={option => option.fullname}
+        key="UserAutocomplete"
         renderInput={(params) => (
             <TextField
-                required
                 {...params}
+                onChange={(e) => {
+                    setTextSearch(e.currentTarget.value)
+                }}
+                onBlur={e => {
+                    if (!e.currentTarget.value) {
+                        setTextSearch(e.currentTarget.value)
+                    }
+                }}
                 className="search-car-input"
                 size='small'
                 label={label}
@@ -58,7 +79,7 @@ const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = []
                             <PersonIcon />
                             {params.InputProps.startAdornment}
                         </>
-                    ),
+                    )
                 }}
             />
         )}

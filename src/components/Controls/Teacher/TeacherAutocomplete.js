@@ -1,24 +1,28 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
+import { useDebounce } from '../../CustomHook';
 const TeacherAutocomplete = ({ onChange, value, label, disabled = false, studentId, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const [teachers, setTeachers] = useState([])
-    useEffect(() => {
+    const [textSearch, setTextSearch] = useState("");
+    const debounceValue = useDebounce(textSearch, 800);
+    const search = useCallback(() => {
         const searchOption = {
-            limit: 100000,
+            limit: 20,
             page: 1
         };
-        const seacherModel = {
+        const searchModel = {
         };
         const searchOther = { teacher: true }
         if (studentId) {
             searchOther.student = true
             searchOther.studentId = studentId
         }
-        User.getStudents(searchOption, seacherModel, searchOther)
+        searchModel.fullname = debounceValue ? { $like: debounceValue } : undefined;
+        User.getStudents(searchOption, searchModel, searchOther)
             .then(response => {
                 const { code, records } = response
                 if (code === RESPONSE_CODE.SUCCESS) {
@@ -28,8 +32,11 @@ const TeacherAutocomplete = ({ onChange, value, label, disabled = false, student
                     //handle error
                 }
             })
+    }, [studentId, debounceValue])
+    useEffect(() => {
+        search()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [studentId])
+    }, [search])
     return <div className="container-car-type container-car-location">
         <Autocomplete
             {...props}
@@ -41,6 +48,14 @@ const TeacherAutocomplete = ({ onChange, value, label, disabled = false, student
                 <TextField
                     {...params}
                     size='small'
+                    onChange={(e) => {
+                        setTextSearch(e.currentTarget.value)
+                    }}
+                    onBlur={e => {
+                        if (!value?.fullname) {
+                            setTextSearch("")
+                        }
+                    }}
                     className="search-car-input"
                     label={label || "Giáo viên"}
                     placeholder={label || "Giáo viên"}
