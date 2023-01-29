@@ -6,10 +6,10 @@ import { User } from "../../../services";
 import { getUser } from '../../../utils';
 import { useDebounce } from '../../CustomHook';
 const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = [], ...props }) => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const _user = getUser()
     const [users, setUsers] = useState([])
     const [textSearch, setTextSearch] = useState("");
+    // eslint-disable-next-line no-unused-vars
     const [loading, setLoading] = useState(false);
     const debounceValue = useDebounce(textSearch, 800);
     const roleIds = _user.Roles.map(r => r.id);

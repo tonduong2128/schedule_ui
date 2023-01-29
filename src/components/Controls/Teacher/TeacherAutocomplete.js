@@ -5,7 +5,6 @@ import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
 import { useDebounce } from '../../CustomHook';
 const TeacherAutocomplete = ({ onChange, value, label, disabled = false, studentId, ...props }) => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const [teachers, setTeachers] = useState([])
     const [textSearch, setTextSearch] = useState("");
     const debounceValue = useDebounce(textSearch, 800);
@@ -35,7 +34,6 @@ const TeacherAutocomplete = ({ onChange, value, label, disabled = false, student
     }, [studentId, debounceValue])
     useEffect(() => {
         search()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
     return <div className="container-car-type container-car-location">
         <Autocomplete

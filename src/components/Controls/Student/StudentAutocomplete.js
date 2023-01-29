@@ -1,14 +1,14 @@
 import PersonIcon from '@mui/icons-material/Person';
-import { Autocomplete, CircularProgress, InputAdornment, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
 import { useDebounce } from '../../CustomHook';
 const StudentAutocomplete = ({ onChange, teacherId, value, disabled = false, ...props }) => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const [students, setStudents] = useState([])
     const [student, setStudent] = useState(value)
     const [textSearch, setTextSearch] = useState("");
+    // eslint-disable-next-line no-unused-vars
     const [loading, setLoading] = useState(false);
     const debounceValue = useDebounce(textSearch, 800);
     const search = useCallback(() => {
@@ -37,7 +37,6 @@ const StudentAutocomplete = ({ onChange, teacherId, value, disabled = false, ...
     }, [teacherId, debounceValue])
     useEffect(() => {
         search()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
     return <div className="container-car-type container-car-location" style={{ position: "relative" }}>
         <Autocomplete

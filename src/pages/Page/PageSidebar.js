@@ -1,6 +1,8 @@
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Button, Checkbox, Drawer, FormControlLabel, Grid, List } from "@mui/material";
 import { memo, useEffect, useState } from "react";
+import { ROLE } from '../../common';
+import { getUser } from '../../utils';
 
 const PageSidebar = ({ option1 = {
     label: "",
@@ -13,8 +15,17 @@ const PageSidebar = ({ option1 = {
     values: [],
     code: "",
 }, onChange2, ...props }) => {
+    const _user = getUser()
     const [open, setOpen] = useState()
-    let [value1, setValue1] = useState(JSON.parse(localStorage.getItem(option1.code)) || option1.defaultValue)
+    const roleIds = _user.Roles.map(r => r.id);
+    option1.values = !roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)
+        ? option1.values : option1.values.filter(i => !["createdBy", "updatedBy"].includes(i.code))
+    let [value1, setValue1] = useState(() => {
+        let value = JSON.parse(localStorage.getItem(option1.code)) || option1.defaultValue
+        value = !roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)
+            ? value : value.filter(code => !["createdBy", "updatedBy"].includes(code))
+        return value
+    })
     let [value2, setValue2] = useState(JSON.parse(localStorage.getItem(option2.code)) || option2.defaultValue)
     const handleOption1 = (event, code) => {
         const checked = event.nativeEvent.target.checked;

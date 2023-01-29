@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 const routeExcept = ["/login", "/forgot-password"]
 function handleResponse(result) {
-    const { token, code } = result;
+    const { token } = result;
     if (!!token) { // the same STATUS_USER.exprid === code
         localStorage.setItem(process.env.REACT_APP_TOKEN_KEY, token);
     } else {

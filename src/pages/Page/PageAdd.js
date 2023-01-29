@@ -1,16 +1,14 @@
-import React, { memo, useContext } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
-import { UserTypeAutocomplete } from '../../components/Controls/UserType';
-import { User } from '../../services';
-import { getUser } from '../../utils';
-import CloseIcon from '@mui/icons-material/Close';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
+import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
+import { User } from '../../services';
+import { getUser } from '../../utils';
 
 const style = {
     position: 'absolute',
@@ -25,17 +23,7 @@ const style = {
     minWidth: "386px",
     overflowY: "hidden",
 };
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '40%',
-    bgcolor: '#222',
-    border: '8px solid #fff',
-    boxShadow: 24,
-    pb: 5,
-};
+
 const initUser = {
     username: "",
     fullname: "",

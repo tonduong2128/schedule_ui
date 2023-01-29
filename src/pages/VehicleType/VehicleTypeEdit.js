@@ -5,11 +5,9 @@ import Button from '@mui/material/Button';
 import { memo, useContext, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
-import UserStatus from '../../components/Controls/User/UserStatus';
-import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
-import { User, VehicleType } from '../../services';
+import { VehicleType } from '../../services';
 import { getUser } from '../../utils';
 
 const style = {

@@ -1,7 +1,6 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
-import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { User } from '../../services';
 import { getUser } from '../../utils';
 import { useDebounce } from '../CustomHook';
