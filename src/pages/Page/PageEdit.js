@@ -28,6 +28,7 @@ const style = {
 
 function PageEdit({
     selectModel = [],
+    styleBtn = {},
     search,
     ...props
 }) {
@@ -118,7 +119,7 @@ function PageEdit({
         }
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
+        <Button style={styleBtn} variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
             Sửa
         </Button>
         <Modal

@@ -26,6 +26,7 @@ const style = {
 
 function VehicleTypeEdit({
     selectModel = [],
+    styleBtn = {},
     search,
     ...props
 }) {
@@ -94,7 +95,7 @@ function VehicleTypeEdit({
         }
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
+        <Button styleBtn={styleBtn} variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
             Sửa
         </Button>
         <Modal

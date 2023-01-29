@@ -95,7 +95,14 @@ function ProfilePage({
 
     }
     return (<div style={{ display: "inline-block" }}>
-        <div onClick={() => handleBeforeShow()}>
+        <div style={{
+            fontWeight: "400",
+            fontSize: "16px",
+            color: "#000",
+            lineHeight: 1.5,
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif;',
+            letterSpacing: "0.00938em"
+        }} onClick={() => handleBeforeShow()}>
             Tài khoản của tôi
         </div>
         <Modal

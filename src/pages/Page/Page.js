@@ -146,23 +146,33 @@ const Page = ({ ...props }) => {
         }
         setOpenConfirm(true)
     }
+    const styleBtn = isMobile ? {
+        fontSize: 12,
+        padding: "4px 2px",
+        marginRight: "2px",
+        marginBottom: "2px",
+    } : {
+        marginRight: "2px",
+        marginBottom: "2px",
+    }
     return (
         <div>
             <Header />
-            <Container fixed>
+            <Container fixed style={{ paddingTop: 8 }}>
+                <h6>QUẢN LÝ HỌC VIÊN</h6>
                 <div>
                     <PageSearch option={option1} onChange={value => setSearchModel(value)} />
                 </div>
                 <div>
                     <div style={{ display: "flex", alignItems: "center", padding: "6px 0" }}>
                         <div style={{ flex: 1 }}>
-                            <Button variant="outlined" onClick={() => search()} size="medium">
+                            <Button style={styleBtn} variant="outlined" onClick={() => search()} size="medium">
                                 Tìm kiếm
                             </Button>
-                            <PageAdd search={search} />
-                            <PageView selectModel={selectModel} />
-                            <PageEdit search={search} selectModel={selectModel} />
-                            <Button onClick={() => handleClickDelete()} variant="outlined" size="medium">
+                            <PageAdd styleBtn={styleBtn} search={search} />
+                            <PageView styleBtn={styleBtn} selectModel={selectModel} />
+                            <PageEdit styleBtn={styleBtn} search={search} selectModel={selectModel} />
+                            <Button style={styleBtn} onClick={() => handleClickDelete()} variant="outlined" size="medium">
                                 Xóa
                             </Button>
                         </div>

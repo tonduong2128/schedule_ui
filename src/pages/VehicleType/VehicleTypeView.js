@@ -29,6 +29,7 @@ const style = {
 
 function VehicleTypeView({
     selectModel = [],
+    styleBtn = {},
     ...props
 }) {
     const _user = getUser()
@@ -60,7 +61,7 @@ function VehicleTypeView({
         }
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
+        <Button style={styleBtn} variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
             Xem
         </Button>
         <Modal

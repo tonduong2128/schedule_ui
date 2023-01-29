@@ -31,6 +31,7 @@ const style = {
 
 function PageView({
     selectModel = [],
+    styleBtn = {},
     ...props
 }) {
     const _user = getUser()
@@ -64,7 +65,7 @@ function PageView({
         }
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
+        <Button style={styleBtn} variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
             Xem
         </Button>
         <Modal

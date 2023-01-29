@@ -36,6 +36,7 @@ const initUser = {
 }
 function PageAdd({
     search,
+    styleBtn = {},
     ...props
 }) {
     const _user = getUser()
@@ -99,7 +100,7 @@ function PageAdd({
             })
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button variant="outlined" size="medium" onClick={() => setOpenModal(true)}>
+        <Button style={styleBtn} variant="outlined" size="medium" onClick={() => setOpenModal(true)}>
             Thêm
         </Button>
         <Modal

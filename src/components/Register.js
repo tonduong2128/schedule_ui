@@ -73,7 +73,6 @@ function Register({
         onSumit({
             ...info,
             teacherId,
-            vehicleTypeId,
             targetDate,
             startTime,
             endTime,
@@ -82,6 +81,7 @@ function Register({
                 mode === MODE_REGISTER_SHEDULE.DELETE) ? STATUS_RESERVATION.ofWeek :
                 (isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new),
             studentId: isBusy ? _user.id : (mode === MODE_REGISTER_SHEDULE.ADD ? studentId || _user.id : studentId),
+            vehicleTypeId: isBusy ? null : vehicleTypeId,
         }, mode)
     }
     const disabled = !calendarOf?.isMe && mode === MODE_REGISTER_SHEDULE.EDIT && info.studentId !== _user.id;

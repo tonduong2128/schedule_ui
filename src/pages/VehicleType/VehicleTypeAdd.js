@@ -29,6 +29,7 @@ const initVehicleType = {
 }
 function VehicleTypeAdd({
     search,
+    styleBtn = {},
     ...props
 }) {
     const _user = getUser()
@@ -73,7 +74,7 @@ function VehicleTypeAdd({
             })
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button variant="outlined" size="medium" onClick={() => setOpenModal(true)}>
+        <Button style={styleBtn} variant="outlined" size="medium" onClick={() => setOpenModal(true)}>
             Thêm
         </Button>
         <Modal

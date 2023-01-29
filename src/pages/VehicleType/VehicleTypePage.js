@@ -144,23 +144,35 @@ const VehicleTypePage = ({ ...props }) => {
         }
         setOpenConfirm(true)
     }
+
+    const styleBtn = isMobile ? {
+        fontSize: 12,
+        padding: "4px 2px",
+        marginRight: "2px",
+        marginBottom: "2px",
+    } : {
+        marginRight: "2px",
+        marginBottom: "2px",
+    }
+
     return (
         <div>
             <Header />
-            <Container fixed>
+            <Container fixed style={{ paddingTop: 8 }}>
+                <h6>QUẢN LÝ LOẠI XE</h6>
                 <div>
                     <VehicleTypeSearch option={option1} onChange={value => setSearchModel(value)} />
                 </div>
                 <div>
                     <div style={{ display: "flex", alignItems: "center", padding: "6px 0" }}>
                         <div style={{ flex: 1 }}>
-                            <Button variant="outlined" onClick={() => search()} size="medium">
+                            <Button style={styleBtn} variant="outlined" onClick={() => search()} size="medium">
                                 Tìm kiếm
                             </Button>
-                            <VehicleTypeAdd search={search} />
-                            <VehicleTypeView selectModel={selectModel} />
-                            <VehicleTypeEdit search={search} selectModel={selectModel} />
-                            <Button onClick={() => handleClickDelete()} variant="outlined" size="medium">
+                            <VehicleTypeAdd styleBtn={styleBtn} search={search} />
+                            <VehicleTypeView styleBtn={styleBtn} selectModel={selectModel} />
+                            <VehicleTypeEdit styleBtn={styleBtn} search={search} selectModel={selectModel} />
+                            <Button style={styleBtn} onClick={() => handleClickDelete()} variant="outlined" size="medium">
                                 Xóa
                             </Button>
                         </div>
