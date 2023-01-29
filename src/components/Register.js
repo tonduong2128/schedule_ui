@@ -76,7 +76,7 @@ function Register({
             targetDate,
             startTime,
             endTime,
-            reason,
+            reason: !isBusy ? null : reason,
             status: !info?.id && (mode === MODE_REGISTER_SHEDULE.EDIT ||
                 mode === MODE_REGISTER_SHEDULE.DELETE) ? STATUS_RESERVATION.ofWeek :
                 (isBusy ? STATUS_RESERVATION.special : STATUS_RESERVATION.new),

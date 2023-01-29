@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RESPONSE_CODE } from '../../common';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
@@ -20,10 +20,21 @@ export default function VerticalLinearStepper() {
     const [showRepassword, setShowRepassword] = useState(false);
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
+    const [focusTag, setFocusTag] = useState("username");
 
-    const handleNext = async (step) => {
-        loadingContext.dispatch(openActionLoading())
+    const handleNext = useCallback(async (step) => {
         if (step === 1) {
+            if (!username) {
+                notificationContext.dispatch(openActionNotification("Tên đăng nhập không được bỏ trống.", "error"))
+                setFocusTag("username")
+                return
+            }
+            if (!phoneOrEmail) {
+                notificationContext.dispatch(openActionNotification("Email không được bỏ trống.", "error"))
+                setFocusTag("phoneOrEmail")
+                return
+            }
+            loadingContext.dispatch(openActionLoading())
             const respose = await Auth.reset({
                 user: {
                     username: username,
@@ -37,6 +48,12 @@ export default function VerticalLinearStepper() {
                 notificationContext.dispatch(openActionNotification("Tài khoản cung cấp không chính xác. Vui lòng kiểm tra lại.", "error"))
             }
         } else if (step === 2) {
+            if (!otpCode) {
+                notificationContext.dispatch(openActionNotification("Opt mã không được bỏ trống.", "error"))
+                setFocusTag("otpCode")
+                return
+            }
+            loadingContext.dispatch(openActionLoading())
             const respose = await Auth.reset({
                 optCode: otpCode,
                 user: {
@@ -48,9 +65,25 @@ export default function VerticalLinearStepper() {
             if (respose.code === RESPONSE_CODE.SUCCESS) {
                 setStep(step => step + 1);
             } else {
-                notificationContext.dispatch(openActionNotification("Opt code không chính xác.", "error"))
+                notificationContext.dispatch(openActionNotification("Opt mã không chính xác.", "error"))
             }
         } else if (step === 3) {
+            if (!password) {
+                notificationContext.dispatch(openActionNotification("Mật khẩu không được bỏ trống.", "error"))
+                setFocusTag("password")
+                return
+            }
+            if (!repassword) {
+                notificationContext.dispatch(openActionNotification("Nhập lại mật khẩu không được bỏ trống.", "error"))
+                setFocusTag("repassword")
+                return
+            }
+            if (!!repassword && password !== repassword) {
+                notificationContext.dispatch(openActionNotification("Nhập lại mật khẩu không giống.", "error"))
+                setFocusTag("repassword")
+                return
+            }
+            loadingContext.dispatch(openActionLoading())
             const respose = await Auth.reset({
                 optCode: otpCode,
                 user: {
@@ -74,8 +107,16 @@ export default function VerticalLinearStepper() {
                 notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau.", "error"))
             }
         }
-    };
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [otpCode, password, phoneOrEmail, repassword, username]);
+    useEffect(() => {
+        window.onkeyup = e => {
+            if (e.code === "Enter") {
+                handleNext(step)
+            }
+            return () => window.onkeyup = () => { }
+        }
+    }, [handleNext, step])
     return (
         <div>
             <div className="container" style={{ textAlign: "center" }}>
@@ -86,6 +127,7 @@ export default function VerticalLinearStepper() {
                         </div>
                         <div hidden={step !== 1}>
                             <TextField
+                                inputRef={input => focusTag === "username" && input && input.focus()}
                                 style={{ margin: 10 }}
                                 sx={{ width: '100%' }}
                                 id="username"
@@ -95,6 +137,7 @@ export default function VerticalLinearStepper() {
                                 onChange={(e) => setUsername(e.nativeEvent.target.value?.replace(/ /g, ""))}
                             />
                             <TextField
+                                inputRef={input => focusTag === "phoneOrEmail" && input && input.focus()}
                                 style={{ margin: 10 }}
                                 sx={{ width: '100%' }}
                                 id="email-phone"
@@ -114,6 +157,7 @@ export default function VerticalLinearStepper() {
                         </div>
                         <div hidden={step !== 2}>
                             <TextField
+                                inputRef={input => focusTag === "otpCode" && input && input.focus()}
                                 style={{ margin: 10 }}
                                 sx={{ width: '100%' }}
                                 id="otp"
@@ -137,6 +181,7 @@ export default function VerticalLinearStepper() {
                                 variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Mật khẩu</InputLabel>
                                 <OutlinedInput
+                                    inputRef={input => focusTag === "password" && input && input.focus()}
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
@@ -163,6 +208,7 @@ export default function VerticalLinearStepper() {
                                 variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-repassword">Nhập lại mật khẩu</InputLabel>
                                 <OutlinedInput
+                                    inputRef={input => focusTag === "repassword" && input && input.focus()}
                                     id="outlined-adornment-repassword"
                                     type={showRepassword ? 'text' : 'password'}
                                     endAdornment={
