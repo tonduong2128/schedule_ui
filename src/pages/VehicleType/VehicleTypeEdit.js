@@ -95,7 +95,7 @@ function VehicleTypeEdit({
         }
     }
     return (<div style={{ display: "inline-block" }}>
-        <Button styleBtn={styleBtn} variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
+        <Button style={styleBtn} variant="outlined" size="medium" onClick={() => handleBeforeShow()}>
             Sửa
         </Button>
         <Modal
