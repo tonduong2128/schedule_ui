@@ -160,7 +160,7 @@ function PageAdd({
                                 onChange={event => {
                                     setUser({
                                         ...user,
-                                        username: event.nativeEvent.target.value
+                                        username: event.nativeEvent.target.value?.replace(/ /g, "")
                                     })
                                 }}
                             />
@@ -177,7 +177,7 @@ function PageAdd({
                                 onChange={event => {
                                     setUser({
                                         ...user,
-                                        fullname: event.nativeEvent.target.value
+                                        fullname: event.nativeEvent.target.value?.trimStart()
                                     })
                                 }}
                             />
@@ -222,7 +222,7 @@ function PageAdd({
                                 onChange={event => {
                                     setUser({
                                         ...user,
-                                        phone: event.nativeEvent.target.value
+                                        phone: event.nativeEvent.target.value?.replace(/ /g, "")
                                     })
                                 }}
                             />
@@ -239,7 +239,7 @@ function PageAdd({
                                 onChange={event => {
                                     setUser({
                                         ...user,
-                                        email: event.nativeEvent.target.value
+                                        email: event.nativeEvent.target.value?.replace(/ /g, "")
                                     })
                                 }}
                                 InputProps={{

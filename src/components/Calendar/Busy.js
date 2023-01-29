@@ -458,7 +458,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                                     ...dataModalDetail,
                                     info: {
                                         ...dataModalDetail.info,
-                                        reason: event.nativeEvent.target.value
+                                        reason: event.nativeEvent.target.value?.trimStart()
                                     }
                                 })
                             }}

@@ -105,7 +105,7 @@ const CustomCalendar = (props) => {
         }
 
         if (!(info.studentId === _user.id || calendarOf.isMe)) {
-            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học người khác.", "error"))
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch người khác.", "error"))
             return;
         }
         if (moment(`${info.targetDate} ${info.startTime}`, 'YYYY-MM-DD HH:mm:ss').isBefore(moment())) {
@@ -113,7 +113,7 @@ const CustomCalendar = (props) => {
             return;
         }
         if (moment(start).isBefore(moment())) {
-            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học về quá khứ.", "error"))
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch về quá khứ.", "error"))
             return;
         }
         loadingContext.dispatch(openActionLoading())
@@ -137,7 +137,7 @@ const CustomCalendar = (props) => {
                     };
                     events.splice(indexOldEvent, 1, newEvent);
                     setEvents([...events])
-                    notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch học thành công.", "success"))
+                    notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch thành công.", "success"))
                 } else if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
                     notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                 } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
@@ -145,7 +145,7 @@ const CustomCalendar = (props) => {
                 } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
                     notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
                 } else {
-                    //Handle error
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {
@@ -160,16 +160,17 @@ const CustomCalendar = (props) => {
     // }
     const handleSelectEmptyCell = (slotInfo) => {
         if (roleIds.includes(ROLE.admin)) {
-            notificationContext.dispatch(openActionNotification("Admin không thể đăng ký lịch học.", "error"))
+            notificationContext.dispatch(openActionNotification("Admin không thể đăng ký lịch.", "error"))
             return;
         }
         let { start: startTime, end: endTime } = slotInfo;
         if ((moment(startTime).isBefore(moment()) && modeCalendar !== "month")
             || (modeCalendar === "month" && moment(startTime).format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))) {
-            notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch học trong quá khứ.", "error"))
+            notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch trong quá khứ.", "error"))
             return;
         }
         if (modeCalendar === "month" && moment(startTime).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD")) {
+            //donothing
         }
         setModeModal(MODE_REGISTER_SHEDULE.ADD)
         setInfoRegister({
@@ -187,7 +188,7 @@ const CustomCalendar = (props) => {
             return;
         }
         if (!(info.studentId === _user.id || calendarOf.isMe)) {
-            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch học người khác.", "error"))
+            notificationContext.dispatch(openActionNotification("Không thể chỉnh sửa lịch người khác.", "error"))
             return;
         }
         if (moment(`${info.targetDate} ${info.startTime}`, 'YYYY-MM-DD HH:mm:ss').isBefore(moment())) {
@@ -195,7 +196,7 @@ const CustomCalendar = (props) => {
             return;
         }
         if (moment(start).isBefore(moment())) {
-            notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch học trong quá khứ.", "error"))
+            notificationContext.dispatch(openActionNotification("Không thể đăng ký lịch trong quá khứ.", "error"))
             return;
         }
         loadingContext.dispatch(openActionLoading())
@@ -219,7 +220,7 @@ const CustomCalendar = (props) => {
                     };
                     events.splice(indexOldEvent, 1, newEvent);
                     setEvents([...events])
-                    notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch học thành công.", "success"))
+                    notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch thành công.", "success"))
                 } else if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
                     notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                 } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
@@ -227,7 +228,7 @@ const CustomCalendar = (props) => {
                 } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
                     notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
                 } else {
-                    //Handle error
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
             })
             .finally(() => {
@@ -249,15 +250,15 @@ const CustomCalendar = (props) => {
         }, 250)
 
     }, [])
-    const hanldeDoubleClickEvent = useCallback((slotInfo) => {
-        /**
-      * Notice our use of the same ref as above.
-      */
-        window.clearTimeout(clickRef?.current)
-        clickRef.current = window.setTimeout(() => {
-            console.log(slotInfo);
-        }, 250)
-    }, [])
+    // const hanldeDoubleClickEvent = useCallback((slotInfo) => {
+    //     /**
+    //   * Notice our use of the same ref as above.
+    //   */
+    //     window.clearTimeout(clickRef?.current)
+    //     clickRef.current = window.setTimeout(() => {
+    //         console.log(slotInfo);
+    //     }, 250)
+    // }, [])
 
     const hanldeSubmit = (slotInfo, mode = MODE_REGISTER_SHEDULE.ADD) => {
         if (slotInfo?.status === STATUS_RESERVATION.ofWeek) {
@@ -282,7 +283,7 @@ const CustomCalendar = (props) => {
                             title: slot?.Student?.fullname,
                             info: slot
                         }
-                        notificationContext.dispatch(openActionNotification("Đăng ký lịch học thành công.", "success"))
+                        notificationContext.dispatch(openActionNotification("Đăng ký lịch thành công.", "success"))
                         setEvents([...events, newEvent])
                     } if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
                         notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
@@ -291,7 +292,7 @@ const CustomCalendar = (props) => {
                     } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
                         notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
                     } else {
-                        //hanlde error
+                        notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                     }
                 })
                 .finally(() => {
@@ -319,7 +320,7 @@ const CustomCalendar = (props) => {
                         }
                         events.splice(indexEventEdit, 1, newEventEdit)
                         setEvents([...events])
-                        notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch học thành công.", "success"))
+                        notificationContext.dispatch(openActionNotification("Chỉnh sửa lịch thành công.", "success"))
                     } else if (code === RESPONSE_CODE.RESERVATION_EXISTS || code === RESPONSE_CODE.RESERVATION_BUSY) {
                         notificationContext.dispatch(openActionNotification("Giáo viên dã bận giờ này rồi.", "error"))
                     } else if (code === RESPONSE_CODE.RESERVATION_EXISTS_USER) {
@@ -327,7 +328,7 @@ const CustomCalendar = (props) => {
                     } else if (code === RESPONSE_CODE.RESERVATION_TIME_NOT_VALID) {
                         notificationContext.dispatch(openActionNotification("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.", "error"))
                     } else {
-                        //Handle error
+                        notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                     }
                 })
                 .finally(() => {
@@ -347,9 +348,9 @@ const CustomCalendar = (props) => {
                         const indexEventDelete = events.findIndex(event => event.info.id === slotInfo.id)
                         events.splice(indexEventDelete, 1)
                         setEvents([...events])
-                        notificationContext.dispatch(openActionNotification("Xóa lịch học thành công.", "success"))
+                        notificationContext.dispatch(openActionNotification("Xóa lịch thành công.", "success"))
                     } else {
-                        //hanlde error
+                        notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                     }
                 })
                 .finally(() => {
@@ -416,6 +417,8 @@ const CustomCalendar = (props) => {
                         end: moment(`${rc.targetDate} ${rc.endTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
                         info: rc
                     }))
+                } else {
+                    notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau", "error"))
                 }
                 return []
             })

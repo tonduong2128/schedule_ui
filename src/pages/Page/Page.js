@@ -255,7 +255,7 @@ const Page = ({ ...props }) => {
                             onPageChange={(event, page) => {
                                 setSearchOption({
                                     ...searchOption,
-                                    page: page
+                                    page: page + 1,
                                 })
                             }}
                             onRowsPerPageChange={event => {

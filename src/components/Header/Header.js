@@ -101,10 +101,12 @@ const handleSelectSetting = () => {
     }
 }
 function Header() {
-    const [pages, setPages] = useState(handleSelectHeader)
-    const [settings, setSettings] = useState(handleSelectSetting)
+    const [pages] = useState(handleSelectHeader)
+    const [settings] = useState(handleSelectSetting)
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const user = getUser();
+    const roleIds = user?.Roles?.map(r => r.id) || [];
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -238,11 +240,14 @@ function Header() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem key={"/profile"} onClick={handleCloseUserMenu}>
-                                <Typography component={"span"} textAlign="center" >
-                                    <ProfilePage />
-                                </Typography>
-                            </MenuItem>
+                            {
+                                roleIds.length > 0 &&
+                                <MenuItem key={"/profile"} onClick={handleCloseUserMenu}>
+                                    <Typography component={"span"} textAlign="center" >
+                                        <ProfilePage />
+                                    </Typography>
+                                </MenuItem>
+                            }
                             {settings.map((setting) => (
                                 <Link key={setting.to} to={setting.to} style={{ color: "#000", textDecoration: "none" }}>
                                     <MenuItem key={setting.to} onClick={handleCloseUserMenu}>

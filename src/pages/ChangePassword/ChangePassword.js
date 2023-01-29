@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RESPONSE_CODE } from "../../common/constantsUiAndApi";
 import { Header } from "../../components";
@@ -27,6 +27,7 @@ function ChangePassword() {
     const [retypePassword, setRetypePassword] = useState("");
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
+    const [focusTag, setFocusTag] = useState("oldPassword");
 
 
     useEffect(() => {
@@ -34,29 +35,48 @@ function ChangePassword() {
         stateNotify && notificationContext.dispatch(openActionNotification(stateNotify.message, stateNotify.type))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state])
-    const handleSubmit = async (e) => {
-        if (!!oldPassword && !!password && !!retypePassword) {
-            if (password === retypePassword) {
-                notificationContext.dispatch(openActionNotification("Nhập lại mật khẩu mới không giống", "warning"))
-                return;
-            }
-            loadingContext.dispatch(openActionLoading())
-            const response = await Auth.changePassword(oldPassword, password)
-            loadingContext.dispatch(closeActionLoading())
-            const { code } = response;
-            if (code === RESPONSE_CODE.SUCCESS) {
-                navigate("/")
-            } else if (code === RESPONSE_CODE.OLD_PASSWORD_NOT_MATCH) {
-                notificationContext.dispatch(openActionNotification("Mật khẩu cũ không đúng", "warning"))
-            } else {
-                //handle error else
-            }
-        } else {
-            notificationContext.dispatch(openActionNotification("Tất cả các trường phải được điền", "warning"))
-            console.log("Not empty for three field");
-            //handle empty data
+    const handleSubmit = useCallback(async () => {
+        if (!oldPassword) {
+            notificationContext.dispatch(openActionNotification("Mật khẩu cũ không được bỏ trống.", "error"))
+            setFocusTag("oldPassword")
+            return
         }
-    }
+        if (!password) {
+            notificationContext.dispatch(openActionNotification("Mật khẩu mới không được bỏ trống.", "error"))
+            setFocusTag("password")
+            return
+        }
+        if (!retypePassword) {
+            notificationContext.dispatch(openActionNotification("Nhập lại mật khẩu mới không được bỏ trống.", "error"))
+            setFocusTag("retypePassword")
+            return
+        }
+        if (password !== retypePassword) {
+            notificationContext.dispatch(openActionNotification("Nhập lại mật khẩu mới không giống", "warning"))
+            setFocusTag("retypePassword")
+            return;
+        }
+        loadingContext.dispatch(openActionLoading())
+        const response = await Auth.changePassword(oldPassword, password)
+        loadingContext.dispatch(closeActionLoading())
+        const { code } = response;
+        if (code === RESPONSE_CODE.SUCCESS) {
+            navigate("/")
+        } else if (code === RESPONSE_CODE.OLD_PASSWORD_NOT_MATCH) {
+            notificationContext.dispatch(openActionNotification("Mật khẩu cũ không đúng", "warning"))
+        } else {
+            notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau.", "error"))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [oldPassword, password, retypePassword])
+    useEffect(() => {
+        window.onkeyup = e => {
+            if (e.code === "Enter") {
+                handleSubmit()
+            }
+            return () => window.onkeyup = () => { }
+        }
+    }, [handleSubmit])
     return (
         <div>
             <Header />
@@ -72,6 +92,8 @@ function ChangePassword() {
                                     <FormControl sx={{ width: '100%' }} variant="outlined">
                                         <InputLabel htmlFor="oldPassword">Mật khẩu cũ</InputLabel>
                                         <OutlinedInput
+                                            onFocus={() => setFocusTag("oldPassword")}
+                                            inputRef={input => focusTag === "oldPassword" && input && input.focus()}
                                             id="oldPassword"
                                             type={showOldPassword ? 'text' : 'password'}
                                             endAdornment={
@@ -98,6 +120,8 @@ function ChangePassword() {
                                     <FormControl sx={{ width: '100%' }} variant="outlined">
                                         <InputLabel htmlFor="password">Mật khẩu mới</InputLabel>
                                         <OutlinedInput
+                                            onFocus={() => setFocusTag("password")}
+                                            inputRef={input => focusTag === "password" && input && input.focus()}
                                             id="password"
                                             type={showPassword ? 'text' : 'password'}
                                             endAdornment={
@@ -124,6 +148,8 @@ function ChangePassword() {
                                     <FormControl sx={{ width: '100%' }} variant="outlined">
                                         <InputLabel htmlFor="retypePassword">Nhập lại mật khẩu mới</InputLabel>
                                         <OutlinedInput
+                                            onFocus={() => setFocusTag("retypePassword")}
+                                            inputRef={input => focusTag === "retypePassword" && input && input.focus()}
                                             id="retypePassword"
                                             type={showRetypePassword ? 'text' : 'password'}
                                             endAdornment={

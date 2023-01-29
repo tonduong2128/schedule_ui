@@ -7,7 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import TextField from '@mui/material/TextField';
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RESPONSE_CODE } from "../../common/constantsUiAndApi";
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
@@ -22,31 +22,46 @@ function Login() {
     const [username, setUsername] = useState("");
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
-
+    const [focusTag, setFocusTag] = useState("username");
     useEffect(() => {
         const { stateNotify } = state || {};
         stateNotify && notificationContext.dispatch(openActionNotification(stateNotify.message, stateNotify.type))
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state])
-    const handleLogin = async (e) => {
-        if (!!password && !!username) {
-            loadingContext.dispatch(openActionLoading())
-            const response = await Auth.login(username, password);
-            loadingContext.dispatch(closeActionLoading())
-            const { code } = response
-            if (code === RESPONSE_CODE.SUCCESS) {
-                navigate("/calendar")
-            } else if (code === RESPONSE_CODE.USER_EXPIRED) {
-                notificationContext.dispatch(openActionNotification(`Tài khoản của bạn đã hết hạn vui lòng liên hệ giáo viên của bạn hoặc admin.`, "error"))
-            } else {
-                notificationContext.dispatch(openActionNotification(`Tài khoản của bạn không chính xác. Vui lòng kiểm tra lại.`, "error"))
-                //handle login error
-            }
-        } else {
-            //handle empty data 
+    const handleLogin = useCallback(async () => {
+        if (!username) {
+            notificationContext.dispatch(openActionNotification("Tên đăng nhập không được bỏ trống.", "error"))
+            setFocusTag("username")
+            return
         }
-    }
+        if (!password) {
+            notificationContext.dispatch(openActionNotification("Mật khẩu không được bỏ trống.", "error"))
+            setFocusTag("password")
+            return
+        }
+        loadingContext.dispatch(openActionLoading())
+        const response = await Auth.login(username, password);
+        loadingContext.dispatch(closeActionLoading())
+        const { code } = response
+        if (code === RESPONSE_CODE.SUCCESS) {
+            navigate("/calendar")
+        } else if (code === RESPONSE_CODE.USER_EXPIRED) {
+            notificationContext.dispatch(openActionNotification(`Tài khoản của bạn đã hết hạn vui lòng liên hệ giáo viên của bạn hoặc admin.`, "error"))
+        } else {
+            notificationContext.dispatch(openActionNotification(`Tài khoản của bạn không chính xác. Vui lòng kiểm tra lại.`, "error"))
+            //handle login error
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [username, password])
+    useEffect(() => {
+        window.onkeyup = e => {
+            if (e.code === "Enter") {
+                handleLogin()
+            }
+            return () => window.onkeyup = () => { }
+        }
+    }, [handleLogin])
     return (
         <div>
             <div className="container" style={{ textAlign: "center" }}>
@@ -58,18 +73,22 @@ function Login() {
                         <div className="input-info">
                             <div className="input-username">
                                 <TextField
+                                    onFocus={() => setFocusTag("username")}
+                                    inputRef={input => focusTag === "username" && input && input.focus()}
                                     sx={{ width: '100%' }}
                                     id="outlined-basic"
                                     label="Tên đăng nhập"
                                     variant="outlined"
                                     value={username}
-                                    onChange={(e) => setUsername(e.nativeEvent.target.value)}
+                                    onChange={(e) => setUsername(e.nativeEvent.target.value?.replace(/ /g, ""))}
                                 />
                             </div>
                             <div className="input-pass">
-                                <FormControl sx={{ width: '100%' }} variant="outlined">
+                                <FormControl sx={{ width: '100%' }} variant="outlined" >
                                     <InputLabel htmlFor="outlined-adornment-password">Mật khẩu</InputLabel>
                                     <OutlinedInput
+                                        onFocus={() => setFocusTag("password")}
+                                        inputRef={input => focusTag === "password" && input && input.focus()}
                                         id="outlined-adornment-password"
                                         type={showPassword ? 'text' : 'password'}
                                         endAdornment={

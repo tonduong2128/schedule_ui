@@ -151,7 +151,7 @@ function VehicleTypeAdd({
                                 onChange={event => {
                                     setVehicleType({
                                         ...vehicleType,
-                                        name: event.nativeEvent.target.value
+                                        name: event.nativeEvent.target.value?.trimStart()
                                     })
                                 }}
                             />
@@ -168,7 +168,7 @@ function VehicleTypeAdd({
                                 onChange={event => {
                                     setVehicleType({
                                         ...vehicleType,
-                                        description: event.nativeEvent.target.value
+                                        description: event.nativeEvent.target.value?.trimStart()
                                     })
                                 }}
                             />

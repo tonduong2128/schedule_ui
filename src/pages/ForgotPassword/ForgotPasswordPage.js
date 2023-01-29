@@ -71,7 +71,7 @@ export default function VerticalLinearStepper() {
                     }
                 })
             } else {
-                notificationContext.dispatch(openActionNotification("Vui lòng thử lại sau.", "error"))
+                notificationContext.dispatch(openActionNotification("Đã xảy ra lỗi vui lòng thử lại sau.", "error"))
             }
         }
     };
@@ -92,16 +92,16 @@ export default function VerticalLinearStepper() {
                                 label="Tên đăng nhập"
                                 variant="outlined"
                                 value={username}
-                                onChange={(e) => setUsername(e.nativeEvent.target.value)}
+                                onChange={(e) => setUsername(e.nativeEvent.target.value?.replace(/ /g, ""))}
                             />
                             <TextField
                                 style={{ margin: 10 }}
                                 sx={{ width: '100%' }}
                                 id="email-phone"
-                                label="Email hoặc tên số điện thoại đăng ký"
+                                label="Email tài khoản đăng ký"
                                 variant="outlined"
                                 value={phoneOrEmail}
-                                onChange={(e) => setPhoneOrEmail(e.nativeEvent.target.value)}
+                                onChange={(e) => setPhoneOrEmail(e.nativeEvent.target.value?.replace(/ /g, ""))}
                             />
                             <div style={{ textAlign: "right" }}>
                                 <Button
@@ -120,7 +120,7 @@ export default function VerticalLinearStepper() {
                                 label="Nhập otp nhận từ email."
                                 variant="outlined"
                                 value={otpCode}
-                                onChange={(e) => setOtpCode(e.nativeEvent.target.value)}
+                                onChange={(e) => setOtpCode(e.nativeEvent.target.value?.replace(/ /g, ""))}
                             />
                             <div style={{ textAlign: "right" }}>
                                 <Button

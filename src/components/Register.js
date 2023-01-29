@@ -7,7 +7,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { MODE_REGISTER_SHEDULE, ROLE, STATUS_RESERVATION } from '../common';
 import { NotificationContext, openActionNotification } from '../reducer/notification';
 import { getUser } from '../utils';
@@ -213,7 +213,7 @@ function Register({
                             label="Lý do"
                             value={reason}
                             onChange={(e) => {
-                                setReason(e.nativeEvent.target.value)
+                                setReason(e.nativeEvent.target.value?.trimStart())
                             }}
                             InputProps={{
                                 startAdornment: (
