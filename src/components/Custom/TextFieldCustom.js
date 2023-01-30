@@ -8,7 +8,7 @@ const TextFieldCustom = ({ value, disable, onChange = () => { }, ...props }) => 
     return <TextField
         {...props}
         inputRef={input => focus && input && input.focus()}
-        value={value}
+        value={value || ""}
         onChange={event => {
             onChange(event)
         }}
