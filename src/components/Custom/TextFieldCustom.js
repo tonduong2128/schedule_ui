@@ -1,24 +1,20 @@
-import { TextField } from "@mui/material"
-import { useState } from "react"
 import ClearIcon from '@mui/icons-material/Clear';
+import { TextField } from "@mui/material";
+import { useState } from "react";
 
 const TextFieldCustom = ({ value, disable, onChange = () => { }, ...props }) => {
     const [hiddenClear, setHiddenClear] = useState(true)
-
+    const [focus, setFocus] = useState(false)
     return <TextField
         {...props}
+        inputRef={input => focus && input && input.focus()}
         value={value}
         onChange={event => {
-
             onChange(event)
         }}
-        onFocus={() => {
+        onFocus={e => {
+            setFocus(true)
             setHiddenClear(false)
-        }}
-        onBlur={() => {
-            setTimeout(() => {
-                setHiddenClear(true)
-            }, 150)
         }}
         InputProps={{
             ...props?.InputProps,
@@ -28,12 +24,14 @@ const TextFieldCustom = ({ value, disable, onChange = () => { }, ...props }) => 
                     event.target.value = ""
                     event.currentTarget.value = ""
                     event.nativeEvent.target.value = ""
+                    setFocus(true)
+                    setHiddenClear(false)
                     onChange(event)
                 }}>
-                    <ClearIcon fontSize="20px" style={{ cursor: "pointer", marginTop: -3, marginRight: -4 }} />
+                    <ClearIcon style={{ cursor: "pointer", fontSize: 26, marginTop: -3, marginRight: -4 }} />
                 </div>
             ),
         }}
     />
 }
-export { TextFieldCustom }
+export { TextFieldCustom };
