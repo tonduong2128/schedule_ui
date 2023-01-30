@@ -360,7 +360,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         </Button>
 
                         {
-                            calendarOf.isMe &&
+                            roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip) && calendarOf.isMe &&
                             <>
                                 <span style={{ paddingLeft: 2 }} />
                                 <Button onClick={() => setData({ ...data, hours: [] })} variant="contained" disableElevation>
@@ -470,7 +470,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         />
                     </div>
                     {
-                        calendarOf.isMe &&
+                        roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip) && calendarOf.isMe &&
                         <div style={{ textAlign: "right", padding: "10px 20px" }}>
                             <Button onClick={() => handleDeleteDetail()} variant="contained" disableElevation>
                                 Xóa
