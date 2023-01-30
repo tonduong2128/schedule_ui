@@ -242,8 +242,11 @@ function Header() {
                         >
                             {
                                 roleIds.length > 0 &&
-                                <MenuItem key={"/profile"} onClick={handleCloseUserMenu}>
-                                    <Typography component={"span"} textAlign="center" >
+                                <MenuItem key={"/profile"} onClick={handleCloseUserMenu} style={{ padding: 0 }}>
+                                    <Typography component={"span"} style={{
+                                        width: "100%",
+                                        height: "100%",
+                                    }} textAlign="center" >
                                         <ProfilePage />
                                     </Typography>
                                 </MenuItem>

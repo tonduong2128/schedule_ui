@@ -1,6 +1,8 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import moment from 'moment';
 import React, { memo, useContext, useState } from 'react';
 import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
@@ -10,6 +12,7 @@ import { closeActionLoading, LoadingContext, openActionLoading } from '../../red
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { User } from '../../services';
 import { getUser } from '../../utils';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const style = {
     position: 'absolute',
@@ -25,28 +28,32 @@ const style = {
     overflowY: "hidden",
 };
 
-const initUser = {
-    username: "",
-    fullname: "",
-    password: PASSWORD_DEFAULT,//default
-    phone: "",
-    email: "",
-    status: 1,
-    User_Roles: [],
-    Students_Teacher: [],
-}
+
 function PageAdd({
     search,
     styleBtn = {},
     ...props
 }) {
     const _user = getUser()
+    const roleIds = _user.Roles.map(r => r.id);
+    
+    const initUser = {
+        username: "",
+        fullname: "",
+        password: PASSWORD_DEFAULT,//default
+        phone: "",
+        email: "",
+        dateExpired: roleIds.includes(ROLE.teacher_vip) ? _user.dateExpired : moment().add(1, "month").format("YYYY-MM-DD"),
+        status: 1,
+        User_Roles: [],
+        Students_Teacher: [],
+    }
+
     const [openModal, setOpenModal] = useState(false);
     const [user, setUser] = useState(initUser);
     const loadingContext = useContext(LoadingContext);
     const notificationContext = useContext(NotificationContext);
 
-    const roleIds = _user.Roles.map(r => r.id);
     const handleSumit = () => {
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
@@ -57,6 +64,10 @@ function PageAdd({
         }
         if (!user.fullname) {
             notificationContext.dispatch(openActionNotification("Họ và tên không được bỏ trống.", "error"))
+            return
+        }
+        if (!user.dateExpired) {
+            notificationContext.dispatch(openActionNotification("Ngày hết hạn không được bỏ trống.", "error"))
             return
         }
         if (!user.User_Roles?.length && roleIds.includes(ROLE.admin)) {
@@ -184,6 +195,26 @@ function PageAdd({
                                 disabled={roleIds.includes(ROLE.teacher_vip)}
                                 value={roleIds.includes(ROLE.teacher_vip) ? ROLE.student : user.User_Roles?.[0]}
                             />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                                <DatePicker
+                                    className="date-input"
+                                    label="Ngày hết hạn"
+                                    renderInput={(params) => <TextField
+                                        size='small'
+                                        {...params} />}
+                                    inputFormat="DD/MM/YYYY"
+                                    minDate={moment().toDate()}
+                                    value={moment(user.dateExpired, "YYYY-MM-DD").toDate()}
+                                    onChange={newValue => {
+                                        setUser({
+                                            ...user,
+                                            dateExpired: moment(newValue.$d).format("YYYY-MM-DD")
+                                        })
+                                    }}
+                                />
+                            </LocalizationProvider>
                         </div>
                         {
                             roleIds.includes(ROLE.admin) && user.User_Roles?.[0] === ROLE.student &&

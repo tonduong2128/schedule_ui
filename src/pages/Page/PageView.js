@@ -14,6 +14,8 @@ import { getUser } from '../../utils';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import PersonIcon from '@mui/icons-material/Person';
 import moment from 'moment';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const style = {
     position: 'absolute',
@@ -120,6 +122,27 @@ function PageView({
                                 }}
                                 value={user.User_Roles?.[0]}
                             />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                                <DatePicker
+                                    disabled
+                                    className="date-input"
+                                    label="Ngày hết hạn"
+                                    renderInput={(params) => <TextField
+                                        size='small'
+                                        {...params} />}
+                                    minDate={moment().toDate()}
+                                    inputFormat="DD/MM/YYYY"
+                                    value={user.dateExpired ? moment(user.dateExpired, "YYYY-MM-DD").toDate() : null}
+                                    onChange={newValue => {
+                                        setUser({
+                                            ...user,
+                                            dateExpired: moment(newValue.$d).format("YYYY-MM-DD")
+                                        })
+                                    }}
+                                />
+                            </LocalizationProvider>
                         </div>
                         {
                             roleIds.includes(ROLE.admin) && user.User_Roles?.[0] === ROLE.student &&

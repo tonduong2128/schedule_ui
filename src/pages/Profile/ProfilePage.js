@@ -15,6 +15,8 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { TextFieldCustom } from '../../components/Custom';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const style = {
     position: 'absolute',
@@ -52,7 +54,6 @@ function ProfilePage({
 
     const roleIds = _user.Roles.map(r => r.id);
     const handleSumit = () => {
-
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
         }
@@ -102,14 +103,20 @@ function ProfilePage({
         }
 
     }
-    return (<div style={{ display: "inline-block" }}>
+    return (<div style={{
+        width: "100%",
+        height: "100%",
+    }}>
         <div style={{
             fontWeight: "400",
             fontSize: "16px",
+            width: "100%",
+            height: "100%",
             color: "#000",
             lineHeight: 1.5,
             fontFamily: 'Roboto, Helvetica, Arial, sans-serif ',
-            letterSpacing: "0.00938em"
+            letterSpacing: "0.00938em",
+            padding: "6px 16px"
         }} onClick={() => handleBeforeShow()}>
             Tài khoản của tôi
         </div>
@@ -173,6 +180,21 @@ function ProfilePage({
                                 }}
                                 value={user.User_Roles?.[0]}
                             />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                                <DatePicker
+                                    disabled
+                                    className="date-input"
+                                    label={roleIds.includes(ROLE.admin) ? "Vô thời hạn" : "Ngày hết hạn"}
+                                    renderInput={(params) => <TextField
+                                        size='small'
+                                        {...params} />}
+                                    inputFormat="DD/MM/YYYY"
+                                    value={moment(user.dateExpired, "YYYY-MM-DD").toDate()}
+                                    onChange={() => { }}
+                                />
+                            </LocalizationProvider>
                         </div>
                         {
                             user.User_Roles?.[0] === ROLE.student &&

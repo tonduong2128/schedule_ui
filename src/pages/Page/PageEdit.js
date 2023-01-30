@@ -2,6 +2,9 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import moment from 'moment';
 import { memo, useContext, useState } from 'react';
 import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
@@ -44,6 +47,7 @@ function PageEdit({
         status: 1,
         User_Roles: [],
         Students_Teacher: [],
+        dateExpired: "",
     });
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
@@ -184,6 +188,26 @@ function PageEdit({
                                 }}
                                 value={user.User_Roles?.[0]}
                             />
+                        </div>
+                        <div className="container-car-type container-car-location">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                                <DatePicker
+                                    className="date-input"
+                                    label="Ngày hết hạn"
+                                    renderInput={(params) => <TextField
+                                        size='small'
+                                        {...params} />}
+                                    minDate={moment().toDate()}
+                                    inputFormat="DD/MM/YYYY"
+                                    value={moment(user.dateExpired, "YYYY-MM-DD").toDate()}
+                                    onChange={newValue => {
+                                        setUser({
+                                            ...user,
+                                            dateExpired: moment(newValue.$d).format("YYYY-MM-DD")
+                                        })
+                                    }}
+                                />
+                            </LocalizationProvider>
                         </div>
                         {
                             roleIds.includes(ROLE.admin) && user.User_Roles?.[0] === ROLE.student &&
