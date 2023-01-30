@@ -19,11 +19,11 @@ const PageSidebar = ({ option1 = {
     const [open, setOpen] = useState()
     const roleIds = _user.Roles.map(r => r.id);
     option1.values = !roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)
-        ? option1.values : option1.values.filter(i => !["createdBy", "updatedBy"].includes(i.code))
+        ? option1.values : option1.values.filter(i => !["createdBy", "updatedBy", "teacher"].includes(i.code))
     let [value1, setValue1] = useState(() => {
         let value = JSON.parse(localStorage.getItem(option1.code)) || option1.defaultValue
         value = !roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)
-            ? value : value.filter(code => !["createdBy", "updatedBy"].includes(code))
+            ? value : value.filter(code => !["createdBy", "updatedBy", "teacher"].includes(code))
         return value
     })
     let [value2, setValue2] = useState(JSON.parse(localStorage.getItem(option2.code)) || option2.defaultValue)
