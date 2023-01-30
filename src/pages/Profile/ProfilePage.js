@@ -99,7 +99,6 @@ function ProfilePage({
             setUser(user)
             setOpenModal(true)
         } else {
-            console.log("External error");
         }
 
     }

@@ -7,7 +7,7 @@ const AboutPage = (props) => {
         <Container>
             <div style={{ fontSize: 20, fontWeight: 600 }}>Bạn là giáo viên muốn đăng ký tài khoản vui lòng liên hệ qua :</div>
             <ul>
-                <li>Sdt: <a href="tel:tonduong2128@gmail.com">0987795761</a></li>
+                <li>Sdt: <a href="tel:0987795761">0987795761</a></li>
                 {/* <li>Email: <a href="mailto:tonduong2128@gmail.com">tonduong2128@gmail.com</a></li>
                 <li>Zalo: 0987795761(<a href="https://zalo.me/0987795761" rel="noreferrer" target="_blank">Tồn dương</a>)</li> */}
             </ul>

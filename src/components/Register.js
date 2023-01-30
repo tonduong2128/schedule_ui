@@ -70,9 +70,6 @@ function Register({
             notificationContext.dispatch(openActionNotification("Học viên không được bỏ trống.", "error"))
             return
         }
-        if (isBusy) {
-            console.log("Handle data before sumit");
-        }
         onSumit({
             ...info,
             teacherId,
@@ -181,9 +178,6 @@ function Register({
                                 {...params}
                             />}
                             ampm={true}
-                            getClockLabelText={(...e) => {
-                                console.log(e);
-                            }}
                             value={moment(startTime || moment().format("HH:mm:ss"), "HH:mm:ss").toDate()}
                             onChange={newValue => {
                                 setStartTime(moment(newValue.$d).format("HH:mm:ss"))

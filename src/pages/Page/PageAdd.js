@@ -51,7 +51,6 @@ function PageAdd({
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
         }
-
         if (!user.username) {
             notificationContext.dispatch(openActionNotification("Tên đăng nhập không được bỏ trống.", "error"))
             return
@@ -89,6 +88,7 @@ function PageAdd({
                 if (code === RESPONSE_CODE.SUCCESS) {
                     !!search && search()
                     setOpenModal(false);
+                    setUser({ ...initUser })
                 } else if (code === RESPONSE_CODE.USERNAME_HAD_USED) {
                     notificationContext.dispatch(openActionNotification("Tên đăng nhập đã tồn tại.", "warning"))
                 } else {

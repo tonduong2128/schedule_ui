@@ -87,7 +87,6 @@ function VehicleTypeEdit({
                 setVehicleType(vehicle)
                 setOpenModal(true)
             } else {
-                console.log("External error");
             }
         } else if (selectModel.length === 0) {
             notificationContext.dispatch(openActionNotification("Vui lòng chọn một dòng dữ liệu.", "warning"))

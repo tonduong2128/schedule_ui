@@ -134,7 +134,7 @@ const VehicleTypePage = ({ ...props }) => {
         }
     }
     const handleDelete = async () => {
-        if (selectModel.length === 1) {
+        if (selectModel.length > 0) {
             loadingContext.dispatch(openActionLoading())
             const response = await VehicleType.deletes(selectModel)
             loadingContext.dispatch(closeActionLoading())

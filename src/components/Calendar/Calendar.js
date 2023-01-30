@@ -46,23 +46,15 @@ const CustomCalendar = (props) => {
     const [infoRegister, setInfoRegister] = useState({});
     const [targetDate, setTargetDate] = useState(moment().toDate());
     const [targetDateRange, setTargetDateRange] = useState([
-        moment().startOf('month').toDate(),
-        moment().endOf('month').toDate()
+        moment().startOf('month').add(-8, "day").toDate(),
+        moment().endOf('month').add(8, "day").toDate()
     ]);
     const roleIds = _user.Roles.map(r => r.id);
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
 
     const clickRef = useRef(null)
-    const [events, setEvents] = useState([
-        // {
-        //     start: moment().toDate(),
-        //     end: moment().toDate(),
-        //     // end: moment().add(1, "days").toDate(),
-        //     title: "Lịch học",
-        //     info: {}
-        // },
-    ])
+    const [events, setEvents] = useState([])
     const search = () => {
         handleRangeChange(targetDateRange, modeCalendar, true)
     }
@@ -583,15 +575,15 @@ const CustomCalendar = (props) => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
                             return isMobile ? <div style={{ fontSize: 12 }}>{startTime.slice(3, 5)}<br />{endTime.slice(3, 5)} </div>
-                                : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name})</div>;
+                                : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name || "Bận"})</div>;
                         }
                     },
                     month: {
                         event: events => {
                             const { info } = events.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name})</div>
-                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name})</div>;
+                            return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name || "Bận"})</div>
+                                : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name || "Bận"})</div>;
                         },
                     },
                     work_week: {

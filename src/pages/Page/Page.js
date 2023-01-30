@@ -133,7 +133,7 @@ const Page = ({ ...props }) => {
         }
     }
     const handleDelete = async () => {
-        if (selectModel.length === 1) {
+        if (selectModel.length > 0) {
             loadingContext.dispatch(openActionLoading())
             const response = await User.deletes(selectModel)
             loadingContext.dispatch(closeActionLoading())
@@ -141,7 +141,7 @@ const Page = ({ ...props }) => {
             if (code === RESPONSE_CODE.SUCCESS) {
                 notificationContext.dispatch(openActionNotification("Xóa thành công.", "success"))
                 search()
-            } if (code === RESPONSE_CODE.USER_HAD_USED) {
+            } else if (code === RESPONSE_CODE.USER_HAD_USED) {
                 notificationContext.dispatch(openActionNotification("Không thể xóa! Người dùng đang được sử dụng.", "warning"))
                 search()
             } else {
