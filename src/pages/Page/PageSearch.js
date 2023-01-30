@@ -1,7 +1,8 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import { memo, useEffect, useState } from "react";
 import { ROLE } from "../../common";
 import DatepickerRange from "../../components/Controls/Datepicker/DatepickerRange";
+import TeacherAutocomplete from "../../components/Controls/Teacher/TeacherAutocomplete";
 import UserAutocomplete from "../../components/Controls/User/UserAutocomplete";
 import { TextFieldCustom } from "../../components/Custom/TextFieldCustom";
 import { getUser } from "../../utils";
@@ -27,6 +28,18 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
                     ...searchModel,
                     id: value,
                 })}
+            />
+        </Grid>
+        <Grid item
+            className={!option.includes("teacher") || roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip) ? "hidden" : ""}
+            xs={12} sm={12} md={6} lg={6} xl={6}>
+            <TeacherAutocomplete
+                style={{ marginTop: -14 }}
+                onChange={value => setSearchModel({
+                    ...searchModel,
+                    teacherId: value,
+                })}
+                value={searchModel.teacherId}
             />
         </Grid>
         <Grid item

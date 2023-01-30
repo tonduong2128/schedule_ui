@@ -6,6 +6,10 @@ const SearchModel = [
         code: "fullname"
     },
     {
+        label: "Giáo viên",
+        code: "teacher"
+    },
+    {
         label: "Tên đăng nhập",
         code: "username"
     },
@@ -41,6 +45,10 @@ const ResultModel = [
         code: "fullname"
     },
     {
+        label: "Giáo viên",
+        code: "teacher"
+    },
+    {
         label: "Tên đăng nhập",
         code: "username"
     },
@@ -70,8 +78,9 @@ const ResultModel = [
     },
 ]
 
-const defaultSearchModel = isMobile ? ["fullname", "phone"] : [
+const defaultSearchModel = isMobile ? ["fullname", "phone", "teacher"] : [
     "fullname",
+    "teacher",
     "username",
     "email",
     "phone",
@@ -80,8 +89,9 @@ const defaultSearchModel = isMobile ? ["fullname", "phone"] : [
     "createdBy",
     "updatedBy",
 ]
-const defaultResultModel = isMobile ? ["fullname", "phone"] : [
+const defaultResultModel = isMobile ? ["fullname", "phone", "teacher"] : [
     "fullname",
+    "teacher",
     "username",
     "email",
     "phone",

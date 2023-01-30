@@ -86,6 +86,10 @@ const Page = ({ ...props }) => {
         if (_searchModel.$or.length <= 0) {
             delete _searchModel.$or
         }
+        if (searchModel.teacherId) {
+            searchOther.student = true;
+            searchOther.teacherId = searchModel.teacherId
+        }
         if (roleIds.includes(ROLE.teacher_vip)) {
             searchOther.student = true;
             searchOther.teacherId = _user.id;
