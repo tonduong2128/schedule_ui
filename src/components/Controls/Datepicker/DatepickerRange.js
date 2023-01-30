@@ -5,11 +5,12 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import moment from "moment";
 import { useEffect, useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
+import { isMobile } from "react-device-detect";
 
 const DatepickerRange = ({ value: _value, onChange, label, ...props }) => {
     const [value, setValue] = useState(_value || [])
-    const [hiddenClear1, setHiddenClear1] = useState(true)
-    const [hiddenClear2, setHiddenClear2] = useState(true)
+    const [hiddenClear1, setHiddenClear1] = useState(true && !isMobile)
+    const [hiddenClear2, setHiddenClear2] = useState(true && !isMobile)
 
     useEffect(() => {
         !!onChange && onChange(value)
@@ -31,27 +32,27 @@ const DatepickerRange = ({ value: _value, onChange, label, ...props }) => {
                 renderInput={(params) => <TextField
                     {...params}
                     onMouseEnter={() => {
-                        setHiddenClear1(false)
+                        setHiddenClear1(false && !isMobile)
                     }}
                     onMouseLeave={() => {
-                        setHiddenClear1(true)
+                        setHiddenClear1(true && !isMobile)
                     }}
                     fullWidth
                     size="small"
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (
-                            <span hidden={hiddenClear1} onClick={(e) => {
+                            <span hidden={hiddenClear1 || !value?.[0]} onClick={(e) => {
                                 e.stopPropagation();
-                                setValue([null, value[1]])
+                                setValue([null, value?.[1]])
                             }}>
-                                <ClearIcon fontSize="20px" style={{ cursor: "pointer" }} />
+                                <ClearIcon fontSize="20px" style={{ cursor: "pointer", marginRight: -8, marginTop: -4 }} />
                             </span>
                         ),
                     }}
                 />}
             />
-            < div style={{ display: "inline-block", padding: "0 6px" }}>
+            <div style={{ display: "inline-block", fontSize: isMobile ? 14 : 16, padding: "0 6px", textTransform: "none" }}>
                 đến
             </div>
             <MobileDatePicker
@@ -78,11 +79,11 @@ const DatepickerRange = ({ value: _value, onChange, label, ...props }) => {
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (
-                            <span hidden={hiddenClear2} onClick={(e) => {
+                            <span hidden={hiddenClear2 || !value?.[1]} onClick={(e) => {
                                 e.stopPropagation();
-                                setValue([value[0], null])
+                                setValue([value?.[0], null])
                             }}>
-                                <ClearIcon fontSize="20px" style={{ cursor: "pointer" }} />
+                                <ClearIcon fontSize="20px" style={{ cursor: "pointer", marginRight: -8, marginTop: -4 }} />
                             </span>
                         ),
                     }}

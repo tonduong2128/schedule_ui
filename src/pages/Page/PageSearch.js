@@ -3,6 +3,7 @@ import { memo, useEffect, useState } from "react";
 import { ROLE } from "../../common";
 import DatepickerRange from "../../components/Controls/Datepicker/DatepickerRange";
 import UserAutocomplete from "../../components/Controls/User/UserAutocomplete";
+import { TextFieldCustom } from "../../components/Custom/TextFieldCustom";
 import { getUser } from "../../utils";
 
 
@@ -31,7 +32,7 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
         <Grid item
             className={!option.includes("username") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
+            <TextFieldCustom
                 fullWidth
                 id="username"
                 placeholder="Tên đăng nhập"
@@ -48,7 +49,7 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
         <Grid item
             className={!option.includes("email") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
+            <TextFieldCustom
                 fullWidth
                 id="email"
                 placeholder="email"
@@ -70,7 +71,7 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
         <Grid item
             className={!option.includes("phone") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
+            <TextFieldCustom
                 fullWidth
                 id="phone"
                 placeholder="Số điện thoại"

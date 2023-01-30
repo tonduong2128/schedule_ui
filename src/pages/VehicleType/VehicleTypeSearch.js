@@ -5,6 +5,7 @@ import DatepickerRange from "../../components/Controls/Datepicker/DatepickerRang
 import TeacherAutocomplete from "../../components/Controls/Teacher/TeacherAutocomplete";
 import UserAutocomplete from "../../components/Controls/User/UserAutocomplete";
 import { getUser } from "../../utils";
+import { TextFieldCustom } from "../../components/Custom";
 
 
 const VehicleTypeSearch = ({ option = [], searchModel: _searchModel, onChange, ...props }) => {
@@ -20,7 +21,7 @@ const VehicleTypeSearch = ({ option = [], searchModel: _searchModel, onChange, .
         <Grid item
             className={!option.includes("name") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
+            <TextFieldCustom
                 fullWidth
                 id="name"
                 placeholder="name"
@@ -28,16 +29,18 @@ const VehicleTypeSearch = ({ option = [], searchModel: _searchModel, onChange, .
                 variant="outlined"
                 size="small"
                 value={searchModel.name}
-                onChange={value => setSearchModel({
-                    ...searchModel,
-                    name: value.nativeEvent.target.value,
-                })}
+                onChange={value => {
+                    setSearchModel({
+                        ...searchModel,
+                        name: value.nativeEvent.target.value,
+                    })
+                }}
             />
         </Grid>
         <Grid item
             className={!option.includes("description") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
+            <TextFieldCustom
                 fullWidth
                 id="description"
                 placeholder="Mô tả"

@@ -5,6 +5,7 @@ import React, { memo, useContext, useState } from 'react';
 import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import { UserTypeAutocomplete } from '../../components/Controls/UserType';
+import { TextFieldCustom } from '../../components/Custom/TextFieldCustom';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { User } from '../../services';
@@ -138,7 +139,7 @@ function PageAdd({
                         }}
                     >
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="username"
                                 placeholder="Tên đăng nhập"
@@ -155,7 +156,7 @@ function PageAdd({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="fullname"
                                 placeholder="Họ và tên"
@@ -200,7 +201,7 @@ function PageAdd({
                             </div>
                         }
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="phone"
                                 placeholder="Số điện thoại"
@@ -217,7 +218,7 @@ function PageAdd({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="email"
                                 placeholder="Email"

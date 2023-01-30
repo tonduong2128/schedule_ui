@@ -36,7 +36,7 @@ const PageSidebar = ({ option1 = {
         }
         localStorage.setItem(option1.code, JSON.stringify(value1))
         setValue1([...value1])
-        !!onChange1 && onChange1(value1)
+        !!onChange1 && onChange1([...value1])
     }
     const handleOption2 = (event, code) => {
         const checked = event.nativeEvent.target.checked;
@@ -47,11 +47,11 @@ const PageSidebar = ({ option1 = {
         }
         localStorage.setItem(option2.code, JSON.stringify(value2))
         setValue2([...value2])
-        !!onChange2 && onChange2(value2)
+        !!onChange2 && onChange2([...value2])
     }
     useEffect(() => {
-        !!onChange1 && onChange1(value1)
-        !!onChange2 && onChange2(value2)
+        !!onChange1 && onChange1([...value1])
+        !!onChange2 && onChange2([...value2])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     const resetSidebar = () => {

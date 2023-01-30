@@ -14,6 +14,7 @@ import { getUser } from '../../utils';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { TextFieldCustom } from '../../components/Custom';
 
 const style = {
     position: 'absolute',
@@ -54,6 +55,14 @@ function ProfilePage({
 
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
             user.Students_Teacher = [_user.id]
+        }
+        if (!user.fullname) {
+            notificationContext.dispatch(openActionNotification("Họ và tên không được bỏ trống.", "error"))
+            return
+        }
+        if (!user.phone) {
+            notificationContext.dispatch(openActionNotification("Số điện thoại không được bỏ trống.", "error"))
+            return
         }
         user.User_Roles = user.User_Roles.map(id => ({
             roleId: id,
@@ -100,7 +109,7 @@ function ProfilePage({
             fontSize: "16px",
             color: "#000",
             lineHeight: 1.5,
-            fontFamily: 'Roboto, Helvetica, Arial, sans-serif;',
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif ',
             letterSpacing: "0.00938em"
         }} onClick={() => handleBeforeShow()}>
             Tài khoản của tôi
@@ -136,7 +145,7 @@ function ProfilePage({
                         }}
                     >
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 disabled
                                 fullWidth
                                 id="username"
@@ -183,7 +192,7 @@ function ProfilePage({
                             </div>
                         }
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="fullname"
                                 placeholder="Họ và tên"
@@ -200,7 +209,7 @@ function ProfilePage({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="phone"
                                 placeholder="Số điện thoại"
@@ -217,7 +226,7 @@ function ProfilePage({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="email"
                                 placeholder="Email"
@@ -252,7 +261,7 @@ function ProfilePage({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 disabled
                                 id="createdDate"
@@ -271,7 +280,7 @@ function ProfilePage({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 disabled
                                 id="updatedDate"

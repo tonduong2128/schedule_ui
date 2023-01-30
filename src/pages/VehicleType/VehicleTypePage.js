@@ -59,12 +59,25 @@ const VehicleTypePage = ({ ...props }) => {
             _searchModel.$or.push({ teacherId: searchModel.teacherId })
         }
 
-        if (searchModel.createdDate?.length > 0) {
-            _searchModel.$or.push({ createdDate: { $between: searchModel.createdDate } })
+        const createdDateF = searchModel.createdDate?.filter(i => !!i);
+        if (createdDateF?.length === 2) {
+            _searchModel.$or.push({ createdDate: { $between: createdDateF } })
+        } else if (!!createdDateF?.[0]) {
+            _searchModel.$or.push({ createdDate: { $gte: createdDateF[0] } })
+        } else if (!!createdDateF?.[1]) {
+            _searchModel.$or.push({ createdDate: { $lte: createdDateF[1] } })
         }
-        if (searchModel.updatedDate?.length > 0) {
-            _searchModel.$or.push({ updatedDate: { $between: searchModel.updatedDate } })
+
+        const updatedDateF = searchModel.updatedDate?.filter(i => !!i);
+        if (updatedDateF?.length === 2) {
+            _searchModel.$or.push({ updatedDate: { $between: updatedDateF } })
+        } else if (!!updatedDateF?.[0]) {
+            _searchModel.$or.push({ updatedDate: { $gte: updatedDateF[0] } })
+        } else if (!!updatedDateF?.[1]) {
+            _searchModel.$or.push({ updatedDate: { $lte: updatedDateF[1] } })
         }
+
+
         if (searchModel.createdBy?.length > 0) {
             _searchModel.$or.push({ createdBy: { $in: searchModel.createdBy } })
         }
@@ -72,7 +85,7 @@ const VehicleTypePage = ({ ...props }) => {
             _searchModel.$or.push({ updatedBy: { $in: searchModel.updatedBy } })
         }
         if (roleIds.some(id => id === ROLE.teacher_vip || id === ROLE.teacher)) {
-            _searchModel.$or.push({ teacherId: _user.id });
+            _searchModel.teacherId = _user.id;
         }
         if (_searchModel.$or.length <= 0) {
             delete _searchModel.$or

@@ -14,6 +14,9 @@ import { getUser } from '../utils';
 import { StudentAutocomplete } from './Controls/Student';
 import TeacherAutocomplete from './Controls/Teacher/TeacherAutocomplete';
 import VehicleTypeAutocomplete from './Controls/VehicleType/VehicleTypeAutocomplete';
+import { TextFieldCustom } from './Custom';
+import 'dayjs/locale/vi';
+
 function Register({
     startTime: _startTime,
     endTime: _endTime,
@@ -151,7 +154,7 @@ function Register({
                 }
 
                 <div className="container-car-type container-car-location">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
                         <DatePicker
                             disabled={disabled}
                             className="date-input"
@@ -168,14 +171,19 @@ function Register({
                     </LocalizationProvider>
                 </div>
                 <div className="container-car-type container-car-location">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
                         <MobileTimePicker
                             disabled={disabled}
                             className="time-input"
                             label="Giờ bắt đầu"
                             renderInput={(params) => <TextField
                                 size='small'
-                                {...params} />}
+                                {...params}
+                            />}
+                            ampm={true}
+                            getClockLabelText={(...e) => {
+                                console.log(e);
+                            }}
                             value={moment(startTime || moment().format("HH:mm:ss"), "HH:mm:ss").toDate()}
                             onChange={newValue => {
                                 setStartTime(moment(newValue.$d).format("HH:mm:ss"))
@@ -185,14 +193,17 @@ function Register({
 
                 </div>
                 <div className="container-car-type container-car-location">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
                         <MobileTimePicker
+
                             disabled={disabled}
                             className="time-input"
                             label="Giờ kết thúc"
                             renderInput={(params) => <TextField
                                 size='small'
-                                {...params} />}
+                                {...params}
+                            />}
+                            ampm={true}
                             minTime={startTime ? moment(startTime, "HH:mm:ss") : null}
                             value={moment(endTime || moment().format("HH:mm:ss"), "HH:mm:ss").toDate()}
                             onChange={newValue => {
@@ -203,7 +214,7 @@ function Register({
                 </div>
                 {
                     isBusy && <div className="container-car-type container-car-location">
-                        <TextField
+                        <TextFieldCustom
                             disabled={disabled}
                             fullWidth
                             id="reason"

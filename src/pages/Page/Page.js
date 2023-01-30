@@ -58,12 +58,25 @@ const Page = ({ ...props }) => {
         if (!!searchModel.phone) {
             _searchModel.$or.push({ phone: { $like: `%25${searchModel.phone}%25` } })
         }
-        if (searchModel.createdDate?.length > 0) {
-            _searchModel.$or.push({ createdDate: { $between: searchModel.createdDate } })
+
+        const createdDateF = searchModel.createdDate?.filter(i => !!i);
+        if (createdDateF?.length === 2) {
+            _searchModel.$or.push({ createdDate: { $between: createdDateF } })
+        } else if (!!createdDateF?.[0]) {
+            _searchModel.$or.push({ createdDate: { $gte: createdDateF[0] } })
+        } else if (!!createdDateF?.[1]) {
+            _searchModel.$or.push({ createdDate: { $lte: createdDateF[1] } })
         }
-        if (searchModel.updatedDate?.length > 0) {
-            _searchModel.$or.push({ updatedDate: { $between: searchModel.updatedDate } })
+
+        const updatedDateF = searchModel.updatedDate?.filter(i => !!i);
+        if (updatedDateF?.length === 2) {
+            _searchModel.$or.push({ updatedDate: { $between: updatedDateF } })
+        } else if (!!updatedDateF?.[0]) {
+            _searchModel.$or.push({ updatedDate: { $gte: updatedDateF[0] } })
+        } else if (!!updatedDateF?.[1]) {
+            _searchModel.$or.push({ updatedDate: { $lte: updatedDateF[1] } })
         }
+
         if (searchModel.createdBy?.length > 0) {
             _searchModel.$or.push({ createdBy: { $in: searchModel.createdBy } })
         }
@@ -246,9 +259,9 @@ const Page = ({ ...props }) => {
                                             <TableCell className={!option2.includes("username") ? "hidden" : ""} align="left">{user.username}</TableCell>
                                             <TableCell className={!option2.includes("email") ? "hidden" : ""} align="left">{user.email}</TableCell>
                                             <TableCell className={!option2.includes("createdDate") ? "hidden" : ""} align="left">{!!user.createdDate ?
-                                                moment(user.createdDate).format("DD//MM/YYYY HH:mm") : ""}</TableCell>
+                                                moment(user.createdDate).format("DD/MM/YYYY HH:mm") : ""}</TableCell>
                                             <TableCell className={!option2.includes("updatedDate") ? "hidden" : ""} align="left">{!!user.updatedDate ?
-                                                moment(user.updatedDate).format("DD//MM/YYYY HH:mm") : ""}</TableCell>
+                                                moment(user.updatedDate).format("DD/MM/YYYY HH:mm") : ""}</TableCell>
                                             <TableCell className={!option2.includes("createdBy") ? "hidden" : ""} align="left">{user.CreatedBy?.fullname}</TableCell>
                                             <TableCell className={!option2.includes("updatedBy") ? "hidden" : ""} align="left">{user.UpdatedBy?.fullname}</TableCell>
                                         </TableRow>

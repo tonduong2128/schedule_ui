@@ -7,6 +7,7 @@ import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import UserStatus from '../../components/Controls/User/UserStatus';
 import { UserTypeAutocomplete } from '../../components/Controls/UserType';
+import { TextFieldCustom } from '../../components/Custom/TextFieldCustom';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { Auth, User } from '../../services';
@@ -153,7 +154,7 @@ function PageEdit({
                         }}
                     >
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 disabled
                                 fullWidth
                                 id="username"
@@ -201,7 +202,7 @@ function PageEdit({
                             </div>
                         }
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="fullname"
                                 placeholder="Họ và tên"
@@ -218,7 +219,7 @@ function PageEdit({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="phone"
                                 placeholder="Số điện thoại"
@@ -235,7 +236,7 @@ function PageEdit({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="email"
                                 placeholder="Email"

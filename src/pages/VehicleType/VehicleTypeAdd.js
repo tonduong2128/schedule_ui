@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import React, { memo, useContext, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
 import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
+import { TextFieldCustom } from '../../components/Custom';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { VehicleType } from '../../services';
@@ -127,7 +128,7 @@ function VehicleTypeAdd({
                             </div>
                         }
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="name"
                                 placeholder="Tên loại xe"
@@ -144,7 +145,7 @@ function VehicleTypeAdd({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <TextField
+                            <TextFieldCustom
                                 fullWidth
                                 id="description"
                                 placeholder="Mô tả"
