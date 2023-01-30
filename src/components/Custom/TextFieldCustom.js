@@ -1,23 +1,30 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { TextField } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const TextFieldCustom = ({ value, disable, onChange = () => { }, ...props }) => {
     const [hiddenClear, setHiddenClear] = useState(true)
     const [focus, setFocus] = useState(false)
+    const ref = useRef()
     return <TextField
         {...props}
         inputRef={input => focus && input && input.focus()}
         value={value || ""}
-        onChange={event => {
-            onChange(event)
-        }}
-        onFocus={e => {
-            setFocus(true)
-            setHiddenClear(false)
-        }}
+
+
         InputProps={{
             ...props?.InputProps,
+            onFocus: e => {
+                setFocus(true)
+                setHiddenClear(false)
+            },
+            onBlur: e => {
+                setFocus(false)
+                clearTimeout(ref.current)
+            },
+            onChange: event => {
+                onChange(event)
+            },
             endAdornment: (
                 <div hidden={hiddenClear || !value || !!disable} onClick={(event) => {
                     event.stopPropagation();
