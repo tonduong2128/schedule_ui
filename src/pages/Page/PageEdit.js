@@ -193,6 +193,7 @@ function PageEdit({
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
                                 <DatePicker
                                     className="date-input"
+                                    disabled={user.User_Roles.some(id => id === ROLE.admin)}
                                     label="Ngày hết hạn"
                                     renderInput={(params) => <TextField
                                         size='small'
