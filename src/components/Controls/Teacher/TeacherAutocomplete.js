@@ -1,6 +1,6 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { User } from "../../../services";
 import { useDebounce } from '../../CustomHook';
@@ -75,4 +75,4 @@ const TeacherAutocomplete = ({ onChange, value, label, disabled = false, student
         />
     </div>
 }
-export default TeacherAutocomplete;
+export default memo(TeacherAutocomplete);

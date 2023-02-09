@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { PER_PAGE, RESPONSE_CODE, ROLE } from '../../common';
 import { Header } from '../../components';
@@ -21,7 +21,15 @@ import PageEdit from './PageEdit';
 import PageSearch from './PageSearch';
 import PageSidebar from './PageSidebar';
 import PageView from './PageView';
-
+const styleBtn = isMobile ? {
+    fontSize: 12,
+    padding: "4px 2px",
+    marginRight: "2px",
+    marginBottom: "2px",
+} : {
+    marginRight: "2px",
+    marginBottom: "2px",
+}
 const Page = ({ ...props }) => {
 
     const _user = getUser()
@@ -163,22 +171,15 @@ const Page = ({ ...props }) => {
         }
         setOpenConfirm(true)
     }
-    const styleBtn = isMobile ? {
-        fontSize: 12,
-        padding: "4px 2px",
-        marginRight: "2px",
-        marginBottom: "2px",
-    } : {
-        marginRight: "2px",
-        marginBottom: "2px",
-    }
+
+    const handleSearchOnchange = useCallback((value) => setSearchModel(value), [])
     return (
         <div>
             <Header />
             <Container fixed style={{ paddingTop: 8 }}>
                 <h6>QUẢN LÝ HỌC VIÊN</h6>
                 <div>
-                    <PageSearch option={option1} onChange={value => setSearchModel(value)} />
+                    <PageSearch option={option1} onChange={handleSearchOnchange} />
                 </div>
                 <div>
                     <div style={{ display: "flex", alignItems: "center", padding: "6px 0" }}>
