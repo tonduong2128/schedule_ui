@@ -110,21 +110,23 @@ function PageView({
                                 size="small"
                                 label="Tên đăng nhập"
                                 value={user.username}
-                                onChange={event => {
-                                }}
+                                onChange={() => { }}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <UserTypeAutocomplete
+                            <TextField
                                 disabled
+                                fullWidth
+                                id="userType"
+                                placeholder="Loại người dùng"
+                                variant="outlined"
+                                size="small"
                                 label="Loại người dùng"
-                                onChange={value => {
-                                }}
-                                value={user.User_Roles?.[0]}
+                                value={user.Roles?.[0]?.name}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DatePicker
                                     disabled
                                     className="date-input"
@@ -135,24 +137,22 @@ function PageView({
                                     minDate={moment().toDate()}
                                     inputFormat="DD/MM/YYYY"
                                     value={user.dateExpired ? moment(user.dateExpired, "YYYY-MM-DD").toDate() : null}
-                                    onChange={newValue => {
-                                        setUser({
-                                            ...user,
-                                            dateExpired: moment(newValue.$d).format("YYYY-MM-DD")
-                                        })
-                                    }}
+                                    onChange={() => { }}
                                 />
                             </LocalizationProvider>
                         </div>
                         {
                             roleIds.includes(ROLE.admin) && user.User_Roles?.[0] === ROLE.student &&
                             <div className="container-car-type container-car-location">
-                                <TeacherAutocomplete
-                                    size='small'
+                                <TextField
                                     disabled
-                                    onChange={value => {
-                                    }}
-                                    value={user.Students_Teacher?.[0]}
+                                    fullWidth
+                                    id="fullname"
+                                    placeholder="Giáo viên"
+                                    variant="outlined"
+                                    size="small"
+                                    label="Giáo viên"
+                                    value={user.Teachers?.[0].fullname}
                                 />
                             </div>
                         }
@@ -202,8 +202,7 @@ function PageView({
                                 disabled
                                 label="Trạng thái"
                                 value={user.status}
-                                onChange={value => {
-                                }}
+                                onChange={() => { }}
                             />
                         </div>
                         <div className="container-car-type container-car-location">

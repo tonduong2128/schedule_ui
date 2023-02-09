@@ -104,8 +104,7 @@ function VehicleTypeView({
                                 size="small"
                                 label="Tên loại xe"
                                 value={vehicleType.name}
-                                onChange={event => {
-                                }}
+                                onChange={() => { }}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
@@ -128,12 +127,20 @@ function VehicleTypeView({
                         {
                             roleIds.includes(ROLE.admin) &&
                             <div className="container-car-type container-car-location">
-                                <TeacherAutocomplete
-                                    size='small'
+                                <TextField
+                                    fullWidth
                                     disabled
-                                    onChange={value => {
+                                    id="teacher"
+                                    placeholder="Giáo viên"
+                                    variant="outlined"
+                                    size="small"
+                                    label="Giáo viên"
+                                    value={vehicleType?.Teacher?.fullname}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <></>
+                                        ),
                                     }}
-                                    value={vehicleType.teacherId}
                                 />
                             </div>
                         }

@@ -151,7 +151,7 @@ function Register({
                 }
 
                 <div className="container-car-type container-car-location">
-                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                    <LocalizationProvider dateAdapter={AdapterDayjs} >
                         <DatePicker
                             disabled={disabled}
                             className="date-input"
@@ -168,7 +168,7 @@ function Register({
                     </LocalizationProvider>
                 </div>
                 <div className="container-car-type container-car-location">
-                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                    <LocalizationProvider dateAdapter={AdapterDayjs} >
                         <MobileTimePicker
                             disabled={disabled}
                             className="time-input"
@@ -187,7 +187,7 @@ function Register({
 
                 </div>
                 <div className="container-car-type container-car-location">
-                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                    <LocalizationProvider dateAdapter={AdapterDayjs} >
                         <MobileTimePicker
 
                             disabled={disabled}

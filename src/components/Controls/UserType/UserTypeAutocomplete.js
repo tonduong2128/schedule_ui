@@ -1,6 +1,6 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { RESPONSE_CODE } from "../../../common";
 import { Role } from "../../../services";
 const UserTypeAutocomplete = ({ onChange, label, disabled = false, value, ...props }) => {
@@ -25,7 +25,7 @@ const UserTypeAutocomplete = ({ onChange, label, disabled = false, value, ...pro
                 }
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value])
+    }, [])
     return <Autocomplete
         disablePortal
         disabled={disabled}
@@ -57,4 +57,4 @@ const UserTypeAutocomplete = ({ onChange, label, disabled = false, value, ...pro
         }}
     />
 }
-export default UserTypeAutocomplete;
+export default memo(UserTypeAutocomplete);

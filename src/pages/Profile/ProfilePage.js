@@ -1,22 +1,20 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 import { Box, InputAdornment, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import moment from 'moment';
 import { memo, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
-import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import UserStatus from '../../components/Controls/User/UserStatus';
-import { UserTypeAutocomplete } from '../../components/Controls/UserType';
+import { TextFieldCustom } from '../../components/Custom';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { User } from '../../services';
 import { getUser } from '../../utils';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
-import { TextFieldCustom } from '../../components/Custom';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const style = {
     position: 'absolute',
@@ -169,20 +167,19 @@ function ProfilePage({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <UserTypeAutocomplete
+                            <TextField
                                 disabled
+                                fullWidth
+                                id="userType"
+                                placeholder="Loại người dùng"
+                                variant="outlined"
+                                size="small"
                                 label="Loại người dùng"
-                                onChange={value => {
-                                    setUser({
-                                        ...user,
-                                        User_Roles: [value]
-                                    })
-                                }}
-                                value={user.User_Roles?.[0]}
+                                value={user.Roles?.[0]?.name}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DatePicker
                                     disabled
                                     className="date-input"
@@ -199,16 +196,15 @@ function ProfilePage({
                         {
                             user.User_Roles?.[0] === ROLE.student &&
                             <div className="container-car-type container-car-location">
-                                <TeacherAutocomplete
+                                <TextField
                                     disabled
-                                    size='small'
-                                    onChange={value => {
-                                        setUser({
-                                            ...user,
-                                            Students_Teacher: [value]
-                                        })
-                                    }}
-                                    value={user.Students_Teacher?.[0]}
+                                    fullWidth
+                                    id="fullname"
+                                    placeholder="Giáo viên"
+                                    variant="outlined"
+                                    size="small"
+                                    label="Giáo viên"
+                                    value={user.Teachers?.[0].fullname}
                                 />
                             </div>
                         }
@@ -320,7 +316,7 @@ function ProfilePage({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <Link to="change-password">
+                            <Link to="/change-password">
                                 <Button style={{ fontSize: 12 }} variant="contained" disableElevation>
                                     Đổi mật khẩu
                                 </Button>

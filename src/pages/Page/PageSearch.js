@@ -4,7 +4,6 @@ import { ROLE } from "../../common";
 import DatepickerRange from "../../components/Controls/Datepicker/DatepickerRange";
 import TeacherAutocomplete from "../../components/Controls/Teacher/TeacherAutocomplete";
 import UserAutocomplete from "../../components/Controls/User/UserAutocomplete";
-import { UserTypeAutocomplete } from "../../components/Controls/UserType";
 import { TextFieldCustom } from "../../components/Custom/TextFieldCustom";
 import { getUser } from "../../utils";
 

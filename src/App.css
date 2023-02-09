@@ -274,3 +274,12 @@ body {
 .rbc-day-slot .rbc-background-event {
   padding: 2px 5px 2px 2px !important;
 }
+
+input[disabled] {
+  color: black !important;
+  -webkit-text-fill-color: unset !important;
+}
+
+label[data-shrink="true"]:has(+div > input:not([disabled])) {
+  color: rgba(0, 0, 0, 0.9) !important;
+}

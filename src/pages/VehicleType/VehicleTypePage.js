@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { PER_PAGE, RESPONSE_CODE, ROLE } from '../../common';
 import { Header } from '../../components';
@@ -22,6 +22,16 @@ import VehicleTypeSearch from './VehicleTypeSearch';
 import VehicleTypeSidebar from './VehicleTypeSidebar';
 import VehicleTypeView from './VehicleTypeView';
 
+
+const styleBtn = isMobile ? {
+    fontSize: 12,
+    padding: "4px 2px",
+    marginRight: "2px",
+    marginBottom: "2px",
+} : {
+    marginRight: "2px",
+    marginBottom: "2px",
+}
 const VehicleTypePage = ({ ...props }) => {
 
     const _user = getUser()
@@ -158,23 +168,14 @@ const VehicleTypePage = ({ ...props }) => {
         setOpenConfirm(true)
     }
 
-    const styleBtn = isMobile ? {
-        fontSize: 12,
-        padding: "4px 2px",
-        marginRight: "2px",
-        marginBottom: "2px",
-    } : {
-        marginRight: "2px",
-        marginBottom: "2px",
-    }
-
+    const handleOnchangeSearch = useCallback(value => setSearchModel(value), [])
     return (
         <div>
             <Header />
             <Container fixed style={{ paddingTop: 8 }}>
                 <h6>QUẢN LÝ LOẠI XE</h6>
                 <div>
-                    <VehicleTypeSearch option={option1} onChange={value => setSearchModel(value)} />
+                    <VehicleTypeSearch option={option1} onChange={handleOnchangeSearch} />
                 </div>
                 <div>
                     <div style={{ display: "flex", alignItems: "center", padding: "6px 0" }}>

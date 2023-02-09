@@ -36,7 +36,7 @@ function PageAdd({
 }) {
     const _user = getUser()
     const roleIds = _user.Roles.map(r => r.id);
-    
+
     const initUser = {
         username: "",
         fullname: "",
@@ -197,7 +197,7 @@ function PageAdd({
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DatePicker
                                     className="date-input"
                                     label="Ngày hết hạn"

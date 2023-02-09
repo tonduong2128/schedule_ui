@@ -124,6 +124,21 @@ function VehicleTypeEdit({
                             marginRight: -10,
                         }}
                     >
+                        {
+                            roleIds.includes(ROLE.admin) &&
+                            <div className="container-car-type container-car-location">
+                                <TeacherAutocomplete
+                                    size='small'
+                                    onChange={value => {
+                                        setVehicleType({
+                                            ...vehicleType,
+                                            teacherId: value
+                                        })
+                                    }}
+                                    value={vehicleType.teacherId}
+                                />
+                            </div>
+                        }
                         <div className="container-car-type container-car-location">
                             <TextFieldCustom
                                 fullWidth
@@ -158,21 +173,6 @@ function VehicleTypeEdit({
                                 }}
                             />
                         </div>
-                        {
-                            roleIds.includes(ROLE.admin) &&
-                            <div className="container-car-type container-car-location">
-                                <TeacherAutocomplete
-                                    size='small'
-                                    onChange={value => {
-                                        setVehicleType({
-                                            ...vehicleType,
-                                            teacherId: value
-                                        })
-                                    }}
-                                    value={vehicleType.teacherId}
-                                />
-                            </div>
-                        }
                         <div className="container-car-type container-car-location">
                             <Button onClick={() => handleSumit()} variant="contained" disableElevation>
                                 Lưu

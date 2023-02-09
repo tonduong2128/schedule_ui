@@ -7,9 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import moment from 'moment';
 import { memo, useContext, useState } from 'react';
 import { PASSWORD_DEFAULT, RESPONSE_CODE, ROLE } from '../../common';
-import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import UserStatus from '../../components/Controls/User/UserStatus';
-import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { TextFieldCustom } from '../../components/Custom/TextFieldCustom';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
@@ -167,30 +165,24 @@ function PageEdit({
                                 size="small"
                                 label="Tên đăng nhập"
                                 value={user.username}
-                                onChange={event => {
-                                    setUser({
-                                        ...user,
-                                        username: event.nativeEvent.target.value?.replace(/ /g, "")
-                                    })
-                                }}
+                                onChange={() => { }}
                             />
                         </div>
 
                         <div className="container-car-type container-car-location">
-                            <UserTypeAutocomplete
-                                label="Loại người dùng"
+                            <TextField
                                 disabled
-                                onChange={value => {
-                                    setUser({
-                                        ...user,
-                                        User_Roles: [value]
-                                    })
-                                }}
-                                value={user.User_Roles?.[0]}
+                                fullWidth
+                                id="userType"
+                                placeholder="Loại người dùng"
+                                variant="outlined"
+                                size="small"
+                                label="Loại người dùng"
+                                value={user.Roles?.[0]?.name}
                             />
                         </div>
                         <div className="container-car-type container-car-location">
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DatePicker
                                     className="date-input"
                                     disabled={user.User_Roles.some(id => id === ROLE.admin)}
@@ -213,16 +205,15 @@ function PageEdit({
                         {
                             roleIds.includes(ROLE.admin) && user.User_Roles?.[0] === ROLE.student &&
                             <div className="container-car-type container-car-location">
-                                <TeacherAutocomplete
-                                    size='small'
+                                <TextField
                                     disabled
-                                    onChange={value => {
-                                        setUser({
-                                            ...user,
-                                            Students_Teacher: [value]
-                                        })
-                                    }}
-                                    value={user.Students_Teacher?.[0]}
+                                    fullWidth
+                                    id="fullname"
+                                    placeholder="Giáo viên"
+                                    variant="outlined"
+                                    size="small"
+                                    label="Giáo viên"
+                                    value={user.Teachers?.[0].fullname}
                                 />
                             </div>
                         }

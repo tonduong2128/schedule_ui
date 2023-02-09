@@ -1,6 +1,6 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Autocomplete, TextField } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { RESPONSE_CODE, ROLE } from "../../../common";
 import { User } from "../../../services";
 import { getUser } from '../../../utils';
@@ -43,7 +43,7 @@ const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = []
                 setLoading(false)
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value, debounceValue])
+    }, [debounceValue])
     useEffect(() => {
         search()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,4 +89,4 @@ const UserAutocomplete = ({ onChange, label, disabled = false, admin, value = []
         }}
     />
 }
-export default UserAutocomplete;
+export default memo(UserAutocomplete);
