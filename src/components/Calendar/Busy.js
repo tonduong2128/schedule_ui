@@ -255,7 +255,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         />)
                     </div>
                 </div>
-                <RadioGroup
+                {/* <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
                     value={typeOf}
                     style={{ display: "flex", justifyContent: "center", flexDirection: "row", marginTop: -8 }}
@@ -273,7 +273,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         control={<Radio size="small" style={{ marginLeft: -6 }} />}
                         label="Lịch rảnh"
                     />
-                </RadioGroup>
+                </RadioGroup> */}
                 <div style={{ overflowY: "overlay", maxHeight: "calc(92vh - 96px)", height: "100%", width: "100%", paddingRight: 8 }}>
                     <Calendar
                         messages={{
@@ -352,7 +352,7 @@ const Busy = ({ calendarOf, search, ...props }) => {
                         onSelectSlot={handleSelectSlot}
                         defaultView="week"
                         views={["week"]}
-                        selectable
+                        selectable={roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip) && calendarOf.isMe}
                         localizer={localizer}
                         toolbar={false}
                     // step={60}
