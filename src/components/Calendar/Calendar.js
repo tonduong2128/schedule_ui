@@ -52,16 +52,10 @@ const CustomCalendar = (props) => {
     const roleIds = _user.Roles.map(r => r.id);
     const notificationContext = useContext(NotificationContext);
     const loadingContext = useContext(LoadingContext);
+    const first = useRef(true);
 
     const clickRef = useRef(null)
     const [events, setEvents] = useState([])
-    const search = () => {
-        handleRangeChange(targetDateRange, modeCalendar, true)
-    }
-    useEffect(() => {
-        handleRangeChange(targetDateRange, modeCalendar, true)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [calendarOf])
     useEffect(() => {
         const calendar = document.querySelector(".rbc-toolbar-label");
         calendar.addEventListener("click", (e) => {
@@ -240,7 +234,6 @@ const CustomCalendar = (props) => {
             setModeModal(MODE_REGISTER_SHEDULE.EDIT)
             setOpenModal(true)
         }, 250)
-
     }, [])
     // const hanldeDoubleClickEvent = useCallback((slotInfo) => {
     //     /**
@@ -355,38 +348,60 @@ const CustomCalendar = (props) => {
         setModeModal(MODE_REGISTER_SHEDULE.ADD);
         setOpenModal(false)
     }
-    const handleRangeChange = async (range, type, first = false) => {
+    const handleRangeChange = async (range, type) => {
         const mode = type || modeCalendar;
         let startDate = null;
         let endDate = null;
-        if (first) {
-            startDate = moment(range[0]).format("YYYY-MM-DD");
-            endDate = moment(range[1]).format("YYYY-MM-DD");
-        } else if (mode === "day") {
-            startDate = moment(range[0]).format("YYYY-MM-DD");
-            endDate = moment(range[0]).format("YYYY-MM-DD");
+        if (mode === "day") {
+            startDate = moment(range[0]).toDate();
+            endDate = moment(range[0]).toDate();
         } else if (mode === "month") {
-            startDate = moment(range.start).format("YYYY-MM-DD");
-            endDate = moment(range.end).format("YYYY-MM-DD");
+            startDate = moment(range.start).toDate();
+            endDate = moment(range.end).toDate();
         } else if (mode === "week") {
-            startDate = moment(range[0]).format("YYYY-MM-DD");
-            endDate = moment(range[6]).format("YYYY-MM-DD");
+            startDate = moment(range[0]).toDate();
+            endDate = moment(range[6]).toDate();
         } else if (mode === "work_week") {
-            startDate = moment(range[0]).format("YYYY-MM-DD");
-            endDate = moment(range[4]).format("YYYY-MM-DD");
+            startDate = moment(range[0]).toDate();
+            endDate = moment(range[4]).toDate();
         } else if (mode === "agenda") {
-            startDate = moment(range.start).format("YYYY-MM-DD");
-            endDate = moment(range.end).format("YYYY-MM-DD");
+            startDate = moment(range.start).toDate();
+            endDate = moment(range.end).toDate();
         } else {
             //donothing
         }
+        setTargetDateRange([startDate, endDate])
+    }
+    const handleShoreMore = (events, date) => {
+        setTimeout(() => {
+            const targetDate = document.querySelector(".rbc-overlay .rbc-overlay-header");
+            targetDate.removeEventListener("click", () => { })
+            targetDate.style.cursor = "pointer"
+            targetDate.addEventListener("click", (e) => {
+                localStorage.setItem("calendar_type", "day")
+                setModeCalendar("day")
+                setTargetDate(moment(date).toDate())
+            })
+        }, 250)
+    }
+    const handleChangeCalendarOf = (calendarOf) => {
+        setCalendarOf(calendarOf)
+    }
+    const handleNavigate = (datas) => {
+        setTargetDate(moment(datas).toDate())
+    }
+    const handleOnView = mode => {
+        setModeCalendar(() => mode)
+        localStorage.setItem("calendar_type", mode)
+    }
+    const search = useCallback(async () => {
         const searchOption = {
             limit: 1000000 || PER_PAGE,
             page: 1
         };
         const seacherModel = {
             targetDate: {
-                $between: [startDate, endDate]
+                $between: [moment(targetDateRange[0]).format("YYYY-MM-DD"), moment(targetDateRange[1]).format("YYYY-MM-DD")]
             },
         };
         const isStudent = _user.Roles.some(r => r.id === ROLE.student)
@@ -417,28 +432,13 @@ const CustomCalendar = (props) => {
             .finally(() => {
                 loadingContext.dispatch(closeActionLoading())
             })
-        setTargetDateRange([moment(startDate, "YYYY-MM-DD").toDate(), moment(endDate, "YYYY-MM-DD").toDate()]);
         setEvents(newEvents)
-    }
-    const handleShoreMore = (events, date) => {
-        setTimeout(() => {
-            const targetDate = document.querySelector(".rbc-overlay .rbc-overlay-header");
-            targetDate.removeEventListener("click", () => { })
-            targetDate.style.cursor = "pointer"
-            targetDate.addEventListener("click", (e) => {
-                setModeCalendar("day")
-                localStorage.setItem("calendar_type", "day")
-                setTargetDate(moment(date).toDate())
-            })
-        }, 250)
-    }
-    const handleNavigate = (datas) => {
-        setTargetDate(moment(datas).toDate())
-    }
-    const handleChangeCalendarOf = (calendarOf) => {
-        setCalendarOf(calendarOf)
-    }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [calendarOf, targetDateRange, modeCalendar])
+    useEffect(() => {
+        if (first.current) { first.current = false; return }
+        search()
+    }, [search])
     const Component = isMobile ? Calendar : DnDCalendar;
     return <div>
         <div style={{ padding: "10px 0px", display: "flex" }}>
@@ -496,10 +496,7 @@ const CustomCalendar = (props) => {
             // onKeyPressEvent={e => { console.log("Key Press Event", e) }}
             onNavigate={handleNavigate}
             onShowMore={handleShoreMore}
-            onView={mode => {
-                setModeCalendar(() => mode)
-                localStorage.setItem("calendar_type", mode)
-            }}
+            onView={handleOnView}
             style={{ height: "100vh" }}
             popup // show popup or deirect to day this
             // dayLayoutAlgorithm="overlap"
