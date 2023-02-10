@@ -40,7 +40,6 @@ function Register({
         || info?.status === STATUS_RESERVATION.special
         || (mode === MODE_REGISTER_SHEDULE.ADD && roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip)));
     const notificationContext = useContext(NotificationContext);
-
     const handleSumit = (mode) => {
         if (!teacherId) {
             notificationContext.dispatch(openActionNotification("Giáo viên không được bỏ trống.", "error"))
@@ -114,7 +113,8 @@ function Register({
                             control={<Checkbox size="small" />}
                             label="Lịch bận"
                             checked={isBusy}
-                            onChange={(e, checked) => { setIsBusy(checked) }}
+                            onChange={(e, checked) => { }}
+                        // onChange={(e, checked) => { setIsBusy(checked) }}
                         />
                         {info?.status === STATUS_RESERVATION.ofWeek &&
                             <FormControlLabel
@@ -147,6 +147,24 @@ function Register({
                             onChange={value => setStudentId(value)}
                             value={studentId || _user.id}
                         />
+                        <div className="container-car-type container-car-location">
+                            <TextFieldCustom
+                                disabled
+                                fullWidth
+                                id="reason"
+                                placeholder="Số điện thoại học viên"
+                                variant="outlined"
+                                size="small"
+                                label="Số điện thoại học viên"
+                                value={info.Student?.phone}
+                                onChange={(e) => { }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <></>
+                                    ),
+                                }}
+                            />
+                        </div>
                     </>
                 }
 
