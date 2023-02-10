@@ -571,7 +571,7 @@ const CustomCalendar = (props) => {
                         event: event => {
                             const { info } = event.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <div style={{ fontSize: 12, display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                            return isMobile ? <div style={{ fontSize: 12, display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                                 <div>{startTime.slice(3, 5)}</div>
                                 <div>{endTime.slice(3, 5)} </div>
                             </div>
