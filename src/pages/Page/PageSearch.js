@@ -30,18 +30,21 @@ const PageSearch = ({ option = [], searchModel: _searchModel, onChange, ...props
                 })}
             />
         </Grid>
-        <Grid item
-            className={!option.includes("teacher") || roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip) ? "hidden" : ""}
-            xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TeacherAutocomplete
-                style={{ marginTop: -14 }}
-                onChange={value => setSearchModel({
-                    ...searchModel,
-                    teacherId: value,
-                })}
-                value={searchModel.teacherId}
-            />
-        </Grid>
+        {!roleIds.some(id => id === ROLE.teacher || id === ROLE.teacher_vip) &&
+            <Grid item
+                className={!option.includes("teacher") ? "hidden" : ""}
+                xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TeacherAutocomplete
+                    style={{ marginTop: -14 }}
+                    onChange={value => setSearchModel({
+                        ...searchModel,
+                        teacherId: value,
+                    })}
+                    value={searchModel.teacherId}
+                />
+            </Grid>
+        }
+
         <Grid item
             className={!option.includes("username") ? "hidden" : ""}
             xs={12} sm={12} md={6} lg={6} xl={6}>
