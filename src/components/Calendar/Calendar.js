@@ -562,30 +562,33 @@ const CustomCalendar = (props) => {
             components={
                 {
                     day: {
-                        event: events => {
-                            const { info } = events.event;
-                            return <>{events.title} ({info?.VehicleType?.name})</>
+                        event: event => {
+                            const { info } = event.event;
+                            return <>{event.title} ({info?.VehicleType?.name || "Bận"})</>
                         }
                     },
                     week: {
-                        event: events => {
-                            const { info } = events.event;
+                        event: event => {
+                            const { info } = event.event;
                             const { startTime, endTime } = info;
-                            return isMobile ? <div style={{ fontSize: 12 }}>{startTime.slice(3, 5)}<br />{endTime.slice(3, 5)} </div>
+                            return isMobile ? <div style={{ fontSize: 12, display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                                <div>{startTime.slice(3, 5)}</div>
+                                <div>{endTime.slice(3, 5)} </div>
+                            </div>
                                 : <div style={{ fontSize: 14 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name || "Bận"})</div>;
                         }
                     },
                     month: {
-                        event: events => {
-                            const { info } = events.event;
+                        event: event => {
+                            const { info } = event.event;
                             const { startTime, endTime } = info;
                             return isMobile ? <div style={{ fontSize: 10 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name || "Bận"})</div>
                                 : <div style={{ fontSize: 12 }}>{startTime.slice(0, 5)}-{endTime.slice(0, 5)} ({info?.VehicleType?.name || "Bận"})</div>;
                         },
                     },
                     work_week: {
-                        event: events => {
-                            return isMobile ? <></> : events.title;
+                        event: event => {
+                            return <div>{event.title}</div>;
                         },
                     },
                     agenda: {
