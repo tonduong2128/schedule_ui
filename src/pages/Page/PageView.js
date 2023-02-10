@@ -1,21 +1,19 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import PersonIcon from '@mui/icons-material/Person';
 import { Box, InputAdornment, Modal, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import moment from 'moment';
 import { memo, useContext, useState } from 'react';
 import { RESPONSE_CODE, ROLE } from '../../common';
-import TeacherAutocomplete from '../../components/Controls/Teacher/TeacherAutocomplete';
 import UserStatus from '../../components/Controls/User/UserStatus';
-import { UserTypeAutocomplete } from '../../components/Controls/UserType';
 import { closeActionLoading, LoadingContext, openActionLoading } from '../../reducer/loading';
 import { NotificationContext, openActionNotification } from '../../reducer/notification';
 import { User } from '../../services';
 import { getUser } from '../../utils';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import PersonIcon from '@mui/icons-material/Person';
-import moment from 'moment';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const style = {
     position: 'absolute',
