@@ -333,7 +333,10 @@ const Busy = ({ calendarOf, search, ...props }) => {
                                 event: (event) => {
                                     const { info } = event.event;
                                     const { startTime, endTime } = info;
-                                    return <div style={{ fontSize: 12 }}>{startTime.slice(3, 5)}<br />{endTime.slice(3, 5)}</div>
+                                    return <div style={{ fontSize: isMobile ? 12 : 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
+                                        <div>{startTime.slice(3, 5)}</div>
+                                        <div>{endTime.slice(3, 5)} </div>
+                                    </div>
                                 },
                                 header: (info) => {
                                     const title = info.label.split(" ")[1];
