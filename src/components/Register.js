@@ -16,6 +16,7 @@ import TeacherAutocomplete from './Controls/Teacher/TeacherAutocomplete';
 import VehicleTypeAutocomplete from './Controls/VehicleType/VehicleTypeAutocomplete';
 import { TextFieldCustom } from './Custom';
 import 'dayjs/locale/vi';
+import CallIcon from '@mui/icons-material/Call';
 
 function Register({
     startTime: _startTime,
@@ -160,10 +161,13 @@ function Register({
                                 onChange={(e) => { }}
                                 InputProps={{
                                     startAdornment: (
-                                        <></>
+                                        <a href={'tel:' + info.Student?.phone} >
+                                            <CallIcon />
+                                        </a>
                                     ),
                                 }}
                             />
+
                         </div>
                     </>
                 }
